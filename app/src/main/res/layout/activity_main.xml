@@ -18,27 +18,32 @@
         android:layout_below="@id/toolbar">
 
         <!--Main content-->
-        <LinearLayout
-            android:id="@+id/content_layout"
+        <!--<LinearLayout-->
+            <!--android:id="@+id/content_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="56dp"-->
+                <!--android:layout_marginLeft="16dp"-->
+                <!--android:layout_marginRight="16dp"-->
+                <!--android:layout_marginTop="4dp"-->
+                <!--android:layout_marginBottom="4dp"-->
+                <!-->-->
+                <!--<TextView-->
+                    <!--android:text="test"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+
+            <!--</android.support.v7.widget.CardView>-->
+
+        <!--</LinearLayout>-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/main_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                >
-                <TextView
-                    android:text="test"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"/>
 
         <!--beside-->
         <LinearLayout
