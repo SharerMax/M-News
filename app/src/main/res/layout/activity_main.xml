@@ -53,7 +53,13 @@
             android:orientation="vertical"
             android:layout_gravity="start"
             android:background="#ffffff">
+            <Button
+                android:id="@+id/test_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="test"/>
             <TextView
+                android:id="@+id/test_textview"
                 android:text="test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
