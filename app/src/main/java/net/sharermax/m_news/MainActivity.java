@@ -1,6 +1,5 @@
 package net.sharermax.m_news;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,19 +9,20 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import net.sharermax.m_news.network.WebResolve;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
     private LinearLayout mTestLayout;
     private RecyclerView mRecyclerView;
     private Button mTestButton;
+    private ImageButton mRefreshButton;
     WebResolve mWebResolve;
 
     private List<HashMap<String, String >> mValidData;
@@ -52,10 +53,17 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mRecyclerView = (RecyclerView)findViewById(R.id.main_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mRefreshButton = (ImageButton)findViewById(R.id.refresh_button);
+        mRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "BBBBBBBB", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
-        mDrawerToggle.syncState();
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        
+        setUpDrawer();
+        
         mTestLayout = (LinearLayout)findViewById(R.id.test_layout);
         
         mWebResolve = new WebResolve();
@@ -70,6 +78,18 @@ public class MainActivity extends ActionBarActivity {
         mTestButton = (Button)findViewById(R.id.test_button);
     }
 
+    private void setUpDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
+        mDrawerLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerToggle.syncState();
+            }
+        });
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
+        
+    }
     private static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private List<HashMap<String, String>> data;
         public MyAdapter(List<HashMap<String,String>> data) {

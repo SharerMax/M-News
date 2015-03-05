@@ -6,9 +6,9 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:layout_height="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:background="@color/toolbar">
+        android:background="?attr/colorPrimary">
     </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.DrawerLayout
@@ -16,27 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
-
-        <!--Main content-->
-        <!--<LinearLayout-->
-            <!--android:id="@+id/content_layout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="vertical">-->
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="56dp"-->
-                <!--android:layout_marginLeft="16dp"-->
-                <!--android:layout_marginRight="16dp"-->
-                <!--android:layout_marginTop="4dp"-->
-                <!--android:layout_marginBottom="4dp"-->
-                <!-->-->
-                <!--<TextView-->
-                    <!--android:text="test"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content" />-->
-
-            <!--</android.support.v7.widget.CardView>-->
 
         <!--</LinearLayout>-->
         <android.support.v7.widget.RecyclerView
@@ -62,10 +41,20 @@
                 android:id="@+id/test_textview"
                 android:text="test"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
-
+    <ImageButton
+        android:id="@+id/refresh_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/refresh"
+        android:background="@color/teal_500"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="18dp"
+        android:layout_marginBottom="18dp"
+        android:elevation="6dp"/>
+    
 
 </RelativeLayout>

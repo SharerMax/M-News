@@ -1,9 +1,6 @@
 package net.sharermax.m_news.network;
 
 import android.os.AsyncTask;
-import android.util.Log;
-
-import org.apache.http.protocol.HTTP;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +10,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
