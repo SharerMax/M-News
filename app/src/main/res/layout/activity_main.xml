@@ -16,45 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
-
-        <!--</LinearLayout>-->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/main_recyclerview"
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"/>
-
-        <!--beside-->
-        <LinearLayout
-            android:id="@+id/test_layout"
+            android:layout_height="match_parent" />
+        <fragment class="net.sharermax.m_news.fragment.NavigationDrawerFragment"
+            android:id="@+id/navigationDrawer_fragment"
             android:layout_width="260dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="start"
-            android:background="#ffffff">
-            <Button
-                android:id="@+id/test_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="test"/>
-            <TextView
-                android:id="@+id/test_textview"
-                android:text="test"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+            android:layout_gravity="start" />
+
     </android.support.v4.widget.DrawerLayout>
-    <ImageButton
-        android:id="@+id/refresh_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/refresh"
-        android:background="@color/teal_500"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="18dp"
-        android:layout_marginBottom="18dp"
-        android:elevation="6dp"/>
     
 
 </RelativeLayout>

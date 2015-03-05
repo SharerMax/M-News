@@ -31,8 +31,8 @@ public class WebResolve {
     }
     
     public List<HashMap<String, String>> getValidData() {
+
         return mValidData;
-        
     }
     
     public static interface TaskOverListener {
@@ -74,7 +74,7 @@ public class WebResolve {
         @Override
         protected void onPostExecute(String webData) {
             Pattern mPattern = Pattern.compile(
-                    "<a target=\"_blank\" href=\"(https?://.+?)\".*?>(\\w.+?)</a>");
+                    "<a target=\"_blank\" href=\"(https?://.+?)\".*?>(.+?)</a>");
             Matcher mMatcher = mPattern.matcher(webData);
             while (mMatcher.find()) {
                 HashMap<String, String> map = new HashMap<String, String>();
