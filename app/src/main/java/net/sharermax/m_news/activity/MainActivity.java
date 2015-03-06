@@ -43,7 +43,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     }
 
     private void setUpDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.post(new Runnable() {
             @Override
             public void run() {

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private WebResolve mWebResolve;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
@@ -33,13 +35,14 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.main_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeColors(R.color.red_500);
 
         mWebResolve = new WebResolve();
         mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
