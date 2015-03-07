@@ -1,6 +1,7 @@
 package net.sharermax.m_news.network;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,15 +21,29 @@ import java.util.regex.Pattern;
  */
 
 public class WebResolve {
-    static public String CLASS_TAG = "WebResolve";
+    public static String CLASS_TAG = "WebResolve";
+    public static final String START_UP_HOST_NAME = "http://news.dbanotes.net/";
+    public static final int START_UP_MAIN_PAGES_FLAG = 0x01;
+    public static final int START_UP_NEXT_PAGES_FLAG = 0x02;
     private List<HashMap<String, String>> mValidData = 
             new ArrayList<HashMap<String, String>>();
+    private String mNextUrl;
     private TaskOverListener mTaskOverListener;
     
-    public void startTask() {
-        WebResolveTask mWebResolveTask = new WebResolveTask();
-        mWebResolveTask.execute("http://news.dbanotes.net/news");
+    public void startTask(int flag) {
+        WebResolveTask webResolveTask = new WebResolveTask();
+        switch (flag) {
+            case START_UP_MAIN_PAGES_FLAG:
+                webResolveTask.execute(START_UP_HOST_NAME + "news");
+                break;
+            case START_UP_NEXT_PAGES_FLAG:
+                webResolveTask.execute(mNextUrl);
+                break;
+        }
+
     }
+
+
     
     public List<HashMap<String, String>> getValidData() {
 
@@ -49,17 +64,17 @@ public class WebResolve {
         protected String doInBackground(String... urls) {
             try {
                 URL url = new URL(urls[0]);
-                HttpURLConnection mHttpURLConnection = (HttpURLConnection) url.openConnection();
-                if (mHttpURLConnection != null) {
-                    mHttpURLConnection.setDoInput(true);
-                    mHttpURLConnection.setConnectTimeout(3000);
-                    mHttpURLConnection.setRequestMethod("GET");
-                    if (mHttpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        BufferedReader mBufferedReader = new BufferedReader(
-                                new InputStreamReader(mHttpURLConnection.getInputStream()));
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                if (httpURLConnection != null) {
+                    httpURLConnection.setDoInput(true);
+                    httpURLConnection.setConnectTimeout(3000);
+                    httpURLConnection.setRequestMethod("GET");
+                    if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        BufferedReader bufferedReader = new BufferedReader(
+                                new InputStreamReader(httpURLConnection.getInputStream()));
                         String lineData = null;
                         String webData = "";
-                        while ((lineData = mBufferedReader.readLine()) != null) {
+                        while ((lineData = bufferedReader.readLine()) != null) {
                             webData += lineData;
                         }
                         return  webData;
@@ -73,15 +88,22 @@ public class WebResolve {
 
         @Override
         protected void onPostExecute(String webData) {
-            Pattern mPattern = Pattern.compile(
+            Pattern urlListPattern = Pattern.compile(
                     "<a target=\"_blank\" href=\"(https?://.+?)\".*?>(.+?)</a>");
-            Matcher mMatcher = mPattern.matcher(webData);
-            while (mMatcher.find()) {
+            Matcher urlListMatcher = urlListPattern.matcher(webData);
+            while (urlListMatcher.find()) {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("title", mMatcher.group(2));
-                map.put("url", mMatcher.group(1));
+                map.put("title", urlListMatcher.group(2));
+                map.put("url", urlListMatcher.group(1));
                 mValidData.add(map);
             }
+            Pattern nextUrlPattern = Pattern.compile("\"/(x\\?fnid=\\w+?)\"\\W?rel");
+            Matcher nextUrlMatcher = nextUrlPattern.matcher(webData);
+            if (nextUrlMatcher.find()) {
+                mNextUrl = START_UP_HOST_NAME + nextUrlMatcher.group(1);
+                Log.v(CLASS_TAG, mNextUrl);
+            }
+
             if (mTaskOverListener != null) {
                 mTaskOverListener.taskOver();
             }

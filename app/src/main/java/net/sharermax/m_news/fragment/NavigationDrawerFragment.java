@@ -15,7 +15,7 @@ import net.sharermax.m_news.R;
  */
 public class NavigationDrawerFragment extends Fragment {
 
-    public static String CLASS_TAG = "NavigationDrawerFragment";
+    public static final String CLASS_NAME = "NavigationDrawerFragment";
 
     private OnFragmentInteractionListener mListener;
     public NavigationDrawerFragment() {
@@ -27,7 +27,7 @@ public class NavigationDrawerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         
         if (null != savedInstanceState) {
-            Log.v(CLASS_TAG, "saveInstanceState is not null");
+            Log.v(CLASS_NAME, "saveInstanceState is not null");
         }
 
         mListener.onFragmentInteraction();

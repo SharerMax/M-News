@@ -18,6 +18,7 @@ import java.util.List;
  * E-Mail: mdcw1103@gmail.com
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+    public static final String CLASS_NAME = "RecyclerViewAdapter";
     private List<HashMap<String, String>> data;
     public RecyclerViewAdapter(List<HashMap<String, String>> data) {
         this.data = data;

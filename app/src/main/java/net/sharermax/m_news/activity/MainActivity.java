@@ -21,7 +21,7 @@ import net.sharermax.m_news.fragment.NavigationDrawerFragment;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.OnFragmentInteractionListener{
 
-    public static String CLASS_TAG = "MainActivty";
+    public static final String CLASS_NAME = "MainActivty";
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private HomeFragment mHomeFragment;
