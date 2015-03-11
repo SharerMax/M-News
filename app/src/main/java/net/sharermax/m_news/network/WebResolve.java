@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.regex.Pattern;
  */
 
 public class WebResolve {
-    public static String CLASS_TAG = "WebResolve";
+    public static final String CLASS_NAME = "WebResolve";
     public static final String START_UP_HOST_NAME = "http://news.dbanotes.net/";
     public static final int START_UP_MAIN_PAGES_FLAG = 0x01;
     public static final int START_UP_NEXT_PAGES_FLAG = 0x02;
@@ -40,11 +41,8 @@ public class WebResolve {
                 webResolveTask.execute(mNextUrl);
                 break;
         }
-
     }
 
-
-    
     public List<HashMap<String, String>> getValidData() {
 
         return mValidData;
@@ -62,32 +60,38 @@ public class WebResolve {
         public String CLASS_TAG = "WebResolveTask";
         @Override
         protected String doInBackground(String... urls) {
+            String webData = null;
             try {
                 URL url = new URL(urls[0]);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 if (httpURLConnection != null) {
                     httpURLConnection.setDoInput(true);
                     httpURLConnection.setConnectTimeout(3000);
+                    httpURLConnection.setReadTimeout(3000);
                     httpURLConnection.setRequestMethod("GET");
                     if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                         BufferedReader bufferedReader = new BufferedReader(
                                 new InputStreamReader(httpURLConnection.getInputStream()));
                         String lineData = null;
-                        String webData = "";
                         while ((lineData = bufferedReader.readLine()) != null) {
                             webData += lineData;
                         }
-                        return  webData;
+                        bufferedReader.close();
                     }
+                    httpURLConnection.disconnect();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                return webData;
             }
-            return null;
         }
 
         @Override
         protected void onPostExecute(String webData) {
+            if (null == webData) {
+                return;
+            }
             Pattern urlListPattern = Pattern.compile(
                     "<a target=\"_blank\" href=\"(https?://.+?)\".*?>(.+?)</a>");
             Matcher urlListMatcher = urlListPattern.matcher(webData);

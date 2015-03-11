@@ -14,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.RecyclerViewAdapter;
+import net.sharermax.m_news.network.HttpUtils;
 import net.sharermax.m_news.network.WebResolve;
 
 import java.util.HashMap;
@@ -51,22 +53,33 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
-        mWebResolve = new WebResolve();
-        mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
-            @Override
-            public void taskOver() {
-
-                mRecyclerView.setAdapter(new RecyclerViewAdapter(mWebResolve.getValidData()));
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
-        mWebResolve.startTask(WebResolve.START_UP_MAIN_PAGES_FLAG);
+        mSwipeRefreshLayout.setRefreshing(true);
         return rootView;
     }
 
     @Override
     public void onRefresh() {
+        if (!HttpUtils.isConnect(getActivity())) {
+            Toast.makeText(getActivity(), getString(R.string.net_error),Toast.LENGTH_SHORT).show();
+            mSwipeRefreshLayout.setRefreshing(false);
+            return;
+        }
+        if (null == mWebResolve) {
+            mWebResolve = new WebResolve();
+            mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
+                @Override
+                public void taskOver() {
+                    mWebData = mWebResolve.getValidData();
+                    if (null == mWebData) {
+                        Toast.makeText(getActivity(), getString(R.string.net_error),Toast.LENGTH_SHORT).show();
+                    } else {
+                        mRecyclerView.setAdapter(new RecyclerViewAdapter(mWebData));
+                    }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+            mWebResolve.startTask(WebResolve.START_UP_MAIN_PAGES_FLAG);
+        }
         mWebResolve.startTask(WebResolve.START_UP_NEXT_PAGES_FLAG);
     }
 
@@ -74,6 +87,16 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        onRefresh();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+//        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
