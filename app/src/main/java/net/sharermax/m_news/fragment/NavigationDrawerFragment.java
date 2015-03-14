@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import net.sharermax.m_news.R;
 /**
  * Author: SharerMax
@@ -50,7 +51,6 @@ public class NavigationDrawerFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-        
     }
 
     @Override

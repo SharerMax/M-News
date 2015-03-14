@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +43,7 @@ public class WebResolve {
     }
 
     public List<HashMap<String, String>> getValidData() {
-
+        //not null
         return mValidData;
     }
     
@@ -57,7 +56,7 @@ public class WebResolve {
     }
     
     class WebResolveTask extends AsyncTask<String, Integer, String> {
-        public String CLASS_TAG = "WebResolveTask";
+        static public final String CLASS_TAG = "WebResolveTask";
         @Override
         protected String doInBackground(String... urls) {
             String webData = null;
@@ -81,31 +80,29 @@ public class WebResolve {
                     httpURLConnection.disconnect();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                return webData;
+                Log.v(CLASS_TAG, "TTT");
             }
+            return webData;
         }
 
         @Override
         protected void onPostExecute(String webData) {
-            if (null == webData) {
-                return;
-            }
-            Pattern urlListPattern = Pattern.compile(
-                    "<a target=\"_blank\" href=\"(https?://.+?)\".*?>(.+?)</a>");
-            Matcher urlListMatcher = urlListPattern.matcher(webData);
-            while (urlListMatcher.find()) {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("title", urlListMatcher.group(2));
-                map.put("url", urlListMatcher.group(1));
-                mValidData.add(map);
-            }
-            Pattern nextUrlPattern = Pattern.compile("\"/(x\\?fnid=\\w+?)\"\\W?rel");
-            Matcher nextUrlMatcher = nextUrlPattern.matcher(webData);
-            if (nextUrlMatcher.find()) {
-                mNextUrl = START_UP_HOST_NAME + nextUrlMatcher.group(1);
-                Log.v(CLASS_TAG, mNextUrl);
+            if (null != webData) {
+                Pattern urlListPattern = Pattern.compile(
+                        "<a target=\"_blank\" href=\"(https?://.+?)\".*?>(.+?)</a>");
+                Matcher urlListMatcher = urlListPattern.matcher(webData);
+                while (urlListMatcher.find()) {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("title", urlListMatcher.group(2));
+                    map.put("url", urlListMatcher.group(1));
+                    mValidData.add(map);
+                }
+                Pattern nextUrlPattern = Pattern.compile("\"/(x\\?fnid=\\w+?)\"\\W?rel");
+                Matcher nextUrlMatcher = nextUrlPattern.matcher(webData);
+                if (nextUrlMatcher.find()) {
+                    mNextUrl = START_UP_HOST_NAME + nextUrlMatcher.group(1);
+                    Log.v(CLASS_TAG, mNextUrl);
+                }
             }
 
             if (mTaskOverListener != null) {

@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import net.sharermax.m_news.R;
+
 import java.util.HashMap;
 import java.util.List;
 

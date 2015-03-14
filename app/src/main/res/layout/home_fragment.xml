@@ -13,5 +13,4 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"/>
     </android.support.v4.widget.SwipeRefreshLayout>
-
 </FrameLayout>
