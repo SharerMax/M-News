@@ -11,11 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.RecyclerViewAdapter;
 import net.sharermax.m_news.network.WebResolve;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,7 +48,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (RecyclerView.SCROLL_STATE_IDLE == newState && isBottom()) {
-                    onRefresh();
+                    bottomLoad();
                 }
             }
 
@@ -70,7 +68,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         Log.v(CLASS_NAME,"onrefresh");
         if (null == mWebResolve) {
-
             mWebResolve = new WebResolve();
             mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
                 @Override
@@ -87,9 +84,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
-            mWebResolve.startTask(WebResolve.START_UP_MAIN_PAGES_FLAG);
         }
-        mWebResolve.startTask(WebResolve.START_UP_NEXT_PAGES_FLAG);
+        mWebResolve.cleanData();
+        mWebResolve.startTask(WebResolve.START_UP_MAIN_PAGES_FLAG);
     }
 
     private boolean isBottom() {
@@ -97,6 +94,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return manager.findLastCompletelyVisibleItemPosition() == (manager.getItemCount() - 1);
     }
 
+    private void bottomLoad() {
+        if (mWebResolve != null && !mWebData.isEmpty()) {
+            mWebResolve.startTask(WebResolve.START_UP_NEXT_PAGES_FLAG);
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {

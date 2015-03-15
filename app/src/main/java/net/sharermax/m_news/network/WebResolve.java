@@ -54,6 +54,12 @@ public class WebResolve {
     public void setTaskOverListener(TaskOverListener taskOverListener) {
         mTaskOverListener = taskOverListener;        
     }
+
+    public void cleanData() {
+        if (!mValidData.isEmpty()) {
+            mValidData.clear();
+        }
+    }
     
     class WebResolveTask extends AsyncTask<String, Integer, String> {
         static public final String CLASS_TAG = "WebResolveTask";
