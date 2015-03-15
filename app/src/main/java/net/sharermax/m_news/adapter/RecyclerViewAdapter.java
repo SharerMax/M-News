@@ -1,11 +1,14 @@
 package net.sharermax.m_news.adapter;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,9 +28,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter(List<HashMap<String, String>> data) {
         this.data = data;
     }
-
+    public TextView mTextView;
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
         public MyViewHolder(View itemView) {
             super(itemView);
             mTextView = (TextView)itemView.findViewById(R.id.main_item_textview);
@@ -53,7 +55,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.mTextView.setText(data.get(position).get("title"));
+        mTextView.setText(data.get(position).get("title"));
     }
 
     @Override
