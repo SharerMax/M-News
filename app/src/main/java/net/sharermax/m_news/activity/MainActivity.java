@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.fragment.HomeFragment;
 import net.sharermax.m_news.fragment.NavigationDrawerFragment;

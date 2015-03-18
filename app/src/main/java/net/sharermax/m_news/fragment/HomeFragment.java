@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.RecyclerViewAdapter;
 import net.sharermax.m_news.network.WebResolve;
+
 import java.util.HashMap;
 import java.util.List;
 
