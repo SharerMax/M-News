@@ -63,6 +63,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         onRefresh();
+
         return rootView;
     }
 
@@ -100,6 +101,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if (mWebResolve != null && !mWebData.isEmpty()) {
             mWebResolve.startTask(WebResolve.START_UP_NEXT_PAGES_FLAG);
         }
+    }
+
+    public void scrollToTop() {
+        mRecyclerView.scrollToPosition(0);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.fragment.HomeFragment;
@@ -26,6 +27,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private HomeFragment mHomeFragment;
+    private boolean mDoubleClickToTopEnable;
+    private long mDoubleClickSpeed = 200;  //time
+    private long mPreDoubleClickTime = 0;
 
 
     @Override
@@ -37,7 +41,18 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         toolbar.inflateMenu(R.menu.menu_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDoubleClickToTopEnable) {
+                    if ( (System.currentTimeMillis() - mPreDoubleClickTime) > mDoubleClickSpeed){
+                        mPreDoubleClickTime = System.currentTimeMillis();
+                    } else {
+                        mHomeFragment.scrollToTop();
+                    }
+                }
+            }
+        });
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 
         setUpDrawer();
@@ -62,6 +77,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, mHomeFragment).commit();
+        mDoubleClickToTopEnable = true;
     }
 
     @Override
