@@ -3,9 +3,7 @@ package net.sharermax.m_news.activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +19,7 @@ import net.sharermax.m_news.fragment.NavigationDrawerFragment;
  * E-Mail: mdcw1103@gmail.com
  */
 
-public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.OnFragmentInteractionListener{
+public class MainActivity extends AbsActivity implements NavigationDrawerFragment.OnFragmentInteractionListener{
 
     public static final String CLASS_NAME = "MainActivty";
     private DrawerLayout mDrawerLayout;
@@ -37,15 +35,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_main);
-        setSupportActionBar(toolbar);
+        mToolBar.inflateMenu(R.menu.menu_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setOnClickListener(new View.OnClickListener() {
+        mToolBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mDoubleClickToTopEnable) {
-                    if ( (System.currentTimeMillis() - mPreDoubleClickTime) > mDoubleClickSpeed){
+                    if ((System.currentTimeMillis() - mPreDoubleClickTime) > mDoubleClickSpeed) {
                         mPreDoubleClickTime = System.currentTimeMillis();
                     } else {
                         mHomeFragment.scrollToTop();

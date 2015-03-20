@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private WebResolve mWebResolve;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<HashMap<String, String>> mWebData;
-    static public  HomeFragment newInstance() {
+    public static HomeFragment newInstance() {
         return new HomeFragment();
     }
     public HomeFragment() {

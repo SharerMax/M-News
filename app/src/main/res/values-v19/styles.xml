@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorPrimaryDark">@color/green_800</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
 </resources>
