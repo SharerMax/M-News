@@ -15,7 +15,8 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_below="@+id/statusHeaderView"
-        android:background="?attr/colorPrimary">
+        android:background="?attr/colorPrimary"
+        android:elevation="6dp">
     </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.DrawerLayout

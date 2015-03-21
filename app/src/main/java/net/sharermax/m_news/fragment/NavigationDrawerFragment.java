@@ -7,8 +7,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import net.sharermax.m_news.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * Author: SharerMax
  * Time  : 2015/3/5
@@ -17,8 +26,10 @@ import net.sharermax.m_news.R;
 public class NavigationDrawerFragment extends Fragment {
 
     public static final String CLASS_NAME = "NavigationDrawerFragment";
-
     private OnFragmentInteractionListener mListener;
+    private ListView mListView;
+    private SimpleAdapter mSimpleAdapter;
+
     public NavigationDrawerFragment() {
         // Required empty public constructor
     }
@@ -38,7 +49,22 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.navigation_drawer_fragment, container, false);
+        mListView = (ListView)rootView.findViewById(R.id.drawer_listView);
+
+        mSimpleAdapter = new SimpleAdapter(getActivity(), getListData(), R.layout.drawer_listview_item,
+                                            new String[] {"image", "text"},
+                                            new int[] {R.id.item_image, R.id.item_text});
+        mListView.setAdapter(mSimpleAdapter);
         return rootView;
+    }
+
+    private List<Map<String, Object>> getListData() {
+        List<Map<String, Object>> listData = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("image", R.drawable.ic_home_white);
+        map.put("text", getString(R.string.home));
+        listData.add(map);
+        return listData;
     }
 
 
