@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.fragment.HomeFragment;
@@ -67,13 +68,30 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
     }
 
     @Override
-    public void onFragmentInteraction() {
-        if (null == mHomeFragment) {
-            mHomeFragment = HomeFragment.newInstance();
-        }
+    public void onFragmentInteraction(int clickedItemPosition) {
+
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, mHomeFragment).commit();
-        mDoubleClickToTopEnable = true;
+        switch (clickedItemPosition) {
+            case NavigationDrawerFragment.LISTVIEW_ITEM_HOME:
+                if (null == mHomeFragment) {
+                    mHomeFragment = HomeFragment.newInstance();
+                }
+                fragmentManager.beginTransaction().replace(R.id.container, mHomeFragment).commit();
+                mDoubleClickToTopEnable = true;
+                break;
+            case NavigationDrawerFragment.LISTVIEW_ITEM_SUBSCRIPTION:
+                Toast.makeText(this, getString(R.string.news_source), Toast.LENGTH_LONG).show();
+                break;
+            case NavigationDrawerFragment.LISVIEW_ITEM_SETTING:
+                Toast.makeText(this, getString(R.string.setting), Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
+        if (null != mDrawerLayout) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        }
+
     }
 
     @Override
