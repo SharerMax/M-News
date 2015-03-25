@@ -6,15 +6,16 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import net.sharermax.m_news.R;
+import net.sharermax.m_news.activity.AbsActivity;
 import net.sharermax.m_news.adapter.RecyclerViewAdapter;
 import net.sharermax.m_news.network.WebResolve;
+import net.sharermax.m_news.support.Setting;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,11 +33,20 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private WebResolve mWebResolve;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<HashMap<String, String>> mWebData;
+    private AbsActivity mAbsActivity;
+    private boolean mAutoRefreshEnable;
+
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
     public HomeFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSetting();
     }
 
     @Override
@@ -62,14 +72,20 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        onRefresh();
+
+        if (mAutoRefreshEnable) {
+            onRefresh();
+        }
 
         return rootView;
     }
 
+    private void getSetting() {
+        mAutoRefreshEnable = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_AUTO_REFRESH, true);
+    }
+
     @Override
     public void onRefresh() {
-        Log.v(CLASS_NAME,"onrefresh");
         if (null == mWebResolve) {
             mWebResolve = new WebResolve();
             mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
@@ -97,6 +113,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return manager.findLastCompletelyVisibleItemPosition() == (manager.getItemCount() - 1);
     }
 
+    private boolean isTop() {
+        LinearLayoutManager manager = (LinearLayoutManager)mRecyclerView.getLayoutManager();
+        return manager.findFirstVisibleItemPosition() == 0;
+    }
+
     private void bottomLoad() {
         if (mWebResolve != null && !mWebData.isEmpty()) {
             mWebResolve.startTask(WebResolve.START_UP_NEXT_PAGES_FLAG);
@@ -110,6 +131,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        try {
+            mAbsActivity = (AbsActivity)activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + "must extents AbsActivity");
+        }
 
     }
     @Override

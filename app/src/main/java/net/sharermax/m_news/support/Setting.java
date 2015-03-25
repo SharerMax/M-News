@@ -1,9 +1,67 @@
 package net.sharermax.m_news.support;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 /**
  * Author: SharerMax
  * Time  : 2015/3/21
  * E-Mail: mdcw1103@gmail.com
  */
 public class Setting {
+    public static final String CLASS_NAME = "Setting";
+    public static final String SETTING_NAME = "setting";
+    public static final int MODE_PRIVATE = Context.MODE_PRIVATE;
+    public static final int MODE_MULTI_PROCESS = Context.MODE_MULTI_PROCESS;
+    @Deprecated
+    public static final int MODE_WORLD_WRITEABLE = Context.MODE_WORLD_WRITEABLE;
+    @Deprecated
+    public static final int MODE_WORLD_READABLE = Context.MODE_WORLD_READABLE;
+
+    public static final String KEY_AUTO_REFRESH = "auto_refresh";
+    public static final String KEY_DOUBLE_TO_TOP = "double_to_top";
+
+    private SharedPreferences mSharedPreferences;
+    public static Setting sInstance;
+
+    public static Setting getInstance(Context context) {
+        if (null == sInstance) {
+            sInstance = new Setting(context);
+        }
+        return sInstance;
+    }
+
+    private Setting(Context context, String settingName, int mode) {
+            mSharedPreferences = context.getSharedPreferences(settingName, mode);
+    }
+
+    private Setting(Context context, String settingName) {
+        this(context, settingName, MODE_PRIVATE);
+    }
+
+    private Setting(Context context) {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public boolean getBoolen(String key, boolean defaultValue) {
+        return mSharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    public String getString(String key, String defultString) {
+        return mSharedPreferences.getString(key, defultString);
+    }
+
+    public int getInteger(String key, int defaultValue) {
+        return mSharedPreferences.getInt(key, defaultValue);
+    }
+
+    public long getLong(String key, long defaultValue) {
+        return mSharedPreferences.getLong(key, defaultValue);
+    }
+
+    public float getInteger(String key, float defaultValue) {
+        return mSharedPreferences.getFloat(key, defaultValue);
+    }
+
 }

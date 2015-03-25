@@ -1,6 +1,7 @@
 package net.sharermax.m_news.activity;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -8,11 +9,11 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.fragment.HomeFragment;
 import net.sharermax.m_news.fragment.NavigationDrawerFragment;
+import net.sharermax.m_news.support.Setting;
 
 /**
  * Author: SharerMax
@@ -29,6 +30,8 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
     private boolean mDoubleClickToTopEnable;
     private long mDoubleClickSpeed = 200;  //time
     private long mPreDoubleClickTime = 0;
+    private Setting mSetting;
+
 
 
     @Override
@@ -51,7 +54,6 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
             }
         });
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-
         setUpDrawer();
     }
 
@@ -67,6 +69,7 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
     }
 
+
     @Override
     public void onFragmentInteraction(int clickedItemPosition) {
 
@@ -77,13 +80,17 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
                     mHomeFragment = HomeFragment.newInstance();
                 }
                 fragmentManager.beginTransaction().replace(R.id.container, mHomeFragment).commit();
-                mDoubleClickToTopEnable = true;
+                mDoubleClickToTopEnable =
+                        Setting.getInstance(getApplicationContext()).getBoolen(Setting.KEY_DOUBLE_TO_TOP, true);
                 break;
             case NavigationDrawerFragment.LISTVIEW_ITEM_SUBSCRIPTION:
-                Toast.makeText(this, getString(R.string.news_source), Toast.LENGTH_LONG).show();
+                mDoubleClickToTopEnable = false;
                 break;
             case NavigationDrawerFragment.LISVIEW_ITEM_SETTING:
-                Toast.makeText(this, getString(R.string.setting), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(this, SettingsActivity.class);
+                startActivity(intent);
+                mDoubleClickToTopEnable = false;
                 break;
             default:
                 break;
@@ -92,6 +99,15 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
             mDrawerLayout.closeDrawer(Gravity.START);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

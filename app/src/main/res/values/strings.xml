@@ -13,4 +13,6 @@
     <string name="news_source">News Source</string>
     <string name="setting">Setting</string>
 
+    <string name="app_label_setting">@string/setting</string>
+
 </resources>
