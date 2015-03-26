@@ -22,8 +22,10 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     public static final String CLASS_NAME = "RecyclerViewAdapter";
     private List<HashMap<String, String>> data;
-    public RecyclerViewAdapter(List<HashMap<String, String>> data) {
+    private boolean mUseCardView;
+    public RecyclerViewAdapter(List<HashMap<String, String>> data, boolean useCardView) {
         this.data = data;
+        this.mUseCardView = useCardView;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -47,7 +49,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_content_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                mUseCardView ? R.layout.main_content_item : R.layout.main_content_item_no_card, parent, false);
         return new MyViewHolder(view);
     }
 

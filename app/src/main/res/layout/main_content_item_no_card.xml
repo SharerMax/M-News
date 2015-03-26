@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/main_item_textview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:paddingLeft="?android:listPreferredItemPaddingLeft"
+        android:paddingRight="?android:listPreferredItemPaddingRight"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"/>
+
+</LinearLayout>

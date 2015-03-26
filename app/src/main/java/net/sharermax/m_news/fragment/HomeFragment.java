@@ -96,7 +96,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         Toast.makeText(getActivity(), getString(R.string.net_error),Toast.LENGTH_SHORT).show();
                     } else {
                         if (null == mRecyclerView.getAdapter()) {
-                            mRecyclerView.setAdapter(new RecyclerViewAdapter(mWebData));
+                            mRecyclerView.setAdapter(new RecyclerViewAdapter(
+                                    mWebData, Setting.getInstance(getActivity()).getBoolen(Setting.KEY_USE_CARD_VIEW, true)));
                         }
                         mRecyclerView.getAdapter().notifyDataSetChanged();
                     }

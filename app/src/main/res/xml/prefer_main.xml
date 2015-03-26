@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Action">
+    <PreferenceCategory
+        android:title="@string/action">
         <CheckBoxPreference
             android:key="auto_refresh"
-            android:title="Auto Refresh"
-            android:summary="First open App Refresh News"
+            android:title="@string/auto_refresh_title"
+            android:summary="@string/auto_refresh_summary"
             android:defaultValue="true"/>
         <CheckBoxPreference
             android:key="double_to_top"
-            android:title="Double Clicked Toolbar to Top"
-            android:summary="Double clicked toolbar scroll to top"
+            android:title="@string/double_to_top_title"
+            android:summary="@string/double_to_top_summary"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/view">
+        <SwitchPreference
+            android:key="use_card_view"
+            android:title="@string/use_card_view_title"
             android:defaultValue="true"/>
     </PreferenceCategory>
 </PreferenceScreen>

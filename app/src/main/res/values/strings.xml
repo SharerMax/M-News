@@ -2,17 +2,28 @@
 <resources>
 
     <string name="app_name">M-News</string>
-    <string name="action_settings">Settings</string>
 
+    <!--DrawerLayout-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="net_error">Maybe your internet is not good....</string>
-    
     <string name="home">Home</string>
     <string name="news_source">News Source</string>
     <string name="setting">Setting</string>
 
     <string name="app_label_setting">@string/setting</string>
+
+    <!--Setting Activity-->
+    <string name="action">Action</string>
+    <string name="auto_refresh_title">Auto Refresh</string>
+    <string name="auto_refresh_summary">First open App Refresh News</string>
+    <string name="double_to_top_title">Double Clicked Toolbar to Top</string>
+    <string name="double_to_top_summary">Double clicked toolbar scroll to top</string>
+
+    <string name="view">View</string>
+    <string name="use_card_view_title">Use Card View</string>
+
+    <!--Error Message-->
+    <string name="net_error">Maybe your internet is not good....</string>
 
 </resources>
