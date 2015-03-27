@@ -4,3 +4,4 @@
 manifest-merger-debug-report.txt
 manifest-merger-release-report.txt
 *.apk
+*.iml

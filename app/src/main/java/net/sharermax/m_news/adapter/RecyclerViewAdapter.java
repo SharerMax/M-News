@@ -32,11 +32,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView mTextView;
         public MyViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    String sendData = RecyclerViewAdapter.this.data.get(getPosition()).get("title")
+                                        + RecyclerViewAdapter.this.data.get(getPosition()).get("url");
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, sendData);
+                    sendIntent.setType("text/plain");
+                    v.getContext().startActivity(Intent.createChooser(sendIntent, v.getResources().getString(R.string.share_to)));
+                    return false;
+                }
+            });
             mTextView = (TextView)itemView.findViewById(R.id.main_item_textview);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), RecyclerViewAdapter.this.data.get(getPosition()).get("url"), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(v.getContext(), RecyclerViewAdapter.this.data.get(getPosition()).get("url"), Toast.LENGTH_LONG).show();
                     String url = RecyclerViewAdapter.this.data.get(getPosition()).get("url");
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);

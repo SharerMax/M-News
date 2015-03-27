@@ -69,6 +69,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+
+
+
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
         mSwipeRefreshLayout.setOnRefreshListener(this);

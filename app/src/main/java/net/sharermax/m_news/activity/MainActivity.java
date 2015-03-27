@@ -30,7 +30,6 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
     private boolean mDoubleClickToTopEnable;
     private long mDoubleClickSpeed = 200;  //time
     private long mPreDoubleClickTime = 0;
-    private Setting mSetting;
 
 
 

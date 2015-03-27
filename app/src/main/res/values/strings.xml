@@ -3,6 +3,9 @@
 
     <string name="app_name">M-News</string>
 
+    <!--Main content item-->
+    <string name="share_to">Share to ...</string>
+
     <!--DrawerLayout-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -22,6 +25,7 @@
 
     <string name="view">View</string>
     <string name="use_card_view_title">Use Card View</string>
+    <string name="swipe_back_title">Swipe Back</string>
 
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>

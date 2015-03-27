@@ -19,5 +19,9 @@
             android:key="use_card_view"
             android:title="@string/use_card_view_title"
             android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="swipe_to_back"
+            android:title="@string/swipe_back_title"
+            android:defaultValue="true"/>
     </PreferenceCategory>
 </PreferenceScreen>
