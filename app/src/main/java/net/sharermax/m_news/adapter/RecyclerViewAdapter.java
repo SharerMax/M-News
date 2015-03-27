@@ -37,12 +37,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 public boolean onLongClick(View v) {
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
-                    String sendData = RecyclerViewAdapter.this.data.get(getPosition()).get("title")
-                                        + RecyclerViewAdapter.this.data.get(getPosition()).get("url");
+                    String sendData = RecyclerViewAdapter.this.data.get(getAdapterPosition()).get("title")
+                                        + RecyclerViewAdapter.this.data.get(getAdapterPosition()).get("url");
                     sendIntent.putExtra(Intent.EXTRA_TEXT, sendData);
                     sendIntent.setType("text/plain");
                     v.getContext().startActivity(Intent.createChooser(sendIntent, v.getResources().getString(R.string.share_to)));
-                    return false;
+                    return true;
                 }
             });
             mTextView = (TextView)itemView.findViewById(R.id.main_item_textview);
@@ -50,7 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public void onClick(View v) {
 //                    Toast.makeText(v.getContext(), RecyclerViewAdapter.this.data.get(getPosition()).get("url"), Toast.LENGTH_LONG).show();
-                    String url = RecyclerViewAdapter.this.data.get(getPosition()).get("url");
+                    String url = RecyclerViewAdapter.this.data.get(getAdapterPosition()).get("url");
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));

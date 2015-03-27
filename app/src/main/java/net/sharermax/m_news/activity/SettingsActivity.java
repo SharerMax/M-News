@@ -2,6 +2,9 @@ package net.sharermax.m_news.activity;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
+import android.preference.SwitchPreference;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.fragment.SettingsFragment;

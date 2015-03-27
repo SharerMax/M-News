@@ -22,6 +22,7 @@ public class Setting {
     public static final String KEY_AUTO_REFRESH = "auto_refresh";
     public static final String KEY_DOUBLE_TO_TOP = "double_to_top";
     public static final String KEY_USE_CARD_VIEW = "use_card_view";
+    public static final String KEY_SWIPE_BACK = "swipe_to_back";
 
     private SharedPreferences mSharedPreferences;
     public static Setting sInstance;

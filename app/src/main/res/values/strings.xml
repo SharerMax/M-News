@@ -26,6 +26,7 @@
     <string name="view">View</string>
     <string name="use_card_view_title">Use Card View</string>
     <string name="swipe_back_title">Swipe Back</string>
+    <string name="toast_you_need_restart">Changes will apply after restarting the application</string>
 
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>
