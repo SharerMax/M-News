@@ -28,6 +28,18 @@
     <string name="swipe_back_title">Swipe Back</string>
     <string name="toast_you_need_restart">Changes will apply after restarting the application</string>
 
+    <string name="about_title">About</string>
+    <string name="author_Weibo_title">Weibo</string>
+    <string name="author_Weibo_summary">\@编代码的西瓜</string>
+    <string name="author_Weibo_url">http://weibo.com/hksharemax</string>
+    <string name="author_Twitter_title">Twitter</string>
+    <string name="author_Twitter_summary">\@Saeratom</string>
+    <string name="author_Twitter_url">https://twitter.com/</string>
+    <string name="github_title">Github</string>
+    <string name="github_url">https://github.com/SharerMax/M-News</string>
+    <string name="open_source_license">Open Source License</string>
+    <string name="app_version">Version</string>
+
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>
 

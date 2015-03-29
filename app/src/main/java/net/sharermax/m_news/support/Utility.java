@@ -16,4 +16,14 @@ public class Utility {
         }
         return result;
     }
+    public static String getVersionInfo(Context context) {
+        String versionInfo = "Unknow";
+        try {
+            versionInfo = context.getPackageManager().getPackageInfo(context.getPackageName(),0).versionName;
+            versionInfo += "(Build" + context.getPackageManager().getPackageInfo(context.getPackageName(),0).versionCode + ")";
+        } catch (Exception e) {
+
+        }
+        return versionInfo;
+    }
 }

@@ -24,4 +24,25 @@
             android:title="@string/swipe_back_title"
             android:defaultValue="true"/>
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/about_title">
+        <Preference
+            android:key="weibo"
+            android:title="@string/author_Weibo_title"
+            android:summary="@string/author_Weibo_summary"/>
+        <Preference
+            android:key="twitter"
+            android:title="@string/author_Twitter_title"
+            android:summary="@string/author_Twitter_summary"/>
+        <Preference
+            android:key="github"
+            android:title="@string/github_title"
+            android:summary="@string/github_url"/>
+        <Preference
+            android:key="license"
+            android:title="@string/open_source_license"/>
+        <Preference
+            android:key="version"
+            android:title="@string/app_version"/>
+    </PreferenceCategory>
 </PreferenceScreen>
