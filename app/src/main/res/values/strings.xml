@@ -41,6 +41,11 @@
     <string name="open_source_license">Open Source License</string>
     <string name="app_version">Version</string>
 
+    <!--WeiboAuthActivity-->
+    <string name="user_account">Account</string>
+    <string name="user_passwd">Password</string>
+    <string name="weibo_auto">Weibo Auth</string>
+
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>
 

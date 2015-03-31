@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import net.sharermax.m_news.R;
@@ -45,6 +46,15 @@ public class AbsActivity extends ActionBarActivity{
 
         mToolBar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolBar);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (android.R.id.home == item.getItemId()) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public Toolbar getToolBar() {

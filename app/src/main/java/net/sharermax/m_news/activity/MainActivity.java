@@ -85,10 +85,15 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
                 mDoubleClickToTopEnable = false;
                 break;
             case NavigationDrawerFragment.LISTVIEW_ITEM_SETTING:
-                Intent intent = new Intent();
-                intent.setClass(this, SettingsActivity.class);
-                startActivity(intent);
+                Intent settingIntent = new Intent();
+                settingIntent.setClass(this, SettingsActivity.class);
+                startActivity(settingIntent);
                 mDoubleClickToTopEnable = false;
+                break;
+            case NavigationDrawerFragment.LISTVIEW_ITEM_ACCOUNT:
+                Intent accountIntent = new Intent();
+                accountIntent.setClass(this, WeiboAuthActivity.class);
+                startActivity(accountIntent);
                 break;
             default:
                 break;

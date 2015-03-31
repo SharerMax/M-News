@@ -53,12 +53,4 @@ public class SettingsActivity extends AbsActivity {
         intent.putExtra(EXTRA_FLAG, flag);
         context.startActivity(intent);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (android.R.id.home == item.getItemId()) {
-            onBackPressed();
-        }
-        return true;
-    }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/basice_toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="48dp"
+        android:paddingLeft="48dp"
+        android:paddingTop="18dp"
+        android:orientation="vertical">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/weibo_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="@string/user_account"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="@string/user_account"/>
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/weibo_passwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="@string/user_passwd"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="@string/user_passwd"/>
+    </LinearLayout>
+
+</LinearLayout>

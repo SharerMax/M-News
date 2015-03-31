@@ -24,6 +24,10 @@
             android:name=".activity.SettingsActivity"
             android:label="@string/app_label_setting">
         </activity>
+        <activity
+            android:name=".activity.WeiboAuthActivity"
+            android:label="@string/weibo_auto">
+        </activity>>
 
     </application>
 
