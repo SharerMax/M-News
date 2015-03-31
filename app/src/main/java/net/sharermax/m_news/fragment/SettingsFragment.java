@@ -65,6 +65,11 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             return true;
         }
 
+        if(preference == mTwitterPreference) {
+            openWebSite(getString(R.string.author_Twitter_url));
+            return true;
+        }
+
         if (preference == mGithubPreference) {
             openWebSite(getString(R.string.github_url));
             return true;
