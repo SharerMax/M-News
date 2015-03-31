@@ -84,7 +84,7 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
             case NavigationDrawerFragment.LISTVIEW_ITEM_SUBSCRIPTION:
                 mDoubleClickToTopEnable = false;
                 break;
-            case NavigationDrawerFragment.LISVIEW_ITEM_SETTING:
+            case NavigationDrawerFragment.LISTVIEW_ITEM_SETTING:
                 Intent intent = new Intent();
                 intent.setClass(this, SettingsActivity.class);
                 startActivity(intent);

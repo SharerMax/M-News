@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Author: SharerMax
@@ -31,7 +32,8 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
     private SimpleAdapter mSimpleAdapter;
     public static final int LISTVIEW_ITEM_HOME = 0x00;
     public static final int LISTVIEW_ITEM_SUBSCRIPTION = 0x01;
-    public static final int LISVIEW_ITEM_SETTING = 0x02;
+    public static final int LISTVIEW_ITEM_SETTING = 0x02;
+    public static final int LISTVIEW_ITEM_ACCOUNT = 0x03;
 
     public NavigationDrawerFragment() {
         // Required empty public constructor
@@ -77,6 +79,11 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
         map = new HashMap<String, Object>();
         map.put("image", R.drawable.ic_settings_white);
         map.put("text", getString(R.string.setting));
+        listData.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("image", R.drawable.ic_account_binding);
+        map.put("text", getString(R.string.account_binding));
         listData.add(map);
 
         return listData;
