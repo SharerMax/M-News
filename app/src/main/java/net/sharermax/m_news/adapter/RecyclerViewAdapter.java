@@ -1,5 +1,7 @@
 package net.sharermax.m_news.adapter;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -68,6 +70,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.mTextView.setText(data.get(position).get("title"));
+        Animator animator = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0.1f, 1f);
+        animator.setDuration(500);
+        animator.start();
     }
 
     @Override
