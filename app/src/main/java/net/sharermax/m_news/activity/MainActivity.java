@@ -92,7 +92,7 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
                 break;
             case NavigationDrawerFragment.LISTVIEW_ITEM_ACCOUNT:
                 Intent accountIntent = new Intent();
-                accountIntent.setClass(this, WeiboAuthActivity.class);
+                accountIntent.setClass(this, AccountBindActivity.class);
                 startActivity(accountIntent);
                 break;
             default:

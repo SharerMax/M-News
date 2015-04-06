@@ -1,5 +1,6 @@
 package net.sharermax.m_news.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Author: SharerMax
@@ -39,6 +39,7 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
         // Required empty public constructor
     }
 
+    @SuppressLint("LongLogTag")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

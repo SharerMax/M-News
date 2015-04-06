@@ -1,2 +1,3 @@
-include ':app', ':library:MaterialEditText'
-
+include ':app'
+include ':library:MaterialEditText'
+include ':library:materialdesignlibrary'

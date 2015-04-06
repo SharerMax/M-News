@@ -29,15 +29,16 @@ public class WebResolve {
             new ArrayList<HashMap<String, String>>();
     private String mNextUrl;
     private TaskOverListener mTaskOverListener;
+    private WebResolveTask mWebResolveTask;
     
     public void startTask(int flag) {
-        WebResolveTask webResolveTask = new WebResolveTask();
+        mWebResolveTask = new WebResolveTask();
         switch (flag) {
             case START_UP_MAIN_PAGES_FLAG:
-                webResolveTask.execute(START_UP_HOST_NAME + "news");
+                mWebResolveTask.execute(START_UP_HOST_NAME + "news");
                 break;
             case START_UP_NEXT_PAGES_FLAG:
-                webResolveTask.execute(mNextUrl);
+                mWebResolveTask.execute(mNextUrl);
                 break;
         }
     }
@@ -59,6 +60,13 @@ public class WebResolve {
         if (!mValidData.isEmpty()) {
             mValidData.clear();
         }
+    }
+
+    public boolean isFinished() {
+        if (null != mWebResolveTask) {
+            return AsyncTask.Status.FINISHED == mWebResolveTask.getStatus();
+        }
+        return true;
     }
     
     class WebResolveTask extends AsyncTask<String, Integer, String> {

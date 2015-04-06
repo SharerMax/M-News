@@ -48,7 +48,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Toast.makeText(v.getContext(), RecyclerViewAdapter.this.data.get(getPosition()).get("url"), Toast.LENGTH_LONG).show();
                     String url = RecyclerViewAdapter.this.data.get(getAdapterPosition()).get("url");
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);

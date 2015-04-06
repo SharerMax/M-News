@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.fragment.LicenseFragment;

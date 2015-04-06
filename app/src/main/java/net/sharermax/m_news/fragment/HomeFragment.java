@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -69,9 +70,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-
-
-
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -108,8 +107,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             });
         }
-        mWebResolve.cleanData();
-        mWebResolve.startTask(WebResolve.START_UP_MAIN_PAGES_FLAG);
+        if (mWebResolve.isFinished()) {
+            mWebResolve.cleanData();
+            mWebResolve.startTask(WebResolve.START_UP_MAIN_PAGES_FLAG);
+        }
     }
 
     private boolean isBottom() {

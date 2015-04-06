@@ -25,9 +25,15 @@
             android:label="@string/app_label_setting">
         </activity>
         <activity
-            android:name=".activity.WeiboAuthActivity"
-            android:label="@string/weibo_auto">
-        </activity>>
+            android:name=".activity.AccountBindActivity"
+            android:label="@string/account_bind">
+        </activity>
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" >
+        </activity>
 
     </application>
 

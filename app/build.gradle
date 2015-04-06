@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "net.sharermax.m_news"
         minSdkVersion 16
@@ -11,29 +11,31 @@ android {
         versionCode 1002
         versionName "1.0"
     }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['jni']
         }
     }
+
     signingConfigs {
-        debugConfig {
+        debug {
             storeFile file("../signingfile/signing_debug.jks")
             storePassword "debug0624"
             keyAlias "debug"
             keyPassword "debug0624"
         }
+//        debug {
+//            storeFile file("../signingfile/debug.keystore")
+//        }
     }
 
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debugConfig
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 
@@ -42,6 +44,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.+'
     compile 'com.android.support:cardview-v7:22.+'
     compile 'com.android.support:recyclerview-v7:22.+'
-    compile files('libs/weibosdkcore.jar')
     compile 'com.rengwuxian.materialedittext:library:2.0.3'
+    compile project(':library:materialdesignlibrary')
+    compile files('libs/weibosdkcore.jar')
+    compile 'de.hdodenhof:circleimageview:1.2.2'
 }
