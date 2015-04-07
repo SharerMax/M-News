@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -17,8 +18,11 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.support.AccessTokenKeeper;
 import net.sharermax.m_news.support.Constants;
+import net.sharermax.m_news.support.Utility;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +48,7 @@ public class AccountBindActivity extends AbsActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAccessToken = AccessTokenKeeper.readAccessToken(this);
         if (mAccessToken.isSessionValid()) {
-            Log.v(CLASS_NAME, "valid");
+            Log.v(CLASS_NAME, "ExpiresTime:" + mAccessToken.getExpiresTime());
         }
         Log.v(CLASS_NAME, "no valid");
 
@@ -81,11 +85,11 @@ public class AccountBindActivity extends AbsActivity
         mAccessToken = Oauth2AccessToken.parseAccessToken(bundle);
         if (mAccessToken.isSessionValid()) {
             AccessTokenKeeper.writeAccessToken(this, mAccessToken);
+            Log.v(CLASS_NAME, mAccessToken.getUid() + mAccessToken.getToken());
         } else {
 //            String code = bundle.getString("code", "");
 //            Log.v(CLASS_NAME, code);
         }
-        Log.v(CLASS_NAME, bundle.getString("code", "NONONO"));
     }
 
     @Override

@@ -71,7 +71,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.mTextView.setText(data.get(position).get("title"));
         Animator animator = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0.1f, 1f);
-        animator.setDuration(500);
+        animator.setDuration(300);
         animator.start();
     }
 

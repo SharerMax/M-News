@@ -77,7 +77,7 @@ public class Setting {
     }
 
     public Setting putLong(String key, long value) {
-        mSharedPreferences.edit().putLong(key, value);
+        mSharedPreferences.edit().putLong(key, value).commit();
         return this;
     }
 }
