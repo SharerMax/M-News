@@ -9,6 +9,13 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -18,7 +25,10 @@ import com.sina.weibo.sdk.exception.WeiboException;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.support.AccessTokenKeeper;
 import net.sharermax.m_news.support.Constants;
+import net.sharermax.m_news.support.UserHelper;
 import net.sharermax.m_news.support.Utility;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +50,7 @@ public class AccountBindActivity extends AbsActivity
     private Oauth2AccessToken mAccessToken;
     private ListView mListView;
     private SimpleAdapter mSimpleAdapter;
+    private RequestQueue mRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,7 @@ public class AccountBindActivity extends AbsActivity
         mAccessToken = AccessTokenKeeper.readAccessToken(this);
         if (mAccessToken.isSessionValid()) {
             Log.v(CLASS_NAME, "ExpiresTime:" + mAccessToken.getExpiresTime());
+            UserHelper.getInstance(this).getUserInfo(mAccessToken.getToken(), mAccessToken.getUid());
         }
         Log.v(CLASS_NAME, "no valid");
 

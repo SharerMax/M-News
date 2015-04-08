@@ -48,4 +48,5 @@ dependencies {
     compile project(':library:materialdesignlibrary')
     compile files('libs/weibosdkcore.jar')
     compile 'de.hdodenhof:circleimageview:1.2.2'
+    compile 'com.mcxiaoke.volley:library:1.0.15'
 }
