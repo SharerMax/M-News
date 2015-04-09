@@ -2,6 +2,9 @@ package net.sharermax.m_news.support;
 
 import android.content.Context;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
 
 /**
  * Author: SharerMax
@@ -9,6 +12,8 @@ import android.content.Context;
  * E-Mail: mdcw1103@gmail.com
  */
 public class Utility {
+    private static RequestQueue sRequestQueue;
+
     public static int getStatusBarHeight(Context context) {
         int result = 0;
         int resId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -33,5 +38,12 @@ public class Utility {
         long ms = milliseconds - System.currentTimeMillis() + sp;
         long day = ms / sp;
         return day;
+    }
+
+    public static RequestQueue getRequestQueue(Context context) {
+        if (null == sRequestQueue) {
+            sRequestQueue = Volley.newRequestQueue(context);
+        }
+        return sRequestQueue;
     }
 }

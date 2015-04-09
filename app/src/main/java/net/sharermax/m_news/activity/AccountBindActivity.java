@@ -6,16 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -23,16 +14,14 @@ import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
 
 import net.sharermax.m_news.R;
+import net.sharermax.m_news.adapter.AccountBindAdapter;
 import net.sharermax.m_news.support.AccessTokenKeeper;
 import net.sharermax.m_news.support.Constants;
 import net.sharermax.m_news.support.UserHelper;
-import net.sharermax.m_news.support.Utility;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,14 +32,17 @@ import java.util.Map;
  * E-Mail: mdcw1103@gmail.com
  */
 public class AccountBindActivity extends AbsActivity
-        implements  WeiboAuthListener, AdapterView.OnItemClickListener{
+        implements  WeiboAuthListener, AdapterView.OnItemClickListener, UserHelper.OnResponseListener{
     public static final String CLASS_NAME = "AccountBindActivity";
+    public static final String FLAG_CIRCLE_IMAGE = "circle_image";
+    public static final String FLAG_TEXT = "text";
     private AuthInfo mAuthInfo;
     private SsoHandler mSsoHandler;
     private Oauth2AccessToken mAccessToken;
     private ListView mListView;
-    private SimpleAdapter mSimpleAdapter;
-    private RequestQueue mRequestQueue;
+    private AccountBindAdapter mAdapter;
+    private List<Map<String, Object>> mlist;
+    private UserHelper mUserHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,26 +50,42 @@ public class AccountBindActivity extends AbsActivity
         setContentView(R.layout.accountbind_activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAccessToken = AccessTokenKeeper.readAccessToken(this);
+        mUserHelper = UserHelper.getInstance(this);
+        mUserHelper.setResponseListener(this);
         if (mAccessToken.isSessionValid()) {
-            Log.v(CLASS_NAME, "ExpiresTime:" + mAccessToken.getExpiresTime());
-            UserHelper.getInstance(this).getUserInfo(mAccessToken.getToken(), mAccessToken.getUid());
+            if (mUserHelper.isUserInfoVailed()) {
+                mlist = getListData(mUserHelper.readUserInfo());
+            } else {
+                mUserHelper.getUserInfo(mAccessToken.getToken(), mAccessToken.getUid());
+                mlist = getListData();
+            }
+        } else {
+            mlist = getListData();
         }
-        Log.v(CLASS_NAME, "no valid");
 
         mListView = (ListView)findViewById(R.id.accountbind_listview);
-        mSimpleAdapter = new SimpleAdapter(this, getListData(), R.layout.accountbind_item,
-                new String[] {"circle_image", "text"}, new int[] {R.id.circle_image, R.id.text});
-        mListView.setAdapter(mSimpleAdapter);
+        mAdapter = new AccountBindAdapter(this, mlist);
+        mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
     }
 
     private List<Map<String, Object>> getListData() {
-        List<Map<String, Object>> listData = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("circle_image", R.drawable.ic_user_unlogin);
-        map.put("text", getString(R.string.weibo_auto_item));
-        listData.add(map);
+        map.put(FLAG_CIRCLE_IMAGE, R.drawable.ic_user_unlogin);
+        map.put(FLAG_TEXT, getString(R.string.weibo_auto_item));
+        return getListData(map);
+    }
 
+    private List<Map<String, Object>> getListData(Map map) {
+        List<Map<String, Object>> listData = new ArrayList<Map<String, Object>>();
+        if (map.containsKey(FLAG_CIRCLE_IMAGE) || map.containsKey(FLAG_TEXT)) {
+            listData.add(map);
+            return listData;
+        }
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put(FLAG_CIRCLE_IMAGE, map.get(UserHelper.KEY_PROFILE_IMAGE));
+        hashMap.put(FLAG_TEXT, (String)map.get(UserHelper.KEY_SCREEN_NAME));
+        listData.add(hashMap);
         return listData;
     }
 
@@ -123,6 +131,13 @@ public class AccountBindActivity extends AbsActivity
             mSsoHandler = new SsoHandler(this, mAuthInfo);
         }
         mSsoHandler.authorize(this);
+    }
+
+    @Override
+    public void onResponse(JSONObject jsonObject) {
+        Log.v(CLASS_NAME, "REPONSE");
+        mlist = getListData(mUserHelper.readUserInfo());
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
