@@ -3,15 +3,20 @@ package net.sharermax.m_news.adapter;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.sharermax.m_news.R;
+import net.sharermax.m_news.api.weibo.StatusesAPI;
+import net.sharermax.m_news.support.SharerToHelper;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,6 +48,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     sendIntent.putExtra(Intent.EXTRA_TEXT, sendData);
                     sendIntent.setType("text/plain");
                     v.getContext().startActivity(Intent.createChooser(sendIntent, v.getResources().getString(R.string.share_to)));
+                    SharerToHelper.sharerToWeibo(v.getContext(), sendData);
                     return true;
                 }
             });
