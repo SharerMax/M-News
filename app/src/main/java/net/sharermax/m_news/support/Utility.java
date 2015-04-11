@@ -1,6 +1,8 @@
 package net.sharermax.m_news.support;
 
 import android.content.Context;
+import android.location.LocationListener;
+import android.location.LocationManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -12,6 +14,7 @@ import com.android.volley.toolbox.Volley;
  * E-Mail: mdcw1103@gmail.com
  */
 public class Utility {
+    public static final String CLASS_NAME = "Utility";
     private static RequestQueue sRequestQueue;
 
     public static int getStatusBarHeight(Context context) {
@@ -46,4 +49,20 @@ public class Utility {
         }
         return sRequestQueue;
     }
+
+    public static LocationManager updateLocation(Context context, LocationListener locationListener) {
+
+        LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+        }
+
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
+        }
+        return locationManager;
+    }
+
+
 }

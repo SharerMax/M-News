@@ -147,6 +147,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onStart() {
         super.onStart();
 //        onRefresh();
+
     }
     @Override
     public void onResume() {

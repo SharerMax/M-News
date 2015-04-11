@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <include layout="@layout/basice_toolbar"/>
+    <RelativeLayout
+        android:id="@+id/relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="18dp"
+        android:paddingLeft="18dp"
+        android:paddingTop="4dp">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/weibo_edit_editTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            app:met_maxCharacters="140"
+            app:met_helperText="@string/weibo_edit_helper"
+            app:met_helperTextAlwaysShown="true"
+            app:met_autoValidate="true"
+            app:met_helperTextColor="?attr/colorPrimary"/>
+        <LinearLayout
+            android:id="@+id/location_lineLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignLeft="@id/weibo_edit_editTextView"
+            android:layout_below="@id/weibo_edit_editTextView"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_location"/>
+            <TextView
+                android:id="@+id/location_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+            <com.gc.materialdesign.views.ButtonRectangle
+                android:id="@+id/weibo_cancel"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/green_500"
+                android:text="@string/weibo_cancle"/>
+            <com.gc.materialdesign.views.ButtonRectangle
+                android:id="@+id/weibo_send"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/green_500"
+                android:text="@string/weibo_send"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
