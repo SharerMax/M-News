@@ -106,6 +106,7 @@ public class AccountBindActivity extends AbsActivity
         if (mAccessToken.isSessionValid()) {
             AccessTokenKeeper.writeAccessToken(this, mAccessToken);
             Log.v(CLASS_NAME, mAccessToken.getUid() + mAccessToken.getToken());
+            mUserHelper.getUserInfo(mAccessToken.getToken(), mAccessToken.getUid());
         } else {
 //            String code = bundle.getString("code", "");
 //            Log.v(CLASS_NAME, code);
@@ -120,6 +121,7 @@ public class AccountBindActivity extends AbsActivity
     @Override
     public void onCancel() {
         Log.v(CLASS_NAME, "cancel");
+
     }
 
     private void auth() {
