@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -32,6 +33,7 @@ public class EditWeiboActivity extends AbsActivity
     private ButtonRectangle mCancelButton;
     private ButtonRectangle mSendButton;
     private Location mLocation;
+    public static final int WEIBO_MAX_COUNT = 140;
     public static final String EXTRA_FLAG = "weibo_status";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +104,16 @@ public class EditWeiboActivity extends AbsActivity
                 break;
             case R.id.weibo_send:
                 Log.v(CLASS_NAME, mWeiboEditText.getText().toString());
-                SharerToHelper.sharerToWeibo(v.getContext(),
-                        mWeiboEditText.getText().toString(),
-                        getString(R.string.send_success),
-                        getString(R.string.send_fail),
-                        mLocation);
-                finish();
+                if (!(mWeiboEditText.getText().toString().length() > WEIBO_MAX_COUNT)) {
+                    SharerToHelper.sharerToWeibo(v.getContext(),
+                            mWeiboEditText.getText().toString(),
+                            getString(R.string.send_success),
+                            getString(R.string.send_fail),
+                            mLocation);
+                    this.finish();
+                } else {
+                    Toast.makeText(this, getString(R.string.weibo_edit_error), Toast.LENGTH_LONG).show();
+                }
                 break;
             default:
                 break;
@@ -122,7 +128,7 @@ public class EditWeiboActivity extends AbsActivity
 
         @Override
         public boolean isValid(@NonNull CharSequence charSequence, boolean b) {
-            return !(charSequence.length() > 140);
+            return !(charSequence.length() > WEIBO_MAX_COUNT);
         }
     }
 }
