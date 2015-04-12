@@ -44,7 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     sendIntent.putExtra(EditWeiboActivity.EXTRA_FLAG, sendData);
 //                    sendIntent.setType("text/plain");
 //                    v.getContext().startActivity(Intent.createChooser(sendIntent, v.getResources().getString(R.string.share_to)));
-//                    SharerToHelper.sharerToWeibo(v.getContext(), sendData);
+//                    SharerToHelper.sendToWeibo(v.getContext(), sendData);
                     sendIntent.setClass(v.getContext(), EditWeiboActivity.class);
                     v.getContext().startActivity(sendIntent);
                     return true;

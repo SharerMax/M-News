@@ -16,6 +16,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rengwuxian.materialedittext.validation.METValidator;
 
 import net.sharermax.m_news.R;
+import net.sharermax.m_news.support.AccessTokenKeeper;
 import net.sharermax.m_news.support.SharerToHelper;
 import net.sharermax.m_news.support.Utility;
 
@@ -75,8 +76,15 @@ public class EditWeiboActivity extends AbsActivity
     public void onLocationChanged(Location location) {
         if (null != location) {
             mLocation = location;
-            String locationData = "" + location.getLongitude() + "," + location.getLatitude();
-            mLocationTextView.setText(locationData);
+//            String locationData = "" + location.getLongitude() + "," + location.getLatitude();
+//            mLocationTextView.setText(locationData);
+            SharerToHelper.geoToAddress(this, AccessTokenKeeper.readAccessToken(this).getToken(), location,
+                    new SharerToHelper.GeoToAddressListener() {
+                        @Override
+                        public void onResponse(String address) {
+                            mLocationTextView.setText(address);
+                        }
+                    });
             mLocationManager.removeUpdates(this);
         }
     }
@@ -105,7 +113,7 @@ public class EditWeiboActivity extends AbsActivity
             case R.id.weibo_send:
                 Log.v(CLASS_NAME, mWeiboEditText.getText().toString());
                 if (!(mWeiboEditText.getText().toString().length() > WEIBO_MAX_COUNT)) {
-                    SharerToHelper.sharerToWeibo(v.getContext(),
+                    SharerToHelper.sendToWeibo(v.getContext(),
                             mWeiboEditText.getText().toString(),
                             getString(R.string.send_success),
                             getString(R.string.send_fail),
