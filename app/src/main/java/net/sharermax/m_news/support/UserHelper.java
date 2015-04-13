@@ -31,7 +31,6 @@ public class UserHelper {
 
     private RequestQueue mRequestQueue;
     private Context mContext;
-    private OnResponseListener mOnResponseListener;
 
     public static UserHelper getInstance(Context context) {
         return new UserHelper(context);
@@ -40,7 +39,12 @@ public class UserHelper {
         mContext = context;
         mRequestQueue = Utility.getRequestQueue(mContext);
     }
-    public void getUserInfo(String userToken, String userId) {
+
+    public void getUserInfo(String userToken, String userId, final OnGetUserInfoListener listener) {
+        getUserInfo(mContext, userToken, userId, listener);
+    }
+
+    public static void getUserInfo(final Context context, String userToken, String userId, final OnGetUserInfoListener listener) {
         String url = USER_INFO + "?access_token=" + userToken + "&uid=" + userId;
         Log.v(CLASS_NAME, url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
@@ -48,9 +52,9 @@ public class UserHelper {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.v(CLASS_NAME, response.toString());
-                        writeUserInfo(response);
-                        if (null != mOnResponseListener) {
-                            mOnResponseListener.onResponse(response);
+                        writeUserInfo(context, response);
+                        if (null != listener) {
+                            listener.onResponse(readUserInfo(context));
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -59,15 +63,11 @@ public class UserHelper {
                 Log.v(CLASS_NAME, error.toString());
             }
         });
-        mRequestQueue.add(jsonObjectRequest);
+        Utility.getRequestQueue(context).add(jsonObjectRequest);
     }
 
-    public static interface OnResponseListener {
-        public void onResponse(JSONObject jsonObject);
-    }
-
-    public void setResponseListener(OnResponseListener onResponseListener) {
-        mOnResponseListener = onResponseListener;
+    public static interface OnGetUserInfoListener {
+        public void onResponse(Map userInfo);
     }
 
     public void writeUserInfo(JSONObject jsonObject) {

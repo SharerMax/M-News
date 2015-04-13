@@ -32,7 +32,7 @@ import java.util.Map;
  * E-Mail: mdcw1103@gmail.com
  */
 public class AccountBindActivity extends AbsActivity
-        implements  WeiboAuthListener, AdapterView.OnItemClickListener, UserHelper.OnResponseListener{
+        implements  WeiboAuthListener, AdapterView.OnItemClickListener, UserHelper.OnGetUserInfoListener {
     public static final String CLASS_NAME = "AccountBindActivity";
     public static final String FLAG_CIRCLE_IMAGE = "circle_image";
     public static final String FLAG_TEXT = "text";
@@ -51,12 +51,11 @@ public class AccountBindActivity extends AbsActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAccessToken = AccessTokenKeeper.readAccessToken(this);
         mUserHelper = UserHelper.getInstance(this);
-        mUserHelper.setResponseListener(this);
         if (mAccessToken.isSessionValid()) {
             if (mUserHelper.isUserInfoVailed()) {
                 mlist = getListData(mUserHelper.readUserInfo());
             } else {
-                mUserHelper.getUserInfo(mAccessToken.getToken(), mAccessToken.getUid());
+                mUserHelper.getUserInfo(mAccessToken.getToken(), mAccessToken.getUid(), this);
                 mlist = getListData();
             }
         } else {
@@ -106,7 +105,7 @@ public class AccountBindActivity extends AbsActivity
         if (mAccessToken.isSessionValid()) {
             AccessTokenKeeper.writeAccessToken(this, mAccessToken);
             Log.v(CLASS_NAME, mAccessToken.getUid() + mAccessToken.getToken());
-            mUserHelper.getUserInfo(mAccessToken.getToken(), mAccessToken.getUid());
+            mUserHelper.getUserInfo(mAccessToken.getToken(), mAccessToken.getUid(), this);
         } else {
 //            String code = bundle.getString("code", "");
 //            Log.v(CLASS_NAME, code);
@@ -135,12 +134,7 @@ public class AccountBindActivity extends AbsActivity
         mSsoHandler.authorize(this);
     }
 
-    @Override
-    public void onResponse(JSONObject jsonObject) {
-        Log.v(CLASS_NAME, "REPONSE");
-        mlist = getListData(mUserHelper.readUserInfo());
-        mAdapter.notifyDataSetChanged();
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -148,5 +142,12 @@ public class AccountBindActivity extends AbsActivity
         if (null != mSsoHandler) {
             mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void onResponse(Map userInfo) {
+        Log.v(CLASS_NAME, "REPONSE");
+        mlist = getListData(userInfo);
+        mAdapter.notifyDataSetChanged();
     }
 }
