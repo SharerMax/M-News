@@ -38,19 +38,19 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
         setContentView(R.layout.activity_main);
 
         //mToolBar.inflateMenu(R.menu.menu_main);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDoubleClickToTopEnable) {
-                    if ((System.currentTimeMillis() - mPreDoubleClickTime) > mDoubleClickSpeed) {
-                        mPreDoubleClickTime = System.currentTimeMillis();
-                    } else {
-                        mHomeFragment.scrollToTop();
-                    }
-                }
-            }
-        });
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getToolBar().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mDoubleClickToTopEnable) {
+//                    if ((System.currentTimeMillis() - mPreDoubleClickTime) > mDoubleClickSpeed) {
+//                        mPreDoubleClickTime = System.currentTimeMillis();
+//                    } else {
+//                        mHomeFragment.scrollToTop();
+//                    }
+//                }
+//            }
+//        });
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         setUpDrawer();
     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,8 +20,8 @@ import net.sharermax.m_news.support.Utility;
 public class AbsActivity extends ActionBarActivity{
     public static final String CLASS_NAME = "AbsActivity";
     protected int mStatusBarHeight = 0;
-    protected Toolbar mToolBar;
-    protected View mStatusHeaderView;
+    private Toolbar mToolBar;
+    private View mStatusHeaderView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,11 +42,16 @@ public class AbsActivity extends ActionBarActivity{
             mStatusHeaderView = findViewById(R.id.statusHeaderView);
             mStatusHeaderView.getLayoutParams().height = mStatusBarHeight;
         } catch (NullPointerException e) {
-
+            Log.v(CLASS_NAME, "Don't find statusHeaderView");
         }
 
-        mToolBar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(mToolBar);
+        try {
+            mToolBar = (Toolbar)findViewById(R.id.toolbar);
+            setSupportActionBar(mToolBar);
+        } catch (NullPointerException e) {
+            Log.v(CLASS_NAME, "Don't find Toolbar");
+        }
+
     }
 
     @Override
@@ -59,5 +65,9 @@ public class AbsActivity extends ActionBarActivity{
 
     public Toolbar getToolBar() {
         return mToolBar;
+    }
+
+    public View getmStatusHeaderView() {
+        return mStatusHeaderView;
     }
 }

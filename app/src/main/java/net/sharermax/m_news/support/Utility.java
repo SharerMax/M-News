@@ -1,11 +1,14 @@
 package net.sharermax.m_news.support;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+
+import net.sharermax.m_news.R;
 
 
 /**
@@ -25,6 +28,14 @@ public class Utility {
         }
         return result;
     }
+
+    public static int getToolBarHeight(Context context) {
+        TypedArray styleAttributes = context.getTheme().obtainStyledAttributes(
+                new int[] {R.attr.actionBarSize});
+        int toolBarHeight = (int)styleAttributes.getDimension(0, 0);
+        return toolBarHeight;
+    }
+
     public static String getVersionInfo(Context context) {
         String versionInfo = "Unknow";
         try {

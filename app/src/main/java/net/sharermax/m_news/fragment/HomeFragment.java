@@ -7,9 +7,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
 
 import net.sharermax.m_news.R;
@@ -17,6 +20,7 @@ import net.sharermax.m_news.activity.AbsActivity;
 import net.sharermax.m_news.adapter.RecyclerViewAdapter;
 import net.sharermax.m_news.network.WebResolve;
 import net.sharermax.m_news.support.Setting;
+import net.sharermax.m_news.support.Utility;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +40,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private List<HashMap<String, String>> mWebData;
     private AbsActivity mAbsActivity;
     private boolean mAutoRefreshEnable;
+    private View mRootView;
+    private Toolbar mToolBar;
+    private int mToolBarDistance = 0;
+    private final int HIDE_HOLD = 20;
+    private boolean mToolbarVisible = true;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -53,8 +62,31 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.home_fragment, container, false);
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.main_recyclerview);
+        mRootView = inflater.inflate(R.layout.home_fragment, container, false);
+        initToolBar();
+        initRecylerView();
+        initSwipeRefreshLayout();
+
+        if (mAutoRefreshEnable) {
+            onRefresh();
+        }
+
+        return mRootView;
+    }
+
+    private void initToolBar() {
+        mToolBar = (Toolbar)mRootView.findViewById(R.id.toolbar);
+        mAbsActivity.setSupportActionBar(mToolBar);
+        mAbsActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+    private void initSwipeRefreshLayout() {
+        mSwipeRefreshLayout = (SwipeRefreshLayout) mRootView.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void initRecylerView() {
+        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.main_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -68,18 +100,29 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                if (isTop()) {
+                    if (!mToolbarVisible) {
+                        mToolBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+                        mToolbarVisible = true;
+                    }
+                } else {
+                    if (mToolBarDistance > HIDE_HOLD && mToolbarVisible) {
+                        mToolBar.animate().translationY(-mToolBar.getHeight()).setInterpolator(new DecelerateInterpolator(2));
+                        mToolbarVisible = false;
+                        mToolBarDistance = 0;
+                    } else if (mToolBarDistance < -HIDE_HOLD && !mToolbarVisible) {
+                        mToolBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+                        mToolbarVisible = true;
+                        mToolBarDistance = 0;
+                    }
+                }
+
+                if ((mToolbarVisible && dy > 0) || (!mToolbarVisible && dy < 0)) {
+                    mToolBarDistance += dy;
+                }
             }
         });
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-
-        if (mAutoRefreshEnable) {
-            onRefresh();
-        }
-
-        return rootView;
     }
 
     private void getSetting() {
