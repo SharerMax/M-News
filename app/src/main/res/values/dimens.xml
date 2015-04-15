@@ -3,5 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="toolbar_height">?attr/actionBarSize</dimen>
+    <dimen name="toolbar_height">48dp</dimen>
+    <dimen name="tab_height">48dp</dimen>
+    <dimen name="toolbar_elevation">6dp</dimen>
+    <dimen name="tab_elevation">@dimen/toolbar_elevation</dimen>
 </resources>

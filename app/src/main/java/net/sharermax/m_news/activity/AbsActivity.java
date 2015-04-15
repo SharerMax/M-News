@@ -3,6 +3,7 @@ package net.sharermax.m_news.activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -47,6 +48,7 @@ public class AbsActivity extends ActionBarActivity{
 
         try {
             mToolBar = (Toolbar)findViewById(R.id.toolbar);
+            ViewCompat.setElevation(mToolBar, getResources().getDimension(R.dimen.toolbar_elevation));
             setSupportActionBar(mToolBar);
         } catch (NullPointerException e) {
             Log.v(CLASS_NAME, "Don't find Toolbar");

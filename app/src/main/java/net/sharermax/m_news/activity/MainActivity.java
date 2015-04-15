@@ -1,17 +1,17 @@
 package net.sharermax.m_news.activity;
 
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
 
 import net.sharermax.m_news.R;
-import net.sharermax.m_news.fragment.HomeFragment;
+import net.sharermax.m_news.fragment.NewsFragment;
 import net.sharermax.m_news.fragment.NavigationDrawerFragment;
+import net.sharermax.m_news.fragment.HomeFragment;
 import net.sharermax.m_news.support.Setting;
 
 /**
@@ -25,6 +25,7 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
     public static final String CLASS_NAME = "MainActivty";
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private NewsFragment mNewsFragment;
     private HomeFragment mHomeFragment;
     private boolean mDoubleClickToTopEnable;
     private long mDoubleClickSpeed = 200;  //time
@@ -71,18 +72,21 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
     @Override
     public void onFragmentInteraction(int clickedItemPosition) {
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         switch (clickedItemPosition) {
             case NavigationDrawerFragment.LISTVIEW_ITEM_HOME:
                 if (null == mHomeFragment) {
-                    mHomeFragment = HomeFragment.newInstance();
+                    mHomeFragment = new HomeFragment();
                 }
                 fragmentManager.beginTransaction().replace(R.id.container, mHomeFragment).commit();
                 mDoubleClickToTopEnable =
                         Setting.getInstance(getApplicationContext()).getBoolen(Setting.KEY_DOUBLE_TO_TOP, true);
                 break;
             case NavigationDrawerFragment.LISTVIEW_ITEM_SUBSCRIPTION:
-                mDoubleClickToTopEnable = false;
+                if (null == mHomeFragment) {
+                    mHomeFragment = new HomeFragment();
+                }
+                fragmentManager.beginTransaction().replace(R.id.container, mHomeFragment).commit();
                 break;
             case NavigationDrawerFragment.LISTVIEW_ITEM_SETTING:
                 Intent settingIntent = new Intent();
