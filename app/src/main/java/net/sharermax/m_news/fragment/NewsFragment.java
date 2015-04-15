@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +42,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private boolean mAutoRefreshEnable;
     private View mRootView;
     private Toolbar mToolBar;
-    private int mToolBarDistance = 0;
-    private final int HIDE_HOLD = 20;
-    private boolean mToolbarVisible = true;
+    private OnNewsScrolledListener mListener;
 
     public static NewsFragment newInstance() {
         return new NewsFragment();
@@ -62,7 +61,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.news_fragment, container, false);
-       // initToolBar();
+        initToolBar();
         initRecylerView();
         initSwipeRefreshLayout();
 
@@ -74,9 +73,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void initToolBar() {
-        mToolBar = (Toolbar)mRootView.findViewById(R.id.toolbar);
-        mAbsActivity.setSupportActionBar(mToolBar);
-        mAbsActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
     private void initSwipeRefreshLayout() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) mRootView.findViewById(R.id.swipe_refresh_layout);
@@ -99,26 +96,30 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (isTop()) {
-                    if (!mToolbarVisible) {
-                        //mToolBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-                        mToolbarVisible = true;
-                    }
-                } else {
-                    if (mToolBarDistance > HIDE_HOLD && mToolbarVisible) {
-                       // mToolBar.animate().translationY(-mToolBar.getHeight()).setInterpolator(new DecelerateInterpolator(2));
-                        mToolbarVisible = false;
-                        mToolBarDistance = 0;
-                    } else if (mToolBarDistance < -HIDE_HOLD && !mToolbarVisible) {
-                      //  mToolBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-                        mToolbarVisible = true;
-                        mToolBarDistance = 0;
-                    }
+                if (null != mListener) {
+                    mListener.OnScrolled(dy, isTop());
                 }
-
-                if ((mToolbarVisible && dy > 0) || (!mToolbarVisible && dy < 0)) {
-                    mToolBarDistance += dy;
-                }
+//
+//                if (isTop()) {
+//                    if (!mToolbarVisible) {
+//                        //mToolBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+//                        mToolbarVisible = true;
+//                    }
+//                } else {
+//                    if (mToolBarDistance > HIDE_HOLD && mToolbarVisible) {
+//                       // mToolBar.animate().translationY(-mToolBar.getHeight()).setInterpolator(new DecelerateInterpolator(2));
+//                        mToolbarVisible = false;
+//                        mToolBarDistance = 0;
+//                    } else if (mToolBarDistance < -HIDE_HOLD && !mToolbarVisible) {
+//                      //  mToolBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+//                        mToolbarVisible = true;
+//                        mToolBarDistance = 0;
+//                    }
+//                }
+//
+//                if ((mToolbarVisible && dy > 0) || (!mToolbarVisible && dy < 0)) {
+//                    mToolBarDistance += dy;
+//                }
             }
         });
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -173,6 +174,14 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     public void scrollToTop() {
         mRecyclerView.scrollToPosition(0);
+    }
+
+    public void setOnNewsScrolledListerer(OnNewsScrolledListener listener) {
+        mListener = listener;
+    }
+
+    public static interface OnNewsScrolledListener {
+        abstract public void OnScrolled(int dy, boolean fistVisible);
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 
+import net.sharermax.m_news.fragment.HomeFragment;
 import net.sharermax.m_news.fragment.NewsFragment;
 
 /**
@@ -15,13 +16,22 @@ import net.sharermax.m_news.fragment.NewsFragment;
 public class HomeViewPagerAdapter  extends CacheFragmentStatePagerAdapter{
 
     private static final String [] TITLE = new String[] {"STARTUP", "GEEK"};
-    public HomeViewPagerAdapter(FragmentManager fm) {
+    private HomeFragment mHomeFragment;
+    public HomeViewPagerAdapter(HomeFragment homeFragment,FragmentManager fm) {
         super(fm);
+        mHomeFragment = homeFragment;
     }
 
     @Override
     protected Fragment createItem(int position) {
         Fragment fragment = new NewsFragment();
+        ((NewsFragment)fragment).setOnNewsScrolledListerer(new NewsFragment.OnNewsScrolledListener() {
+            @Override
+            public void OnScrolled(int dy, boolean fistVisible) {
+                mHomeFragment.onNewsScrolled(dy, fistVisible);
+            }
+        });
+
         return fragment;
     }
 
@@ -34,4 +44,6 @@ public class HomeViewPagerAdapter  extends CacheFragmentStatePagerAdapter{
     public CharSequence getPageTitle(int position) {
         return TITLE[position];
     }
+
+
 }
