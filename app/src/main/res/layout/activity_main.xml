@@ -17,15 +17,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <FrameLayout
-            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/header_toolbar"
+                    android:layout_height="@dimen/toolbar_height"
+                    android:layout_width="match_parent"
+                    android:background="?attr/colorPrimary"/>
+                <net.sharermax.m_news.view.SlidingTabLayout
+                    android:id="@+id/sliding_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/tab_height"
+                    android:background="?attr/colorPrimary"/>
+
+            </LinearLayout>
+        </FrameLayout>
         <fragment class="net.sharermax.m_news.fragment.NavigationDrawerFragment"
             android:id="@+id/navigationDrawer_fragment"
             android:layout_width="260dp"
             android:layout_height="match_parent"
             android:layout_gravity="start" />
     </android.support.v4.widget.DrawerLayout>
-    
-
 </LinearLayout>

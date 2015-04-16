@@ -3,16 +3,30 @@ package net.sharermax.m_news.activity;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.gc.materialdesign.views.ScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
+import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import net.sharermax.m_news.R;
+import net.sharermax.m_news.adapter.MainViewPagerAdapter;
 import net.sharermax.m_news.fragment.NewsFragment;
 import net.sharermax.m_news.fragment.NavigationDrawerFragment;
 import net.sharermax.m_news.fragment.HomeFragment;
 import net.sharermax.m_news.support.Setting;
+import net.sharermax.m_news.view.SlidingTabLayout;
 
 /**
  * Author: SharerMax
@@ -20,11 +34,17 @@ import net.sharermax.m_news.support.Setting;
  * E-Mail: mdcw1103@gmail.com
  */
 
-public class MainActivity extends AbsActivity implements NavigationDrawerFragment.OnFragmentInteractionListener{
+public class MainActivity extends AbsActivity
+        implements NavigationDrawerFragment.OnFragmentInteractionListener, ObservableScrollViewCallbacks{
 
     public static final String CLASS_NAME = "MainActivty";
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private Toolbar mToolbar;
+    private View mHeaderView;
+    private ViewPager mViewPager;
+    private SlidingTabLayout mSlidingTabLayout;
+    private int mBaseTranslationY;
     private NewsFragment mNewsFragment;
     private HomeFragment mHomeFragment;
     private boolean mDoubleClickToTopEnable;
@@ -37,7 +57,6 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         //mToolBar.inflateMenu(R.menu.menu_main);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getToolBar().setOnClickListener(new View.OnClickListener() {
@@ -52,11 +71,13 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
 //                }
 //            }
 //        });
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        setUpDrawer();
+        initDrawerLayout();
+        initHeaderView();
+
     }
 
-    private void setUpDrawer() {
+    private void initDrawerLayout() {
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.post(new Runnable() {
             @Override
@@ -67,26 +88,35 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
     }
-
+    private void initHeaderView() {
+        mToolbar = (Toolbar)findViewById(R.id.header_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mHeaderView = findViewById(R.id.header);
+        ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
+        mViewPager = (ViewPager)findViewById(R.id.view_pager);
+        mViewPager.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager()));
+        mSlidingTabLayout = (SlidingTabLayout)findViewById(R.id.sliding_tabs);
+        mSlidingTabLayout.setViewPager(mViewPager);
+        mSlidingTabLayout.setCustomTabView(R.layout.sliding_tab, android.R.id.text1);
+        mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.red_500));
+        mSlidingTabLayout.setViewPager(mViewPager);
+    }
 
     @Override
     public void onFragmentInteraction(int clickedItemPosition) {
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
         switch (clickedItemPosition) {
             case NavigationDrawerFragment.LISTVIEW_ITEM_HOME:
-                if (null == mHomeFragment) {
-                    mHomeFragment = new HomeFragment();
+
+                if (null != mViewPager) {
+                    mViewPager.setCurrentItem(0);
                 }
-                fragmentManager.beginTransaction().replace(R.id.container, mHomeFragment).commit();
-                mDoubleClickToTopEnable =
-                        Setting.getInstance(getApplicationContext()).getBoolen(Setting.KEY_DOUBLE_TO_TOP, true);
                 break;
             case NavigationDrawerFragment.LISTVIEW_ITEM_SUBSCRIPTION:
-                if (null == mHomeFragment) {
-                    mHomeFragment = new HomeFragment();
-                }
-                fragmentManager.beginTransaction().replace(R.id.container, mHomeFragment).commit();
+                Intent subIntent = new Intent();
+                subIntent.setClass(this, SubscriptionActivity.class);
+                startActivity(subIntent);
                 break;
             case NavigationDrawerFragment.LISTVIEW_ITEM_SETTING:
                 Intent settingIntent = new Intent();
@@ -134,5 +164,21 @@ public class MainActivity extends AbsActivity implements NavigationDrawerFragmen
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+        Log.v(CLASS_NAME, "" + scrollY);
+        mHeaderView.animate().translationY(-mToolbar.getHeight());
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        mBaseTranslationY = 0;
     }
 }

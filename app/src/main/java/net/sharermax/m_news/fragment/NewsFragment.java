@@ -15,6 +15,10 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
+
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.AbsActivity;
 import net.sharermax.m_news.adapter.RecyclerViewAdapter;
@@ -41,8 +45,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private AbsActivity mAbsActivity;
     private boolean mAutoRefreshEnable;
     private View mRootView;
-    private Toolbar mToolBar;
+    private int mSwipeRefreshCircleStart;
     private OnNewsScrolledListener mListener;
+    private ObservableScrollViewCallbacks mScrollViewCallbacks;
 
     public static NewsFragment newInstance() {
         return new NewsFragment();
@@ -61,8 +66,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.news_fragment, container, false);
-        initToolBar();
+        mSwipeRefreshCircleStart = (int) getResources().getDimension(R.dimen.toolbar_height) * 2;
         initRecylerView();
+        initGlobalLayoutListener();
         initSwipeRefreshLayout();
 
         if (mAutoRefreshEnable) {
@@ -72,18 +78,17 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return mRootView;
     }
 
-    private void initToolBar() {
-
-    }
     private void initSwipeRefreshLayout() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) mRootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
+        mSwipeRefreshLayout.setProgressViewOffset(true, mSwipeRefreshCircleStart, mSwipeRefreshCircleStart + mSwipeRefreshCircleStart / 2);
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void initRecylerView() {
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.main_recyclerview);
+        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.news_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -96,9 +101,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (null != mListener) {
-                    mListener.OnScrolled(dy, isTop());
+                if (null != mScrollViewCallbacks) {
+                    mScrollViewCallbacks.onScrollChanged(dy, isTop(), true);
                 }
+
 //
 //                if (isTop()) {
 //                    if (!mToolbarVisible) {
@@ -125,6 +131,11 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
+    private void initGlobalLayoutListener() {
+        if (mAbsActivity instanceof ObservableScrollViewCallbacks) {
+            mScrollViewCallbacks = (ObservableScrollViewCallbacks)mAbsActivity;
+        }
+    }
     private void getSetting() {
         mAutoRefreshEnable = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_AUTO_REFRESH, true);
     }

@@ -35,36 +35,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mUseCardView = useCardView;
     }
 
-//    public class MyViewHolder extends RecyclerView.ViewHolder {
-//        public TextView mTextView;
-//        public MyViewHolder(View itemView) {
-//            super(itemView);
-//            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//                    Intent sendIntent = new Intent();
-//                    String sendData = RecyclerViewAdapter.this.data.get(getAdapterPosition()).get("title")
-//                                        + RecyclerViewAdapter.this.data.get(getAdapterPosition()).get("url");
-//                    sendIntent.putExtra(EditWeiboActivity.EXTRA_FLAG, sendData);
-//                    sendIntent.setClass(v.getContext(), EditWeiboActivity.class);
-//                    v.getContext().startActivity(sendIntent);
-//                    return true;
-//                }
-//            });
-//            mTextView = (TextView)itemView.findViewById(R.id.main_item_textview);
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    String url = RecyclerViewAdapter.this.data.get(getAdapterPosition()).get("url");
-//                    Intent intent = new Intent();
-//                    intent.setAction(Intent.ACTION_VIEW);
-//                    intent.setData(Uri.parse(url));
-//                    v.getContext().startActivity(intent);
-//                }
-//            });
-//        }
-//    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
