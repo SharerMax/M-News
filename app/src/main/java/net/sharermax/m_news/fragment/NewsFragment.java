@@ -38,7 +38,8 @@ import java.util.List;
 public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String CLASS_NAME = "NewsFragment";
-    private RecyclerView mRecyclerView;
+    public static final String FLAG_INITIAL_POSITION = "FLAG_INITIAL_POSITION";
+    private ObservableRecyclerView mRecyclerView;
     private WebResolve mWebResolve;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<HashMap<String, String>> mWebData;
@@ -86,7 +87,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void initRecylerView() {
-        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.news_recyclerview);
+        mRecyclerView = (ObservableRecyclerView) mRootView.findViewById(R.id.news_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -104,6 +105,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 if (null != mScrollViewCallbacks) {
                     mScrollViewCallbacks.onScrollChanged(dy, isTop(), true);
                 }
+
 
 //
 //                if (isTop()) {
@@ -132,8 +134,22 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void initGlobalLayoutListener() {
+        Log.v(CLASS_NAME, "HHHHH");
         if (mAbsActivity instanceof ObservableScrollViewCallbacks) {
-            mScrollViewCallbacks = (ObservableScrollViewCallbacks)mAbsActivity;
+
+            Bundle args = getArguments();
+            if (args != null && args.containsKey(FLAG_INITIAL_POSITION)) {
+                Log.v(CLASS_NAME, "TTTTT");
+                final int initialPosition = args.getInt(FLAG_INITIAL_POSITION, 0);
+                ScrollUtils.addOnGlobalLayoutListener(mRecyclerView, new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecyclerView.scrollVerticallyToPosition(1);
+
+                    }
+                });
+            }
+            mRecyclerView.setScrollViewCallbacks(mScrollViewCallbacks = (ObservableScrollViewCallbacks)mAbsActivity);
         }
     }
     private void getSetting() {

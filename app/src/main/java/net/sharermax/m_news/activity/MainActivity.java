@@ -1,5 +1,6 @@
 package net.sharermax.m_news.activity;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.gc.materialdesign.views.ScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
+import com.github.ksoichiro.android.observablescrollview.Scrollable;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
@@ -45,6 +47,7 @@ public class MainActivity extends AbsActivity
     private ViewPager mViewPager;
     private SlidingTabLayout mSlidingTabLayout;
     private int mBaseTranslationY;
+    private MainViewPagerAdapter mViewPagerAdapter;
     private NewsFragment mNewsFragment;
     private HomeFragment mHomeFragment;
     private boolean mDoubleClickToTopEnable;
@@ -95,12 +98,29 @@ public class MainActivity extends AbsActivity
         mHeaderView = findViewById(R.id.header);
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
         mViewPager = (ViewPager)findViewById(R.id.view_pager);
-        mViewPager.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager()));
+        mViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mViewPagerAdapter);
         mSlidingTabLayout = (SlidingTabLayout)findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setViewPager(mViewPager);
         mSlidingTabLayout.setCustomTabView(R.layout.sliding_tab, android.R.id.text1);
         mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.red_500));
         mSlidingTabLayout.setViewPager(mViewPager);
+        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                propagateToolbarState(toolbarIsShown());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -169,7 +189,19 @@ public class MainActivity extends AbsActivity
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
         Log.v(CLASS_NAME, "" + scrollY);
-        mHeaderView.animate().translationY(-mToolbar.getHeight());
+//        mHeaderView.animate().translationY(-mToolbar.getHeight());
+        if (dragging) {
+            int toolbarHeight = mToolbar.getHeight();
+            float currentHeaderTranslationY = ViewHelper.getTranslationY(mHeaderView);
+            if (firstScroll) {
+                if (-toolbarHeight < currentHeaderTranslationY) {
+                    mBaseTranslationY = scrollY;
+                }
+            }
+            float headerTranslationY = ScrollUtils.getFloat(-(scrollY - mBaseTranslationY), -toolbarHeight, 0);
+            ViewPropertyAnimator.animate(mHeaderView).cancel();
+            ViewHelper.setTranslationY(mHeaderView, headerTranslationY);
+        }
     }
 
     @Override
@@ -180,5 +212,123 @@ public class MainActivity extends AbsActivity
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
         mBaseTranslationY = 0;
+        Fragment fragment = getCurrentFragment();
+        if (fragment == null) {
+            return;
+        }
+        View view = fragment.getView();
+        if (view == null) {
+            return;
+        }
+
+        // ObservableXxxViews have same API
+        // but currently they don't have any common interfaces.
+        adjustToolbar(scrollState, view);
+    }
+
+    private void adjustToolbar(ScrollState scrollState, View view) {
+        int toolbarHeight = mToolbar.getHeight();
+        final Scrollable scrollView = (Scrollable) view.findViewById(R.id.news_recyclerview);
+        if (scrollView == null) {
+            return;
+        }
+        int scrollY = scrollView.getCurrentScrollY();
+        if (scrollState == ScrollState.DOWN) {
+            showToolbar();
+        } else if (scrollState == ScrollState.UP) {
+            if (toolbarHeight <= scrollY) {
+                hideToolbar();
+            } else {
+                showToolbar();
+            }
+        } else {
+            // Even if onScrollChanged occurs without scrollY changing, toolbar should be adjusted
+            if (toolbarIsShown() || toolbarIsHidden()) {
+                // Toolbar is completely moved, so just keep its state
+                // and propagate it to other pages
+                propagateToolbarState(toolbarIsShown());
+            } else {
+                // Toolbar is moving but doesn't know which to move:
+                // you can change this to hideToolbar()
+                showToolbar();
+            }
+        }
+    }
+
+    private Fragment getCurrentFragment() {
+        return mViewPagerAdapter.getItemAt(mViewPager.getCurrentItem());
+    }
+
+    private void propagateToolbarState(boolean isShown) {
+        int toolbarHeight = mToolbar.getHeight();
+        Log.v(CLASS_NAME, "" + isShown);
+
+        // Set scrollY for the fragments that are not created yet
+        mViewPagerAdapter.setScrollY(isShown ? 0 : toolbarHeight);
+
+        // Set scrollY for the active fragments
+        for (int i = 0; i < mViewPagerAdapter.getCount(); i++) {
+            // Skip current item
+            if (i == mViewPager.getCurrentItem()) {
+                continue;
+            }
+
+            // Skip destroyed or not created item
+            Fragment f = mViewPagerAdapter.getItemAt(i);
+            if (f == null) {
+                continue;
+            }
+
+            View view = f.getView();
+            if (view == null) {
+                continue;
+            }
+            propagateToolbarState(isShown, view, toolbarHeight);
+        }
+    }
+
+    private void propagateToolbarState(boolean isShown, View view, int toolbarHeight) {
+        Scrollable scrollView = (Scrollable) view.findViewById(R.id.news_recyclerview);
+        if (scrollView == null) {
+            return;
+        }
+        if (isShown) {
+            // Scroll up
+            if (0 < scrollView.getCurrentScrollY()) {
+                scrollView.scrollVerticallyTo(0);
+            }
+        } else {
+            // Scroll down (to hide padding)
+            if (scrollView.getCurrentScrollY() < toolbarHeight) {
+                scrollView.scrollVerticallyTo(toolbarHeight);
+            }
+        }
+    }
+
+    private boolean toolbarIsShown() {
+        return ViewHelper.getTranslationY(mHeaderView) == 0;
+    }
+
+    private boolean toolbarIsHidden() {
+        return ViewHelper.getTranslationY(mHeaderView) == -mToolbar.getHeight();
+    }
+
+    private void showToolbar() {
+        float headerTranslationY = ViewHelper.getTranslationY(mHeaderView);
+        if (headerTranslationY != 0) {
+            ViewPropertyAnimator.animate(mHeaderView).cancel();
+            ViewPropertyAnimator.animate(mHeaderView).translationY(0).setDuration(200).start();
+        }
+        propagateToolbarState(true);
+    }
+
+    private void hideToolbar() {
+        float headerTranslationY = ViewHelper.getTranslationY(mHeaderView);
+        int toolbarHeight = mToolbar.getHeight();
+        if (headerTranslationY != -toolbarHeight) {
+            ViewPropertyAnimator.animate(mHeaderView).cancel();
+            ViewPropertyAnimator.animate(mHeaderView).translationY(-toolbarHeight).setDuration(200).start();
+        }
+        propagateToolbarState(false);
     }
 }
