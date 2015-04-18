@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -292,7 +293,12 @@ public class MainActivity extends AbsActivity
         float headerTranslationY = ViewHelper.getTranslationY(mHeaderView);
         if (headerTranslationY != 0) {
             ViewPropertyAnimator.animate(mHeaderView).cancel();
-            ViewPropertyAnimator.animate(mHeaderView).translationY(0).setDuration(200).start();
+            ViewPropertyAnimator animator = ViewPropertyAnimator.animate(mHeaderView);
+            animator.setDuration(200);
+            animator.translationY(0);
+            animator.setInterpolator(new DecelerateInterpolator(2));
+            animator.start();
+//            ViewPropertyAnimator.animate(mHeaderView).translationY(0).setDuration(200).start();
         }
         propagateToolbarState(true);
     }
@@ -302,7 +308,12 @@ public class MainActivity extends AbsActivity
         int toolbarHeight = mToolbar.getHeight();
         if (headerTranslationY != -toolbarHeight) {
             ViewPropertyAnimator.animate(mHeaderView).cancel();
-            ViewPropertyAnimator.animate(mHeaderView).translationY(-toolbarHeight).setDuration(200).start();
+            ViewPropertyAnimator animator = ViewPropertyAnimator.animate(mHeaderView);
+            animator.setDuration(200);
+            animator.translationY(-toolbarHeight);
+            animator.setInterpolator(new DecelerateInterpolator(2));
+            animator.start();
+//            ViewPropertyAnimator.animate(mHeaderView).translationY(-toolbarHeight).setDuration(200).start();
         }
         propagateToolbarState(false);
     }
