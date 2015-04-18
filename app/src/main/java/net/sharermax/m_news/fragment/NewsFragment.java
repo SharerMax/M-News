@@ -1,18 +1,16 @@
 package net.sharermax.m_news.fragment;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
@@ -24,7 +22,7 @@ import net.sharermax.m_news.activity.AbsActivity;
 import net.sharermax.m_news.adapter.RecyclerViewAdapter;
 import net.sharermax.m_news.network.WebResolve;
 import net.sharermax.m_news.support.Setting;
-
+import net.sharermax.m_news.support.Utility;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,8 +45,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private boolean mAutoRefreshEnable;
     private View mRootView;
     private int mSwipeRefreshCircleStart;
-    private OnNewsScrolledListener mListener;
-    private ObservableScrollViewCallbacks mScrollViewCallbacks;
+    private int mToolBarHeight;
 
     public static NewsFragment newInstance() {
         return new NewsFragment();
@@ -67,7 +64,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.news_fragment, container, false);
-        mSwipeRefreshCircleStart = (int) getResources().getDimension(R.dimen.toolbar_height) * 2;
+        mToolBarHeight = Utility.getToolBarHeight(getActivity());
+        mSwipeRefreshCircleStart = mToolBarHeight * 2;
         initRecylerView();
         initGlobalLayoutListener();
         initSwipeRefreshLayout();
@@ -89,7 +87,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initRecylerView() {
         mRecyclerView = (ObservableRecyclerView) mRootView.findViewById(R.id.news_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setPadding(
+                mRecyclerView.getPaddingLeft(), mToolBarHeight,
+                mRecyclerView.getPaddingRight(), mRecyclerView.getPaddingBottom());
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -102,32 +103,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (null != mScrollViewCallbacks) {
-                    mScrollViewCallbacks.onScrollChanged(dy, isTop(), true);
-                }
-
-
-//
-//                if (isTop()) {
-//                    if (!mToolbarVisible) {
-//                        //mToolBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-//                        mToolbarVisible = true;
-//                    }
-//                } else {
-//                    if (mToolBarDistance > HIDE_HOLD && mToolbarVisible) {
-//                       // mToolBar.animate().translationY(-mToolBar.getHeight()).setInterpolator(new DecelerateInterpolator(2));
-//                        mToolbarVisible = false;
-//                        mToolBarDistance = 0;
-//                    } else if (mToolBarDistance < -HIDE_HOLD && !mToolbarVisible) {
-//                      //  mToolBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-//                        mToolbarVisible = true;
-//                        mToolBarDistance = 0;
-//                    }
-//                }
-//
-//                if ((mToolbarVisible && dy > 0) || (!mToolbarVisible && dy < 0)) {
-//                    mToolBarDistance += dy;
-//                }
             }
         });
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -135,7 +110,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void initGlobalLayoutListener() {
         Log.v(CLASS_NAME, "HHHHH");
-        if (mAbsActivity instanceof ObservableScrollViewCallbacks) {
+        Activity parentActivity = getActivity();
+        if (parentActivity instanceof ObservableScrollViewCallbacks) {
 
             Bundle args = getArguments();
             if (args != null && args.containsKey(FLAG_INITIAL_POSITION)) {
@@ -144,12 +120,12 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 ScrollUtils.addOnGlobalLayoutListener(mRecyclerView, new Runnable() {
                     @Override
                     public void run() {
-                        mRecyclerView.scrollVerticallyToPosition(1);
+                        mRecyclerView.scrollVerticallyToPosition(initialPosition);
 
                     }
                 });
             }
-            mRecyclerView.setScrollViewCallbacks(mScrollViewCallbacks = (ObservableScrollViewCallbacks)mAbsActivity);
+            mRecyclerView.setScrollViewCallbacks((ObservableScrollViewCallbacks)parentActivity);
         }
     }
     private void getSetting() {
@@ -194,22 +170,11 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void bottomLoad() {
-        if (mWebResolve != null && !mWebData.isEmpty()) {
+        if (mWebResolve != null && null != mWebData && !mWebData.isEmpty()) {
             mWebResolve.startTask(WebResolve.START_UP_NEXT_PAGES_FLAG);
         }
     }
 
-    public void scrollToTop() {
-        mRecyclerView.scrollToPosition(0);
-    }
-
-    public void setOnNewsScrolledListerer(OnNewsScrolledListener listener) {
-        mListener = listener;
-    }
-
-    public static interface OnNewsScrolledListener {
-        abstract public void OnScrolled(int dy, boolean fistVisible);
-    }
 
     @Override
     public void onAttach(Activity activity) {

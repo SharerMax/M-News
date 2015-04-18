@@ -25,11 +25,15 @@ public class WebResolve {
     public static final String START_UP_HOST_NAME = "http://news.dbanotes.net/";
     public static final int START_UP_MAIN_PAGES_FLAG = 0x01;
     public static final int START_UP_NEXT_PAGES_FLAG = 0x02;
-    private List<HashMap<String, String>> mValidData = 
-            new ArrayList<HashMap<String, String>>();
+    private List<HashMap<String, String>> mValidData;
     private String mNextUrl;
     private TaskOverListener mTaskOverListener;
     private WebResolveTask mWebResolveTask;
+
+    public WebResolve() {
+        mValidData = new ArrayList<HashMap<String, String>>();
+        mValidData.clear();
+    }
     
     public void startTask(int flag) {
         mWebResolveTask = new WebResolveTask();

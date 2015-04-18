@@ -29,6 +29,9 @@ public class Setting {
     public static final String KEY_LICENSE = "license";
     public static final String KEY_VERSION = "version";
 
+    public static final String KEY_SUB_STARTUP = "sub_startup";
+    public static final String KEY_SUB_CSDNGEEK = "sub_csdn_geek";
+
     private SharedPreferences mSharedPreferences;
     public static Setting sInstance;
 

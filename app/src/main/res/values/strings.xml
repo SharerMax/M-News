@@ -12,7 +12,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="home">Home</string>
-    <string name="news_source">News Source</string>
+    <string name="subscription">Subscription</string>
     <string name="setting">Setting</string>
     <string name="account_binding">Account Binding</string>
 
@@ -54,6 +54,11 @@
     <string name="weibo_edit_error">Error:Has more than 140 letters</string>
     <string name="send_success">Has Send</string>
     <string name="send_fail">Send Fail</string>
+
+    <!--SubscriptionActivity-->
+    <string name="label_subscription_activity">Subscription</string>
+    <string name="title_startup">StartUp</string>
+    <string name="title_csdn_geek">CSDN GEEK</string>
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>
 

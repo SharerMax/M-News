@@ -19,8 +19,6 @@ import net.sharermax.m_news.support.AccessTokenKeeper;
 import net.sharermax.m_news.support.Constants;
 import net.sharermax.m_news.support.UserHelper;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

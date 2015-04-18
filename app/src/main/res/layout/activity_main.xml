@@ -30,7 +30,7 @@
                 android:orientation="vertical">
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/header_toolbar"
-                    android:layout_height="@dimen/toolbar_height"
+                    android:layout_height="?attr/actionBarSize"
                     android:layout_width="match_parent"
                     android:background="?attr/colorPrimary"/>
                 <net.sharermax.m_news.view.SlidingTabLayout

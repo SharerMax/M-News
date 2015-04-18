@@ -1,9 +1,8 @@
 package net.sharermax.m_news.activity;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +13,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.gc.materialdesign.views.ScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
@@ -24,10 +22,7 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.MainViewPagerAdapter;
-import net.sharermax.m_news.fragment.NewsFragment;
 import net.sharermax.m_news.fragment.NavigationDrawerFragment;
-import net.sharermax.m_news.fragment.HomeFragment;
-import net.sharermax.m_news.support.Setting;
 import net.sharermax.m_news.view.SlidingTabLayout;
 
 /**
@@ -48,11 +43,7 @@ public class MainActivity extends AbsActivity
     private SlidingTabLayout mSlidingTabLayout;
     private int mBaseTranslationY;
     private MainViewPagerAdapter mViewPagerAdapter;
-    private NewsFragment mNewsFragment;
-    private HomeFragment mHomeFragment;
-    private boolean mDoubleClickToTopEnable;
-    private long mDoubleClickSpeed = 200;  //time
-    private long mPreDoubleClickTime = 0;
+
 
 
 
@@ -60,20 +51,6 @@ public class MainActivity extends AbsActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //mToolBar.inflateMenu(R.menu.menu_main);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getToolBar().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (mDoubleClickToTopEnable) {
-//                    if ((System.currentTimeMillis() - mPreDoubleClickTime) > mDoubleClickSpeed) {
-//                        mPreDoubleClickTime = System.currentTimeMillis();
-//                    } else {
-//                        mHomeFragment.scrollToTop();
-//                    }
-//                }
-//            }
-//        });
         initDrawerLayout();
         initHeaderView();
 
@@ -128,7 +105,6 @@ public class MainActivity extends AbsActivity
 
         switch (clickedItemPosition) {
             case NavigationDrawerFragment.LISTVIEW_ITEM_HOME:
-
                 if (null != mViewPager) {
                     mViewPager.setCurrentItem(0);
                 }
@@ -142,7 +118,6 @@ public class MainActivity extends AbsActivity
                 Intent settingIntent = new Intent();
                 settingIntent.setClass(this, SettingsActivity.class);
                 startActivity(settingIntent);
-                mDoubleClickToTopEnable = false;
                 break;
             case NavigationDrawerFragment.LISTVIEW_ITEM_ACCOUNT:
                 Intent accountIntent = new Intent();

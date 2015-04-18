@@ -7,9 +7,7 @@ import android.util.Log;
 
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 
-import net.sharermax.m_news.fragment.HomeFragment;
 import net.sharermax.m_news.fragment.NewsFragment;
-import net.sharermax.m_news.fragment.SubscriptionFragment;
 
 /**
  * Author: SharerMax
@@ -33,7 +31,7 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
     protected Fragment createItem(int position) {
         Fragment fragment = new NewsFragment();
         Log.v(CLASS_NAME, "" + mScrollY);
-        if (true) {
+        if (0 < mScrollY) {
             Bundle args = new Bundle();
             args.putInt(NewsFragment.FLAG_INITIAL_POSITION, 1);
             fragment.setArguments(args);

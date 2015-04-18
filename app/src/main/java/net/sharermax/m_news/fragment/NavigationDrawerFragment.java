@@ -2,8 +2,8 @@ package net.sharermax.m_news.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +74,7 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
 
         map = new HashMap<String, Object>();
         map.put("image", R.drawable.ic_subscription_white);
-        map.put("text", getString(R.string.news_source));
+        map.put("text", getString(R.string.subscription));
         listData.add(map);
 
         map = new HashMap<String, Object>();

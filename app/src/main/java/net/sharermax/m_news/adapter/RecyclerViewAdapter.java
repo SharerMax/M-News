@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
@@ -40,7 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         Log.v(CLASS_NAME, "create");
         if (viewType == FLAG_HEADER) {
-            View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_header, parent, false);
+            View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.padding, parent, false);
             return new RecyclerHeaderHolderView(view1);
         } else if (viewType == FLAG_ITEM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(

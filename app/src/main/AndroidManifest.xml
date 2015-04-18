@@ -41,7 +41,9 @@
             android:name=".activity.EditWeiboActivity"
             android:label="@string/label_editWeiboActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activity.SubscriptionActivity"/>
+        <activity
+            android:name=".activity.SubscriptionActivity"
+            android:label="@string/label_subscription_activity"/>
 
     </application>
 
