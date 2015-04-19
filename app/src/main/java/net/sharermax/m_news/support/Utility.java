@@ -2,8 +2,10 @@ package net.sharermax.m_news.support;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -64,14 +66,25 @@ public class Utility {
     public static LocationManager updateLocation(Context context, LocationListener locationListener) {
 
         LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        Location location;
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+            location  = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (null != location) {
+                locationListener.onLocationChanged(location);
+                return locationManager;
+            }
         }
 
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
+            location  = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (null != location) {
+                locationListener.onLocationChanged(location);
+                return locationManager;
+            }
         }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
         return locationManager;
     }
 }

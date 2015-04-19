@@ -24,6 +24,7 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.MainViewPagerAdapter;
 import net.sharermax.m_news.fragment.NavigationDrawerFragment;
+import net.sharermax.m_news.support.CrashHandler;
 import net.sharermax.m_news.view.SlidingTabLayout;
 
 /**
@@ -45,18 +46,19 @@ public class MainActivity extends AbsActivity
     private int mBaseTranslationY;
     private MainViewPagerAdapter mViewPagerAdapter;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initCrashHandler();
         setContentView(R.layout.activity_main);
         initDrawerLayout();
         initHeaderView();
 
     }
-
+    private void initCrashHandler() {
+        CrashHandler.init(getApplicationContext());
+        CrashHandler.register();
+    }
     private void initDrawerLayout() {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

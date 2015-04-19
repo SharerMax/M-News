@@ -76,8 +76,6 @@ public class EditWeiboActivity extends AbsActivity
     public void onLocationChanged(Location location) {
         if (null != location) {
             mLocation = location;
-//            String locationData = "" + location.getLongitude() + "," + location.getLatitude();
-//            mLocationTextView.setText(locationData);
             SharerToHelper.geoToAddress(this, AccessTokenKeeper.readAccessToken(this).getToken(), location,
                     new SharerToHelper.GeoToAddressListener() {
                         @Override
@@ -85,7 +83,10 @@ public class EditWeiboActivity extends AbsActivity
                             mLocationTextView.setText(address);
                         }
                     });
-            mLocationManager.removeUpdates(this);
+            if (null != mLocationManager) {
+                mLocationManager.removeUpdates(this);
+            }
+
         }
     }
 
