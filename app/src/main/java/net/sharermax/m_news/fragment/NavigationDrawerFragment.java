@@ -2,6 +2,7 @@ package net.sharermax.m_news.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,15 +10,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.NetworkImageView;
+
 import net.sharermax.m_news.R;
+import net.sharermax.m_news.support.UserHelper;
+import net.sharermax.m_news.support.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Author: SharerMax
@@ -30,6 +42,9 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
     private OnFragmentInteractionListener mListener;
     private ListView mListView;
     private SimpleAdapter mSimpleAdapter;
+    private NetworkImageView mImageView;
+    private View mRootView;
+    private CircleImageView mProfileImage;
     public static final int LISTVIEW_ITEM_HOME = 0x00;
     public static final int LISTVIEW_ITEM_SUBSCRIPTION = 0x01;
     public static final int LISTVIEW_ITEM_SETTING = 0x02;
@@ -54,15 +69,60 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.navigation_drawer_fragment, container, false);
-        mListView = (ListView)rootView.findViewById(R.id.drawer_listView);
+        mRootView = inflater.inflate(R.layout.navigation_drawer_fragment, container, false);
+        initListView();
+        initImageView();
+        return mRootView;
+    }
+
+    private void initImageView() {
+        mImageView = (NetworkImageView)mRootView.findViewById(R.id.drawer_coverimage);
+        mImageView.setDefaultImageResId(R.drawable.background);
+        mProfileImage = (CircleImageView)mRootView.findViewById(R.id.profile_image);
+        ImageLoader imageLoader = new ImageLoader(Utility.getRequestQueue(getActivity()), new ImageLoader.ImageCache() {
+            @Override
+            public Bitmap getBitmap(String url) {
+                return null;
+            }
+
+            @Override
+            public void putBitmap(String url, Bitmap bitmap) {
+
+            }
+        });
+        String image_url = UserHelper.readUserInfo(getActivity()).get(UserHelper.KEY_COVER_IMAGE);
+        String profile_image_url = UserHelper.readUserInfo(getActivity()).get(UserHelper.KEY_PROFILE_IMAGE);
+//        Log.v(CLASS_NAME, image_url);
+        if (null != image_url && null != profile_image_url) {
+            mImageView.setImageUrl(image_url, imageLoader);
+            ImageRequest imageRequest = new ImageRequest(profile_image_url,
+                    new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            mProfileImage.setImageBitmap(response);
+                        }
+                    }, 144, 144, ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565,
+                    new Response.ErrorListener() {
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.v(CLASS_NAME, error.toString());
+                            mProfileImage.setImageResource(R.drawable.ic_action_person);
+                        }
+                    });
+            Utility.getRequestQueue(getActivity()).add(imageRequest);
+        }
+
+    }
+
+    private void initListView() {
+        mListView = (ListView)mRootView.findViewById(R.id.drawer_listView);
 
         mSimpleAdapter = new SimpleAdapter(getActivity(), getListData(), R.layout.drawer_listview_item,
                                             new String[] {"image", "text"},
                                             new int[] {R.id.item_image, R.id.item_text});
         mListView.setAdapter(mSimpleAdapter);
         mListView.setOnItemClickListener(this);
-        return rootView;
     }
 
     private List<Map<String, Object>> getListData() {

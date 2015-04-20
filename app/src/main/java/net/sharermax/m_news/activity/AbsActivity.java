@@ -30,9 +30,9 @@ public class AbsActivity extends ActionBarActivity{
             mStatusBarHeight = Utility.getStatusBarHeight(getApplication());
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mStatusBarHeight = 0;
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            mStatusBarHeight = 0;
+//        }
         super.onCreate(savedInstanceState);
     }
 
