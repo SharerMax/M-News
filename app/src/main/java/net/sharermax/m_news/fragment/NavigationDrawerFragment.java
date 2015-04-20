@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -45,6 +46,7 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
     private NetworkImageView mImageView;
     private View mRootView;
     private CircleImageView mProfileImage;
+    private TextView mProfileIDView;
     public static final int LISTVIEW_ITEM_HOME = 0x00;
     public static final int LISTVIEW_ITEM_SUBSCRIPTION = 0x01;
     public static final int LISTVIEW_ITEM_SETTING = 0x02;
@@ -79,6 +81,7 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
         mImageView = (NetworkImageView)mRootView.findViewById(R.id.drawer_coverimage);
         mImageView.setDefaultImageResId(R.drawable.background);
         mProfileImage = (CircleImageView)mRootView.findViewById(R.id.profile_image);
+        mProfileIDView = (TextView)mRootView.findViewById(R.id.profile_idstr);
         ImageLoader imageLoader = new ImageLoader(Utility.getRequestQueue(getActivity()), new ImageLoader.ImageCache() {
             @Override
             public Bitmap getBitmap(String url) {
@@ -92,8 +95,9 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
         });
         String image_url = UserHelper.readUserInfo(getActivity()).get(UserHelper.KEY_COVER_IMAGE);
         String profile_image_url = UserHelper.readUserInfo(getActivity()).get(UserHelper.KEY_PROFILE_IMAGE);
+        String profile_idstr = UserHelper.readUserInfo(getActivity()).get(UserHelper.KEY_SCREEN_NAME);
 //        Log.v(CLASS_NAME, image_url);
-        if (null != image_url && null != profile_image_url) {
+        if (null != image_url && null != profile_image_url && null != profile_idstr) {
             mImageView.setImageUrl(image_url, imageLoader);
             ImageRequest imageRequest = new ImageRequest(profile_image_url,
                     new Response.Listener<Bitmap>() {
@@ -111,6 +115,7 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
                         }
                     });
             Utility.getRequestQueue(getActivity()).add(imageRequest);
+            mProfileIDView.setText(profile_idstr);
         }
 
     }

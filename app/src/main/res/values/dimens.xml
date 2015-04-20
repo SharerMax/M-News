@@ -8,9 +8,9 @@
     <dimen name="toolbar_elevation">6dp</dimen>
     <dimen name="tab_elevation">@dimen/toolbar_elevation</dimen>
 
-    <dimen name="drawer_width">260dp</dimen>
-    <dimen name="drawer_image_height">145dp</dimen>
-    <dimen name="drawer_image_width">260dp</dimen>
+    <dimen name="drawer_width">304dp</dimen>
+    <dimen name="drawer_image_height">171dp</dimen>
+    <dimen name="drawer_image_width">304dp</dimen>
 
     <dimen name="list_margin_top">4dp</dimen>
     <dimen name="list_margin_left">16dp</dimen>
