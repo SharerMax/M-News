@@ -1,13 +1,14 @@
 package net.sharermax.m_news.network;
 
-import android.os.AsyncTask;
+import android.content.Context;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import net.sharermax.m_news.support.Utility;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,21 +29,22 @@ public class WebResolve {
     private List<HashMap<String, String>> mValidData;
     private String mNextUrl;
     private TaskOverListener mTaskOverListener;
-    private WebResolveTask mWebResolveTask;
+    private Context mContext;
+    private boolean isFinished = true;
 
-    public WebResolve() {
+    public WebResolve(Context context) {
+        mContext = context;
         mValidData = new ArrayList<HashMap<String, String>>();
         mValidData.clear();
     }
     
     public void startTask(int flag) {
-        mWebResolveTask = new WebResolveTask();
         switch (flag) {
             case START_UP_MAIN_PAGES_FLAG:
-                mWebResolveTask.execute(START_UP_HOST_NAME + "news");
+                resolveData(START_UP_HOST_NAME + "news");
                 break;
             case START_UP_NEXT_PAGES_FLAG:
-                mWebResolveTask.execute(mNextUrl);
+                resolveData(mNextUrl);
                 break;
         }
     }
@@ -67,65 +69,43 @@ public class WebResolve {
     }
 
     public boolean isFinished() {
-        if (null != mWebResolveTask) {
-            return AsyncTask.Status.FINISHED == mWebResolveTask.getStatus();
-        }
-        return true;
+        return isFinished;
     }
-    
-    class WebResolveTask extends AsyncTask<String, Integer, String> {
-        static public final String CLASS_TAG = "WebResolveTask";
-        @Override
-        protected String doInBackground(String... urls) {
-            String webData = null;
-            try {
-                URL url = new URL(urls[0]);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                if (httpURLConnection != null) {
-                    httpURLConnection.setDoInput(true);
-                    httpURLConnection.setConnectTimeout(3000);
-                    httpURLConnection.setReadTimeout(3000);
-                    httpURLConnection.setRequestMethod("GET");
-                    if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        BufferedReader bufferedReader = new BufferedReader(
-                                new InputStreamReader(httpURLConnection.getInputStream()));
-                        String lineData = null;
-                        while ((lineData = bufferedReader.readLine()) != null) {
-                            webData += lineData;
-                        }
-                        bufferedReader.close();
+
+    private void resolveData(String url) {
+        isFinished = false;
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (null != response) {
+                    Pattern urlListPattern = Pattern.compile(
+                            "<a target=\"_blank\" href=\"(https?://.+?)\".*?>(.+?)</a>");
+                    Matcher urlListMatcher = urlListPattern.matcher(response);
+                    while (urlListMatcher.find()) {
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put("title", urlListMatcher.group(2));
+                        map.put("url", urlListMatcher.group(1));
+                        mValidData.add(map);
                     }
-                    httpURLConnection.disconnect();
+                    Pattern nextUrlPattern = Pattern.compile("\"/(x\\?fnid=\\w+?)\"\\W?rel");
+                    Matcher nextUrlMatcher = nextUrlPattern.matcher(response);
+                    if (nextUrlMatcher.find()) {
+                        mNextUrl = START_UP_HOST_NAME + nextUrlMatcher.group(1);
+                        Log.v(CLASS_NAME, mNextUrl);
+                    }
                 }
-            } catch (IOException e) {
-                Log.v(CLASS_TAG, "TTT");
-            }
-            return webData;
-        }
 
-        @Override
-        protected void onPostExecute(String webData) {
-            if (null != webData) {
-                Pattern urlListPattern = Pattern.compile(
-                        "<a target=\"_blank\" href=\"(https?://.+?)\".*?>(.+?)</a>");
-                Matcher urlListMatcher = urlListPattern.matcher(webData);
-                while (urlListMatcher.find()) {
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("title", urlListMatcher.group(2));
-                    map.put("url", urlListMatcher.group(1));
-                    mValidData.add(map);
+                if (mTaskOverListener != null) {
+                    mTaskOverListener.taskOver();
                 }
-                Pattern nextUrlPattern = Pattern.compile("\"/(x\\?fnid=\\w+?)\"\\W?rel");
-                Matcher nextUrlMatcher = nextUrlPattern.matcher(webData);
-                if (nextUrlMatcher.find()) {
-                    mNextUrl = START_UP_HOST_NAME + nextUrlMatcher.group(1);
-                    Log.v(CLASS_TAG, mNextUrl);
-                }
+                isFinished = true;
             }
-
-            if (mTaskOverListener != null) {
-                mTaskOverListener.taskOver();
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                isFinished = true;
             }
-        }
+        });
+        Utility.getRequestQueue(mContext).add(stringRequest);
     }
 }

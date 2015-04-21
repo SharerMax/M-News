@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;

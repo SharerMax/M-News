@@ -135,7 +135,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         if (null == mWebResolve) {
-            mWebResolve = new WebResolve();
+            mWebResolve = new WebResolve(getActivity());
             mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
                 @Override
                 public void taskOver() {
