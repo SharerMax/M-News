@@ -6,14 +6,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <include layout="@layout/basice_toolbar"/>
-    <RelativeLayout
-        android:id="@+id/relativelayout"
+    <!--<include layout="@layout/basice_toolbar"/>-->
+    <View
+        android:id="@+id/statusHeaderView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingRight="18dp"
-        android:paddingLeft="18dp"
-        android:paddingTop="4dp">
+        android:layout_height="0dp"
+        android:background="?attr/colorPrimary"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:background="?attr/colorPrimary"
+        app:contentInsetStart="0dp">
+        <include layout="@layout/editweibo_send_toolbar"/>
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/list_margin_top"
+        android:paddingLeft="@dimen/list_margin_right"
+        android:paddingRight="@dimen/list_margin_right"
+        android:orientation="vertical">
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/weibo_edit_editTextView"
             android:layout_width="match_parent"
@@ -29,8 +42,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_alignLeft="@id/weibo_edit_editTextView"
-            android:layout_below="@id/weibo_edit_editTextView"
             android:gravity="center_vertical">
             <ImageView
                 android:layout_width="wrap_content"
@@ -40,29 +51,8 @@
                 android:id="@+id/location_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true">
-            <com.gc.materialdesign.views.ButtonRectangle
-                android:id="@+id/weibo_cancel"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:background="@color/green_500"
-                android:text="@string/weibo_cancle"/>
-            <com.gc.materialdesign.views.ButtonRectangle
-                android:id="@+id/weibo_send"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:background="@color/green_500"
-                android:text="@string/weibo_send"/>
         </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

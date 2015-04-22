@@ -7,6 +7,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,17 +38,17 @@ public class EditWeiboActivity extends AbsActivity
     private Location mLocation;
     public static final int WEIBO_MAX_COUNT = 140;
     public static final String EXTRA_FLAG = "weibo_status";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_weibo_activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         mWeiboEditText = (MaterialEditText)findViewById(R.id.weibo_edit_editTextView);
         mLocationTextView = (TextView)findViewById(R.id.location_textview);
-        mCancelButton = (ButtonRectangle)findViewById(R.id.weibo_cancel);
         mSendButton = (ButtonRectangle)findViewById(R.id.weibo_send);
-        mCancelButton.setOnClickListener(this);
         mSendButton.setOnClickListener(this);
         mWeiboEditText.addValidator(new CountValidator(getString(R.string.weibo_edit_error)));
 
@@ -108,9 +110,6 @@ public class EditWeiboActivity extends AbsActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.weibo_cancel:
-                onBackPressed();
-                break;
             case R.id.weibo_send:
                 Log.v(CLASS_NAME, mWeiboEditText.getText().toString());
                 if (!(mWeiboEditText.getText().toString().length() > WEIBO_MAX_COUNT)) {
@@ -126,7 +125,6 @@ public class EditWeiboActivity extends AbsActivity
                 break;
             default:
                 break;
-
         }
     }
     class CountValidator extends METValidator {
