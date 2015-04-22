@@ -109,7 +109,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void initGlobalLayoutListener() {
-        Log.v(CLASS_NAME, "HHHHH");
         Activity parentActivity = getActivity();
         if (parentActivity instanceof ObservableScrollViewCallbacks) {
 
