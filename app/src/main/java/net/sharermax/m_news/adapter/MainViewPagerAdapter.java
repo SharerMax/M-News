@@ -1,13 +1,19 @@
 package net.sharermax.m_news.adapter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 
+import net.sharermax.m_news.R;
 import net.sharermax.m_news.fragment.NewsFragment;
+import net.sharermax.m_news.support.Setting;
+
+import java.util.ArrayList;
 
 /**
  * Author: SharerMax
@@ -18,9 +24,25 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
 
     public static final String CLASS_NAME = "MainViewPagerAdapter";
     private static final String [] TITLE = new String[] {"STARTUP", "GEEK"};
+    private ArrayList<String> mTitles;
+    private Context mContext;
     private int mScrollY;
-    public MainViewPagerAdapter(FragmentManager fm) {
+    private Setting mSetting;
+    public MainViewPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
+        mContext = context;
+        mSetting = Setting.getInstance(mContext);
+        mTitles = new ArrayList<String>();
+        initTitles();
+    }
+
+    private void initTitles() {
+        if (mSetting.getBoolen(Setting.KEY_SUB_STARTUP, true)) {
+            mTitles.add(mContext.getString(R.string.title_startup));
+        }
+        if (mSetting.getBoolen(Setting.KEY_SUB_CSDNGEEK, true)) {
+            mTitles.add(mContext.getString(R.string.title_csdn_geek));
+        }
     }
 
     public void setScrollY(int scrollY) {
@@ -41,13 +63,22 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
 
     @Override
     public int getCount() {
-        return TITLE.length;
+        return mTitles.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return TITLE[position];
+        return mTitles.get(position);
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+        initTitles();
+        super.notifyDataSetChanged();
+    }
 
+    @Override
+    public int getItemPosition(Object object) {
+        return PagerAdapter.POSITION_NONE;
+    }
 }

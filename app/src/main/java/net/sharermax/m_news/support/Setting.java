@@ -75,12 +75,12 @@ public class Setting {
     }
 
     public Setting putString(String key, String value) {
-        mSharedPreferences.edit().putString(key, value).commit();
+        mSharedPreferences.edit().putString(key, value).apply();
         return this;
     }
 
     public Setting putLong(String key, long value) {
-        mSharedPreferences.edit().putLong(key, value).commit();
+        mSharedPreferences.edit().putLong(key, value).apply();
         return this;
     }
 }

@@ -85,7 +85,7 @@ public class MainActivity extends AbsActivity
         mHeaderView = findViewById(R.id.header);
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
         mViewPager = (ViewPager)findViewById(R.id.view_pager);
-        mViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
+        mViewPagerAdapter = new MainViewPagerAdapter(this, getSupportFragmentManager());
         mViewPager.setAdapter(mViewPagerAdapter);
         mSlidingTabLayout = (SlidingTabLayout)findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setViewPager(mViewPager);
@@ -325,5 +325,12 @@ public class MainActivity extends AbsActivity
 //            ViewPropertyAnimator.animate(mHeaderView).translationY(-toolbarHeight).setDuration(200).start();
         }
         propagateToolbarState(false);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mViewPagerAdapter.notifyDataSetChanged();
+        Log.v(CLASS_NAME, "onResume");
     }
 }
