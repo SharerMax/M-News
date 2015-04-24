@@ -1,5 +1,6 @@
 package net.sharermax.m_news.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -21,7 +22,6 @@ public class SubscriptionFragment extends PreferenceFragment
 
     private CheckBoxPreference mStartUpPre;
     private CheckBoxPreference mGeekPre;
-    private Set<String> mStringSet;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,7 @@ public class SubscriptionFragment extends PreferenceFragment
 
     private void initPreferenceItem() {
         mStartUpPre = (CheckBoxPreference)findPreference(Setting.KEY_SUB_STARTUP);
-        mGeekPre = (CheckBoxPreference)findPreference(Setting.KEY_SUB_CSDNGEEK);
+        mGeekPre = (CheckBoxPreference)findPreference(Setting.KEY_SUB_HACKERNEWS);
         mStartUpPre.setOnPreferenceChangeListener(this);
         mGeekPre.setOnPreferenceChangeListener(this);
 
@@ -39,6 +39,8 @@ public class SubscriptionFragment extends PreferenceFragment
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        getActivity().setResult(Activity.RESULT_OK);
         return true;
     }
+
 }

@@ -1,5 +1,6 @@
 package net.sharermax.m_news.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -37,6 +39,7 @@ public class MainActivity extends AbsActivity
         implements NavigationDrawerFragment.OnFragmentInteractionListener, ObservableScrollViewCallbacks{
 
     public static final String CLASS_NAME = "MainActivty";
+    public static final int FLAG_ACTIVITY_SUB = 0;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar mToolbar;
@@ -122,7 +125,7 @@ public class MainActivity extends AbsActivity
             case NavigationDrawerFragment.LISTVIEW_ITEM_SUBSCRIPTION:
                 Intent subIntent = new Intent();
                 subIntent.setClass(this, SubscriptionActivity.class);
-                startActivity(subIntent);
+                startActivityForResult(subIntent, FLAG_ACTIVITY_SUB);
                 break;
             case NavigationDrawerFragment.LISTVIEW_ITEM_SETTING:
                 Intent settingIntent = new Intent();
@@ -330,8 +333,21 @@ public class MainActivity extends AbsActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mViewPagerAdapter.notifyDataSetChanged();
-        mSlidingTabLayout.setViewPager(mViewPager);
         Log.v(CLASS_NAME, "onResume");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case FLAG_ACTIVITY_SUB:
+                if (Activity.RESULT_OK == resultCode) {
+                    mViewPagerAdapter.notifyDataSetChanged();
+                    mSlidingTabLayout.setViewPager(mViewPager);
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

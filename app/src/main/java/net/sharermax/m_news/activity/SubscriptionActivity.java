@@ -1,6 +1,7 @@
 package net.sharermax.m_news.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.fragment.SubscriptionFragment;
@@ -22,5 +23,11 @@ public class SubscriptionActivity extends AbsActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mSubFragment = new SubscriptionFragment();
         getFragmentManager().beginTransaction().replace(R.id.container, mSubFragment).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

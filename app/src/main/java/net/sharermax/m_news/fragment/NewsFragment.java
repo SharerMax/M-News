@@ -37,6 +37,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     public static final String CLASS_NAME = "NewsFragment";
     public static final String FLAG_INITIAL_POSITION = "FLAG_INITIAL_POSITION";
+    public static final String FLAG_INITIAL_NEWS = "FLAG_INITIAL_NEWS";
+    public static final int FLAG_NEWS_STARTUP = 0;
+    public static final int FLAG_NEWS_HACKERNEWS = 1;
     private ObservableRecyclerView mRecyclerView;
     private WebResolve mWebResolve;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -46,6 +49,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private View mRootView;
     private int mSwipeRefreshCircleStart;
     private int mToolBarHeight;
+    private Bundle mBundle;
+    private int mMainPageFlag;
+    private int mNextPageFlag;
 
     public static NewsFragment newInstance() {
         return new NewsFragment();
@@ -66,6 +72,20 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mRootView = inflater.inflate(R.layout.news_fragment, container, false);
         mToolBarHeight = Utility.getToolBarHeight(getActivity());
         mSwipeRefreshCircleStart = mToolBarHeight * 2;
+        mBundle = getArguments();
+        if (null != mBundle) {
+            if (mBundle.containsKey(FLAG_INITIAL_NEWS)) {
+                if (FLAG_NEWS_STARTUP == mBundle.getInt(FLAG_INITIAL_NEWS)) {
+                    mMainPageFlag = WebResolve.START_UP_MAIN_PAGES_FLAG;
+                    mNextPageFlag = WebResolve.START_UP_NEXT_PAGES_FLAG;
+                }
+
+                if (FLAG_NEWS_HACKERNEWS == mBundle.getInt(FLAG_INITIAL_NEWS)) {
+                    mMainPageFlag = WebResolve.HACKER_NEWS_MAIN_PAGES_FLAG;
+                    mNextPageFlag = WebResolve.HACKER_NEWS_NEXT_PAGES_FLAG;
+                }
+            }
+        }
         initRecylerView();
         initGlobalLayoutListener();
         initSwipeRefreshLayout();
@@ -111,11 +131,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initGlobalLayoutListener() {
         Activity parentActivity = getActivity();
         if (parentActivity instanceof ObservableScrollViewCallbacks) {
-
-            Bundle args = getArguments();
-            if (args != null && args.containsKey(FLAG_INITIAL_POSITION)) {
-                Log.v(CLASS_NAME, "TTTTT");
-                final int initialPosition = args.getInt(FLAG_INITIAL_POSITION, 0);
+            if (mBundle != null && mBundle.containsKey(FLAG_INITIAL_POSITION)) {
+                final int initialPosition = mBundle.getInt(FLAG_INITIAL_POSITION, 0);
                 ScrollUtils.addOnGlobalLayoutListener(mRecyclerView, new Runnable() {
                     @Override
                     public void run() {
@@ -154,7 +171,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
         if (mWebResolve.isFinished()) {
             mWebResolve.cleanData();
-            mWebResolve.startTask(WebResolve.START_UP_MAIN_PAGES_FLAG);
+            mWebResolve.startTask(mMainPageFlag);
         }
     }
 
@@ -170,7 +187,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void bottomLoad() {
         if (mWebResolve != null && null != mWebData && !mWebData.isEmpty()) {
-            mWebResolve.startTask(WebResolve.START_UP_NEXT_PAGES_FLAG);
+            mWebResolve.startTask(mNextPageFlag);
         }
     }
 
@@ -183,12 +200,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + "must extents AbsActivity");
         }
-
     }
     @Override
     public void onStart() {
         super.onStart();
-//        onRefresh();
 
     }
     @Override

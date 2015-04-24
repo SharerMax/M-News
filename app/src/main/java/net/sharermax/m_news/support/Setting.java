@@ -31,6 +31,7 @@ public class Setting {
 
     public static final String KEY_SUB_STARTUP = "sub_startup";
     public static final String KEY_SUB_CSDNGEEK = "sub_csdn_geek";
+    public static final String KEY_SUB_HACKERNEWS = "sub_hacker_news";
 
     private SharedPreferences mSharedPreferences;
     public static Setting sInstance;

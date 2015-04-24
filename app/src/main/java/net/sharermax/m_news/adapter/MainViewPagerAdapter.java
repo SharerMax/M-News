@@ -14,6 +14,8 @@ import net.sharermax.m_news.fragment.NewsFragment;
 import net.sharermax.m_news.support.Setting;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: SharerMax
@@ -24,7 +26,7 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
 
     public static final String CLASS_NAME = "MainViewPagerAdapter";
     private static final String [] TITLE = new String[] {"STARTUP", "GEEK"};
-    private ArrayList<String> mTitles;
+    private ArrayList<Map> mTitles;
     private Context mContext;
     private int mScrollY;
     private Setting mSetting;
@@ -34,7 +36,7 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
         mFm = fm;
         mContext = context;
         mSetting = Setting.getInstance(mContext);
-        mTitles = new ArrayList<String>();
+        mTitles = new ArrayList<Map>();
         initTitles();
     }
 
@@ -43,10 +45,16 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
             mTitles.clear();
         }
         if (mSetting.getBoolen(Setting.KEY_SUB_STARTUP, true)) {
-            mTitles.add(mContext.getString(R.string.title_startup));
+            HashMap map = new HashMap<String, Object>();
+            map.put("title", mContext.getString(R.string.title_startup));
+            map.put("flag", NewsFragment.FLAG_NEWS_STARTUP);
+            mTitles.add(map);
         }
-        if (mSetting.getBoolen(Setting.KEY_SUB_CSDNGEEK, true)) {
-            mTitles.add(mContext.getString(R.string.title_csdn_geek));
+        if (mSetting.getBoolen(Setting.KEY_SUB_HACKERNEWS, true)) {
+            HashMap map = new HashMap<String, Object>();
+            map.put("title", mContext.getString(R.string.title_hacker_news));
+            map.put("flag", NewsFragment.FLAG_NEWS_HACKERNEWS);
+            mTitles.add(map);
         }
     }
 
@@ -57,12 +65,13 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
     @Override
     protected Fragment createItem(int position) {
         Fragment fragment = new NewsFragment();
+        Bundle args = new Bundle();
+        args.putInt(NewsFragment.FLAG_INITIAL_NEWS, (int)mTitles.get(position).get("flag"));
         Log.v(CLASS_NAME, "" + mScrollY);
         if (0 < mScrollY) {
-            Bundle args = new Bundle();
             args.putInt(NewsFragment.FLAG_INITIAL_POSITION, 1);
-            fragment.setArguments(args);
         }
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -73,7 +82,7 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTitles.get(position);
+        return (String)mTitles.get(position).get("title");
     }
 
     @Override

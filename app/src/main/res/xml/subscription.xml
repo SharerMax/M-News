@@ -5,7 +5,7 @@
         android:key="sub_startup"
         android:defaultValue="true"/>
     <CheckBoxPreference
-        android:title="@string/title_csdn_geek"
-        android:key="sub_csdn_geek"
+        android:title="@string/title_hacker_news"
+        android:key="sub_hacker_news"
         android:defaultValue="true"/>
 </PreferenceScreen>
