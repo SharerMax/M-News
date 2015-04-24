@@ -28,8 +28,10 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
     private Context mContext;
     private int mScrollY;
     private Setting mSetting;
+    private FragmentManager mFm;
     public MainViewPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
+        mFm = fm;
         mContext = context;
         mSetting = Setting.getInstance(mContext);
         mTitles = new ArrayList<String>();
@@ -37,6 +39,9 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
     }
 
     private void initTitles() {
+        if (!mTitles.isEmpty()) {
+            mTitles.clear();
+        }
         if (mSetting.getBoolen(Setting.KEY_SUB_STARTUP, true)) {
             mTitles.add(mContext.getString(R.string.title_startup));
         }
@@ -79,6 +84,7 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
 
     @Override
     public int getItemPosition(Object object) {
+        Log.v(CLASS_NAME, "Item Position");
         return PagerAdapter.POSITION_NONE;
     }
 }

@@ -1,6 +1,5 @@
 package net.sharermax.m_news.fragment;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -9,7 +8,6 @@ import android.preference.PreferenceFragment;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.support.Setting;
 
-import java.util.HashSet;
 import java.util.Set;
 
 

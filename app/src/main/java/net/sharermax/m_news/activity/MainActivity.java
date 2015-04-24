@@ -328,9 +328,10 @@ public class MainActivity extends AbsActivity
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onResume() {
+        super.onResume();
         mViewPagerAdapter.notifyDataSetChanged();
+        mSlidingTabLayout.setViewPager(mViewPager);
         Log.v(CLASS_NAME, "onResume");
     }
 }
