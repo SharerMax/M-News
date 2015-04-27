@@ -14,6 +14,7 @@ import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
 import net.sharermax.m_news.adapter.viewholder.RecyclerHeaderHolderView;
 import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
+import net.sharermax.m_news.view.ItemDialog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +69,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     sendIntent.putExtra(EditWeiboActivity.EXTRA_FLAG, sendData);
                     sendIntent.setClass(v.getContext(), EditWeiboActivity.class);
                     v.getContext().startActivity(sendIntent);
+//                    ItemDialog dialog = ItemDialog.getInstance(v.getContext());
+//                    dialog.show();
                     return true;
                 }
             });
