@@ -4,7 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,7 +24,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
  * Time  : 2015/3/20
  * E-Mail: mdcw1103@gmail.com
  */
-public class AbsActivity extends ActionBarActivity implements SwipeBackActivityBase{
+public class AbsActivity extends AppCompatActivity implements SwipeBackActivityBase{
     public static final String CLASS_NAME = "AbsActivity";
     private SwipeBackActivityHelper mHelper;
     protected int mStatusBarHeight = 0;

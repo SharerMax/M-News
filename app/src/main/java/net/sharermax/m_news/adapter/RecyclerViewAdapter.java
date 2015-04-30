@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.sharermax.m_news.R;
-import net.sharermax.m_news.activity.EditWeiboActivity;
 import net.sharermax.m_news.adapter.viewholder.RecyclerHeaderHolderView;
 import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
+import net.sharermax.m_news.network.WebResolve;
 import net.sharermax.m_news.view.ItemDialog;
 
 import java.util.HashMap;
@@ -63,14 +63,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Intent sendIntent = new Intent();
-                    String sendData = RecyclerViewAdapter.this.data.get(position-1).get("title")
-                            + RecyclerViewAdapter.this.data.get(position-1).get("url");
-                    sendIntent.putExtra(EditWeiboActivity.EXTRA_FLAG, sendData);
-                    sendIntent.setClass(v.getContext(), EditWeiboActivity.class);
-                    v.getContext().startActivity(sendIntent);
-//                    ItemDialog dialog = ItemDialog.getInstance(v.getContext());
-//                    dialog.show();
+                    String sendData = RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_TITLE)
+                            + RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_URL);
+                    DatabaseAdapter databaseAdapter = DatabaseAdapter.getInstance(v.getContext());
+                    databaseAdapter.setSendData(sendData);
+                    ItemDialog dialog = ItemDialog.getInstance(v.getContext());
+                    dialog.setAdapter(databaseAdapter);
+                    dialog.show();
                     return true;
                 }
             });

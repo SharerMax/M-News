@@ -29,6 +29,8 @@ public class WebResolve {
     public static final int START_UP_NEXT_PAGES_FLAG = 0x02;
     public static final int HACKER_NEWS_MAIN_PAGES_FLAG = 0x03;
     public static final int HACKER_NEWS_NEXT_PAGES_FLAG = 0x04;
+    public static final String FIELD_TITLE = "title";
+    public static final String FIELD_URL = "url";
     private List<HashMap<String, String>> mValidData;
     private String mNextUrl;
     private TaskOverListener mTaskOverListener;
@@ -109,8 +111,8 @@ public class WebResolve {
                 Matcher urlListMatcher = mUrlListPattern.matcher(response);
                 while (urlListMatcher.find()) {
                     HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("title", urlListMatcher.group(2));
-                    map.put("url", urlListMatcher.group(1));
+                    map.put(FIELD_TITLE, urlListMatcher.group(2));
+                    map.put(FIELD_URL, urlListMatcher.group(1));
                     mValidData.add(map);
                 }
                 Matcher nextUrlMatcher = mNextUrlPattern.matcher(response);

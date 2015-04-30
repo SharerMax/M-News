@@ -60,6 +60,13 @@
     <string name="title_startup">StartUp</string>
     <string name="title_csdn_geek">CSDN GEEK</string>
     <string name="title_hacker_news">Hacker News</string>
+
+    <!--ItemDialog-->
+    <string name="itemdialog_negative_button">Cancel</string>
+    <string name="itemdialog_title">Action</string>
+    <string name="itemdialog_share_action">Share to Weibo</string>
+    <string name="itemdialog_star_action">Star</string>
+
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>
 

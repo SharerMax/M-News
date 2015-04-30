@@ -9,8 +9,6 @@ import android.preference.PreferenceFragment;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.support.Setting;
 
-import java.util.Set;
-
 
 /**
  * Author: SharerMax

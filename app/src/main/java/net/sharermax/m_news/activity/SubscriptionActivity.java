@@ -1,7 +1,6 @@
 package net.sharermax.m_news.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.fragment.SubscriptionFragment;
