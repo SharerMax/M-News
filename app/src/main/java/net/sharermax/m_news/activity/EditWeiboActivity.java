@@ -31,7 +31,6 @@ public class EditWeiboActivity extends AbsActivity
     private MaterialEditText mWeiboEditText;
     private TextView mLocationTextView;
     private LocationManager mLocationManager;
-    private ButtonRectangle mCancelButton;
     private ButtonRectangle mSendButton;
     private Location mLocation;
     public static final int WEIBO_MAX_COUNT = 140;
@@ -42,14 +41,11 @@ public class EditWeiboActivity extends AbsActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_weibo_activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         mWeiboEditText = (MaterialEditText)findViewById(R.id.weibo_edit_editTextView);
         mLocationTextView = (TextView)findViewById(R.id.location_textview);
         mSendButton = (ButtonRectangle)findViewById(R.id.weibo_send);
         mSendButton.setOnClickListener(this);
         mWeiboEditText.addValidator(new CountValidator(getString(R.string.weibo_edit_error)));
-
 
         Intent intent = getIntent();
         String weiboStatus = intent.getStringExtra(EXTRA_FLAG);

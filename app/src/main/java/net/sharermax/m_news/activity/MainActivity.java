@@ -23,6 +23,7 @@ import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import net.sharermax.m_news.R;
+import net.sharermax.m_news.adapter.DatabaseAdapter;
 import net.sharermax.m_news.adapter.MainViewPagerAdapter;
 import net.sharermax.m_news.fragment.NavigationDrawerFragment;
 import net.sharermax.m_news.support.CrashHandler;
@@ -116,22 +117,25 @@ public class MainActivity extends AbsActivity
     public void onFragmentInteraction(int clickedItemPosition) {
 
         switch (clickedItemPosition) {
-            case NavigationDrawerFragment.LISTVIEW_ITEM_HOME:
+            case NavigationDrawerFragment.LISTVIEW_POSITION_HOME:
                 if (null != mViewPager) {
                     mViewPager.setCurrentItem(0);
                 }
                 break;
-            case NavigationDrawerFragment.LISTVIEW_ITEM_SUBSCRIPTION:
+            case NavigationDrawerFragment.LISTVIEW_POSITION_FAVORITE:
+
+                break;
+            case NavigationDrawerFragment.LISTVIEW_POSITION_SUBSCRIPTION:
                 Intent subIntent = new Intent();
                 subIntent.setClass(this, SubscriptionActivity.class);
                 startActivityForResult(subIntent, FLAG_ACTIVITY_SUB);
                 break;
-            case NavigationDrawerFragment.LISTVIEW_ITEM_SETTING:
+            case NavigationDrawerFragment.LISTVIEW_POSITION_SETTING:
                 Intent settingIntent = new Intent();
                 settingIntent.setClass(this, SettingsActivity.class);
                 startActivity(settingIntent);
                 break;
-            case NavigationDrawerFragment.LISTVIEW_ITEM_ACCOUNT:
+            case NavigationDrawerFragment.LISTVIEW_POSITION_ACCOUNT:
                 Intent accountIntent = new Intent();
                 accountIntent.setClass(this, AccountBindActivity.class);
                 startActivity(accountIntent);
@@ -330,12 +334,6 @@ public class MainActivity extends AbsActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.v(CLASS_NAME, "onResume");
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -348,5 +346,11 @@ public class MainActivity extends AbsActivity
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        DatabaseAdapter.close();
+        super.onDestroy();
     }
 }

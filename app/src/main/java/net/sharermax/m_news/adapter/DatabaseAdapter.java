@@ -20,11 +20,12 @@ public class DatabaseAdapter {
     private static final String FIELD_TITLE = WebResolve.FIELD_TITLE;
     private static final String FIELD_URL = WebResolve.FIELD_URL;
     private static final String FIELD_TIME = "star_time";
-    private SQLiteDatabase db;
+    private SQLiteDatabase mDataBase;
     private DatabaseHelper mDatabaseHelper;
     private ContentValues mContentValues;
     private List<NewsDataRecord> mRecordList;
     private String mSendData;
+    private NewsDataRecord mNewsDataRecord;
     private static DatabaseAdapter sDatabaseAdapter;
 
     public static DatabaseAdapter getInstance(Context context) {
@@ -35,17 +36,24 @@ public class DatabaseAdapter {
     }
     private DatabaseAdapter(Context context) {
         mDatabaseHelper = new DatabaseHelper(context);
-        db = mDatabaseHelper.getWritableDatabase();
+        mDataBase = mDatabaseHelper.getWritableDatabase();
         mContentValues = new ContentValues();
         mRecordList = new ArrayList<NewsDataRecord>();
     }
 
     public void insert (NewsDataRecord record) {
+        if (null == record) {
+            return;
+        }
         mContentValues.clear();
         mContentValues.put(DatabaseHelper.MyBaseColumns.COLUMN_NAME_TITLE, record.title);
         mContentValues.put(DatabaseHelper.MyBaseColumns.COLUMN_NAME_URL, record.url);
         mContentValues.put(DatabaseHelper.MyBaseColumns.COLUMN_NAME_TIME, record.time);
-        db.insert(DatabaseHelper.MyBaseColumns.TABLE_NAME, null, mContentValues);
+        mDataBase.insert(DatabaseHelper.MyBaseColumns.TABLE_NAME, null, mContentValues);
+    }
+
+    public void insert() {
+        insert(mNewsDataRecord);
     }
 
     public List<NewsDataRecord> queryAllData() {
@@ -56,7 +64,7 @@ public class DatabaseAdapter {
                 DatabaseHelper.MyBaseColumns.COLUMN_NAME_URL,
                 DatabaseHelper.MyBaseColumns.COLUMN_NAME_TIME
         };
-        Cursor result = db.query(DatabaseHelper.MyBaseColumns.TABLE_NAME, projection,
+        Cursor result = mDataBase.query(DatabaseHelper.MyBaseColumns.TABLE_NAME, projection,
                 null, null, null, null, null);
         int count = result.getCount();
 
@@ -69,7 +77,23 @@ public class DatabaseAdapter {
             mRecordList.add(record);
             result.moveToNext();
         }
+        result.close();
         return mRecordList;
+    }
+
+    public static void close() {
+        SQLiteDatabase db = sDatabaseAdapter.mDataBase;
+        if (null != db && db.isOpen()) {
+            db.close();
+        }
+    }
+
+    public void setItemRecord(NewsDataRecord record) {
+        mNewsDataRecord = record;
+    }
+
+    public NewsDataRecord getItemRecord() {
+        return mNewsDataRecord;
     }
 
     public void setSendData(String sendData) {
@@ -80,11 +104,10 @@ public class DatabaseAdapter {
         return mSendData;
     }
 
-    public class NewsDataRecord{
+    public static class NewsDataRecord{
         public long _id = 0;
         public String title = "";
         public String url = "";
         public long time = 0;
     }
-
  }

@@ -47,10 +47,11 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
     private View mRootView;
     private CircleImageView mProfileImage;
     private TextView mProfileIDView;
-    public static final int LISTVIEW_ITEM_HOME = 0x00;
-    public static final int LISTVIEW_ITEM_SUBSCRIPTION = 0x01;
-    public static final int LISTVIEW_ITEM_SETTING = 0x02;
-    public static final int LISTVIEW_ITEM_ACCOUNT = 0x03;
+    public static final int LISTVIEW_POSITION_HOME = 0x00;
+    public static final int LISTVIEW_POSITION_FAVORITE = 0x01;
+    public static final int LISTVIEW_POSITION_SUBSCRIPTION = 0x02;
+    public static final int LISTVIEW_POSITION_SETTING = 0x03;
+    public static final int LISTVIEW_POSITION_ACCOUNT = 0x04;
 
     public NavigationDrawerFragment() {
         // Required empty public constructor
@@ -65,7 +66,7 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
             Log.v(CLASS_NAME, "saveInstanceState is not null");
         }
 
-        mListener.onFragmentInteraction(LISTVIEW_ITEM_HOME);
+        mListener.onFragmentInteraction(LISTVIEW_POSITION_HOME);
     }
 
     @Override
@@ -134,22 +135,27 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
         List<Map<String, Object>> listData = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("image", R.drawable.ic_home_white);
-        map.put("text", getString(R.string.home));
+        map.put("text", getString(R.string.drawer_home_action));
+        listData.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("image", R.drawable.ic_action_favorite);
+        map.put("text", getString(R.string.drawer_favorite_action));
         listData.add(map);
 
         map = new HashMap<String, Object>();
         map.put("image", R.drawable.ic_subscription_white);
-        map.put("text", getString(R.string.subscription));
+        map.put("text", getString(R.string.drawer_subscription_action));
         listData.add(map);
 
         map = new HashMap<String, Object>();
         map.put("image", R.drawable.ic_settings_white);
-        map.put("text", getString(R.string.setting));
+        map.put("text", getString(R.string.drawer_setting_action));
         listData.add(map);
 
         map = new HashMap<String, Object>();
         map.put("image", R.drawable.ic_account_binding);
-        map.put("text", getString(R.string.account_binding));
+        map.put("text", getString(R.string.drawer_account_binding_action));
         listData.add(map);
 
         return listData;

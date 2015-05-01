@@ -63,10 +63,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    String sendData = RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_TITLE)
-                            + RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_URL);
+                    String title = RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_TITLE);
+                    String url = RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_URL);
+                    String sendData = title + url;
                     DatabaseAdapter databaseAdapter = DatabaseAdapter.getInstance(v.getContext());
                     databaseAdapter.setSendData(sendData);
+                    DatabaseAdapter.NewsDataRecord itemRecord = new DatabaseAdapter.NewsDataRecord();
+                    itemRecord.title = title;
+                    itemRecord.url = url;
+                    itemRecord.time = System.currentTimeMillis();
+                    databaseAdapter.setItemRecord(itemRecord);
                     ItemDialog dialog = ItemDialog.getInstance(v.getContext());
                     dialog.setAdapter(databaseAdapter);
                     dialog.show();

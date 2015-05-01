@@ -4,21 +4,18 @@
     <string name="app_name">M-News</string>
     <string name="unknown">Unknown</string>
 
-    <!--Main content item-->
-    <string name="share_to">Share to ...</string>
-
     <!--DrawerLayout-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="home">Home</string>
-    <string name="subscription">Subscription</string>
-    <string name="setting">Setting</string>
-    <string name="account_binding">Account Binding</string>
-
-    <string name="app_label_setting">@string/setting</string>
+    <string name="drawer_home_action">Home</string>
+    <string name="drawer_favorite_action">Favorite</string>
+    <string name="drawer_subscription_action">Subscription</string>
+    <string name="drawer_setting_action">Setting</string>
+    <string name="drawer_account_binding_action">Account Binding</string>
 
     <!--Setting Activity-->
+    <string name="app_label_setting">@string/drawer_setting_action</string>
     <string name="action">Action</string>
     <string name="auto_refresh_title">Auto Refresh</string>
     <string name="auto_refresh_summary">First open App Refresh News</string>
@@ -65,7 +62,11 @@
     <string name="itemdialog_negative_button">Cancel</string>
     <string name="itemdialog_title">Action</string>
     <string name="itemdialog_share_action">Share to Weibo</string>
-    <string name="itemdialog_star_action">Star</string>
+    <string name="itemdialog_favorite_action">Favorite</string>
+    <string-array name="itemdialog_actions">
+        <item>@string/itemdialog_favorite_action</item>
+        <item>@string/itemdialog_share_action</item>
+    </string-array>
 
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>

@@ -1,10 +1,10 @@
 package net.sharermax.m_news.view;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.widget.Toast;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
@@ -17,7 +17,7 @@ import net.sharermax.m_news.adapter.DatabaseAdapter;
  */
 public class ItemDialog {
     private Context mContext;
-    private AlertDialog mAlertDialog;
+    private MaterialDialog mMaterialDialog;
     private DatabaseAdapter mAdapter;
     private static ItemDialog sItemDialog;
     public static ItemDialog getInstance(Context context) {
@@ -28,54 +28,49 @@ public class ItemDialog {
     }
     private ItemDialog(Context context) {
         mContext = context;
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setCancelable(true);
-        String [] items = new String[2];
-        items[0] = mContext.getString(R.string.itemdialog_star_action);
-        items[1] = mContext.getString(R.string.itemdialog_share_action);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(mContext);
+        builder.cancelable(true);
+//        String [] items = new String[2];
+//        items[0] = mContext.getString(R.string.itemdialog_favorite_action);
+//        items[1] = mContext.getString(R.string.itemdialog_share_action);
+        builder.items(R.array.itemdialog_actions);
+        builder.itemsCallback(new MaterialDialog.ListCallback() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onSelection(MaterialDialog materialDialog, View view, int which, CharSequence charSequence) {
+                if (null == mAdapter) {
+                    return;
+                }
                 Toast.makeText(mContext, "click" + which, Toast.LENGTH_LONG).show();
                 switch (which) {
                     case 0:
                         Toast.makeText(mContext, "star" + which, Toast.LENGTH_LONG).show();
+                        mAdapter.insert();
                         break;
                     case 1:
-                        if (null != mAdapter) {
-                            Intent sendIntent = new Intent();
-                            sendIntent.putExtra(EditWeiboActivity.EXTRA_FLAG, mAdapter.getSendData());
-                            sendIntent.setClass(mContext, EditWeiboActivity.class);
-                            mContext.startActivity(sendIntent);
-                        }
+                        Intent sendIntent = new Intent();
+                        sendIntent.putExtra(EditWeiboActivity.EXTRA_FLAG, mAdapter.getSendData());
+                        sendIntent.setClass(mContext, EditWeiboActivity.class);
+                        mContext.startActivity(sendIntent);
                         break;
                     default:
                         break;
                 }
             }
         });
-        builder.setNegativeButton(mContext.getString(R.string.itemdialog_negative_button),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (null != sItemDialog) {
-                            sItemDialog.dismiss();
-                        }
-                    }
-                });
-        builder.setTitle(R.string.itemdialog_title);
-        mAlertDialog = builder.create();
+        builder.negativeText(R.string.itemdialog_negative_button);
+        builder.title(R.string.itemdialog_title);
+        mMaterialDialog = builder.build();
     }
 
     public void show() {
-        if (null != mAlertDialog && !mAlertDialog.isShowing()) {
-            mAlertDialog.show();
+        if (null != mMaterialDialog && !mMaterialDialog.isShowing()) {
+            mMaterialDialog.show();
         }
     }
 
     public void dismiss() {
-        if (null != mAlertDialog && mAlertDialog.isShowing()) {
-            mAlertDialog.dismiss();
+        if (null != mMaterialDialog && mMaterialDialog.isShowing()) {
+            mMaterialDialog.dismiss();
         }
     }
 
