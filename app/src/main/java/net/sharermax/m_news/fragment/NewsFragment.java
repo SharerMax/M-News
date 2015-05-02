@@ -52,18 +52,12 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private Bundle mBundle;
     private int mMainPageFlag;
     private int mNextPageFlag;
-
-    public static NewsFragment newInstance() {
-        return new NewsFragment();
-    }
-    public NewsFragment() {
-        // Required empty public constructor
-    }
+    private boolean mUseCardStyle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSetting();
+        initSetting();
     }
 
     @Override
@@ -86,7 +80,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             }
         }
-        initRecylerView();
+        initRecyclerView();
         initGlobalLayoutListener();
         initSwipeRefreshLayout();
 
@@ -104,7 +98,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    private void initRecylerView() {
+    private void initRecyclerView() {
         mRecyclerView = (ObservableRecyclerView) mRootView.findViewById(R.id.news_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
@@ -154,8 +148,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             mRecyclerView.setScrollViewCallbacks((ObservableScrollViewCallbacks)parentActivity);
         }
     }
-    private void getSetting() {
+    private void initSetting() {
         mAutoRefreshEnable = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_AUTO_REFRESH, true);
+        mUseCardStyle = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
     }
 
     @Override
@@ -170,8 +165,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         Toast.makeText(getActivity(), getString(R.string.net_error),Toast.LENGTH_SHORT).show();
                     } else {
                         if (null == mRecyclerView.getAdapter()) {
-                            mRecyclerView.setAdapter(new RecyclerViewAdapter(
-                                    mWebData, Setting.getInstance(getActivity()).getBoolen(Setting.KEY_USE_CARD_VIEW, true)));
+                            RecyclerViewAdapter adapter = new RecyclerViewAdapter(
+                                    mWebData, mUseCardStyle);
+                            adapter.setItemDialogEnable(true);
+                            mRecyclerView.setAdapter(adapter);
                         }
                         mRecyclerView.getAdapter().notifyDataSetChanged();
                     }

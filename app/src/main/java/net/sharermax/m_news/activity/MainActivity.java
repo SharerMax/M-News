@@ -123,7 +123,9 @@ public class MainActivity extends AbsActivity
                 }
                 break;
             case NavigationDrawerFragment.LISTVIEW_POSITION_FAVORITE:
-
+                Intent favIntent = new Intent();
+                favIntent.setClass(this, FavoriteActivity.class);
+                startActivity(favIntent);
                 break;
             case NavigationDrawerFragment.LISTVIEW_POSITION_SUBSCRIPTION:
                 Intent subIntent = new Intent();

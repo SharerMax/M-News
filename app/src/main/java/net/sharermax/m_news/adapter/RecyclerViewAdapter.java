@@ -2,6 +2,7 @@ package net.sharermax.m_news.adapter;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.sharermax.m_news.R;
+import net.sharermax.m_news.activity.EditWeiboActivity;
 import net.sharermax.m_news.adapter.viewholder.RecyclerHeaderHolderView;
 import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
 import net.sharermax.m_news.network.WebResolve;
@@ -30,6 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final int FLAG_ITEM = 1;
     private List<HashMap<String, String>> data;
     private boolean mUseCardView;
+    private boolean mItemDialogEnable;
     public RecyclerViewAdapter(List<HashMap<String, String>> data, boolean useCardView) {
         this.data = data;
         this.mUseCardView = useCardView;
@@ -66,16 +69,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     String title = RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_TITLE);
                     String url = RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_URL);
                     String sendData = title + url;
-                    DatabaseAdapter databaseAdapter = DatabaseAdapter.getInstance(v.getContext());
-                    databaseAdapter.setSendData(sendData);
-                    DatabaseAdapter.NewsDataRecord itemRecord = new DatabaseAdapter.NewsDataRecord();
-                    itemRecord.title = title;
-                    itemRecord.url = url;
-                    itemRecord.time = System.currentTimeMillis();
-                    databaseAdapter.setItemRecord(itemRecord);
-                    ItemDialog dialog = ItemDialog.getInstance(v.getContext());
-                    dialog.setAdapter(databaseAdapter);
-                    dialog.show();
+                    if (mItemDialogEnable) {
+                        showItemDialog(v.getContext(), title, url);
+                        return true;
+                    }
+                    showActivity(v.getContext(), sendData);
+//                    DatabaseAdapter databaseAdapter = DatabaseAdapter.getInstance(v.getContext());
+//                    databaseAdapter.setSendData(sendData);
+//                    DatabaseAdapter.NewsDataRecord itemRecord = new DatabaseAdapter.NewsDataRecord();
+//                    itemRecord.title = title;
+//                    itemRecord.url = url;
+//                    itemRecord.time = System.currentTimeMillis();
+//                    databaseAdapter.setItemRecord(itemRecord);
+//                    ItemDialog dialog = ItemDialog.getInstance(v.getContext());
+//                    dialog.setAdapter(databaseAdapter);
+//                    dialog.show();
                     return true;
                 }
             });
@@ -104,5 +112,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return FLAG_HEADER;
         }
         return FLAG_ITEM;
+    }
+
+    public void setItemDialogEnable(boolean enable) {
+        mItemDialogEnable = enable;
+    }
+
+    private void showItemDialog(Context context, String title, String url) {
+        String sendData = title + url;
+        DatabaseAdapter databaseAdapter = DatabaseAdapter.getInstance(context);
+        databaseAdapter.setSendData(sendData);
+        DatabaseAdapter.NewsDataRecord itemRecord = new DatabaseAdapter.NewsDataRecord();
+        itemRecord.title = title;
+        itemRecord.url = url;
+        itemRecord.time = System.currentTimeMillis();
+        databaseAdapter.setItemRecord(itemRecord);
+        ItemDialog dialog = ItemDialog.getInstance(context);
+        dialog.setAdapter(databaseAdapter);
+        dialog.show();
+    }
+
+    private void showActivity(Context context, String sendData) {
+        Intent sendIntent = new Intent();
+        sendIntent.putExtra(EditWeiboActivity.EXTRA_FLAG, sendData);
+        sendIntent.setClass(context, EditWeiboActivity.class);
+        context.startActivity(sendIntent);
     }
 }

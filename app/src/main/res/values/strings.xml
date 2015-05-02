@@ -58,6 +58,10 @@
     <string name="title_csdn_geek">CSDN GEEK</string>
     <string name="title_hacker_news">Hacker News</string>
 
+    <!--FavoriteActivity-->
+    <string name="fav_activity_title">@string/drawer_favorite_action</string>
+
+
     <!--ItemDialog-->
     <string name="itemdialog_negative_button">Cancel</string>
     <string name="itemdialog_title">Action</string>

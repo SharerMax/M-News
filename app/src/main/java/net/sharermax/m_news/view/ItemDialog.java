@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.sharermax.m_news.R;
@@ -37,10 +38,8 @@ public class ItemDialog {
                 if (null == mAdapter) {
                     return;
                 }
-                Toast.makeText(mContext, "click" + which, Toast.LENGTH_LONG).show();
                 switch (which) {
                     case 0:
-                        Toast.makeText(mContext, "star" + which, Toast.LENGTH_LONG).show();
                         mAdapter.insert();
                         break;
                     case 1:
