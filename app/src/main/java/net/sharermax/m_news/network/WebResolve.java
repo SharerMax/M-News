@@ -97,6 +97,9 @@ public class WebResolve {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (mTaskOverListener != null) {
+                            mTaskOverListener.taskOver();
+                        }
                         isFinished = true;
                     }
                 });
