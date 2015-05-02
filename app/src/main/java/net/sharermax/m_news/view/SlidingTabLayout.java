@@ -226,6 +226,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 			mTabStrip.addView(tabView);
 			if (i == mViewPager.getCurrentItem()) {
 				tabView.setSelected(true);
+				tabTitleView.setTypeface(Typeface.DEFAULT_BOLD);
 			}
 		}
 	}
@@ -302,7 +303,15 @@ public class SlidingTabLayout extends HorizontalScrollView {
 				scrollToTab(position, 0);
 			}
 			for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-				mTabStrip.getChildAt(i).setSelected(position == i);
+				View view = mTabStrip.getChildAt(i);
+				TextView textView = (TextView)mTabStrip.getChildAt(i).findViewById(mTabViewTextViewId);
+				if (i != position) {
+					view.setSelected(false);
+					textView.setTypeface(Typeface.DEFAULT);
+				} else {
+					view.setSelected(true);
+					textView.setTypeface(Typeface.DEFAULT_BOLD);
+				}
 			}
 			if (mViewPagerPageChangeListener != null) {
 				mViewPagerPageChangeListener.onPageSelected(position);

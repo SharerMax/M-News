@@ -30,9 +30,6 @@ public class ItemDialog {
         mContext = context;
         MaterialDialog.Builder builder = new MaterialDialog.Builder(mContext);
         builder.cancelable(true);
-//        String [] items = new String[2];
-//        items[0] = mContext.getString(R.string.itemdialog_favorite_action);
-//        items[1] = mContext.getString(R.string.itemdialog_share_action);
         builder.items(R.array.itemdialog_actions);
         builder.itemsCallback(new MaterialDialog.ListCallback() {
             @Override
