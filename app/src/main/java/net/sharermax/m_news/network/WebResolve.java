@@ -41,7 +41,7 @@ public class WebResolve {
 
     public WebResolve(Context context) {
         mContext = context;
-        mValidData = new ArrayList<HashMap<String, String>>();
+        mValidData = new ArrayList<>();
         mValidData.clear();
     }
     
@@ -113,7 +113,7 @@ public class WebResolve {
             if (null != response) {
                 Matcher urlListMatcher = mUrlListPattern.matcher(response);
                 while (urlListMatcher.find()) {
-                    HashMap<String, String> map = new HashMap<String, String>();
+                    HashMap<String, String> map = new HashMap<>();
                     map.put(FIELD_TITLE, urlListMatcher.group(2));
                     map.put(FIELD_URL, urlListMatcher.group(1));
                     mValidData.add(map);

@@ -3,7 +3,6 @@ package net.sharermax.m_news.view;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 

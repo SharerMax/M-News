@@ -82,6 +82,10 @@ public class DatabaseAdapter {
     }
 
     public static void close() {
+        if (null == sDatabaseAdapter) {
+            return;
+        }
+
         SQLiteDatabase db = sDatabaseAdapter.mDataBase;
         if (null != db && db.isOpen()) {
             db.close();

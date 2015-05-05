@@ -18,22 +18,22 @@ import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
 import net.sharermax.m_news.network.WebResolve;
 import net.sharermax.m_news.view.ItemDialog;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author: SharerMax
  * Time  : 2015/3/5
  * E-Mail: mdcw1103@gmail.com
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RecyclerViewAdapter<T extends Map<String, String>> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final String CLASS_NAME = "RecyclerViewAdapter";
     public static final int FLAG_HEADER = 0;
     public static final int FLAG_ITEM = 1;
-    private List<HashMap<String, String>> data;
+    private List<T> data;
     private boolean mUseCardView;
     private boolean mItemDialogEnable;
-    public RecyclerViewAdapter(List<HashMap<String, String>> data, boolean useCardView) {
+    public RecyclerViewAdapter(List<T> data, boolean useCardView) {
         this.data = data;
         this.mUseCardView = useCardView;
     }
@@ -112,6 +112,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return FLAG_HEADER;
         }
         return FLAG_ITEM;
+    }
+
+    public void addItem(int position, T map) {
+        data.add(position, map);
+        notifyItemInserted(position);
+    }
+
+    public void addItems(int startPosition, List<T> list) {
+        data.addAll(startPosition, list);
+        notifyItemRangeInserted(startPosition, list.size());
     }
 
     public void setItemDialogEnable(boolean enable) {

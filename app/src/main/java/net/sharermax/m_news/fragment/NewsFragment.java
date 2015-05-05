@@ -165,7 +165,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         Toast.makeText(getActivity(), getString(R.string.net_error),Toast.LENGTH_SHORT).show();
                     } else {
                         if (null == mRecyclerView.getAdapter()) {
-                            RecyclerViewAdapter adapter = new RecyclerViewAdapter(
+                            RecyclerViewAdapter<HashMap<String, String>> adapter = new RecyclerViewAdapter<>(
                                     mWebData, mUseCardStyle);
                             adapter.setItemDialogEnable(true);
                             mRecyclerView.setAdapter(adapter);

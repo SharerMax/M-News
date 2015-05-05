@@ -98,7 +98,7 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
         String profile_image_url = UserHelper.readUserInfo(getActivity()).get(UserHelper.KEY_PROFILE_IMAGE);
         String profile_idstr = UserHelper.readUserInfo(getActivity()).get(UserHelper.KEY_SCREEN_NAME);
 //        Log.v(CLASS_NAME, image_url);
-        if (null != image_url && null != profile_image_url && null != profile_idstr) {
+        if (!image_url.isEmpty() && !profile_image_url.isEmpty() && !profile_idstr.isEmpty()) {
             mImageView.setImageUrl(image_url, imageLoader);
             ImageRequest imageRequest = new ImageRequest(profile_image_url,
                     new Response.Listener<Bitmap>() {
