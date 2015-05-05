@@ -1,6 +1,7 @@
 package net.sharermax.m_news.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,6 +25,7 @@ import net.sharermax.m_news.network.WebResolve;
 import net.sharermax.m_news.support.Setting;
 import net.sharermax.m_news.support.Utility;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,7 +46,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private WebResolve mWebResolve;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<HashMap<String, String>> mWebData;
-    private AbsActivity mAbsActivity;
     private boolean mAutoRefreshEnable;
     private View mRootView;
     private int mSwipeRefreshCircleStart;
@@ -53,6 +54,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private int mMainPageFlag;
     private int mNextPageFlag;
     private boolean mUseCardStyle;
+    private RecyclerViewAdapter<HashMap<String, String>> mAdapter;
+    private Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         initRecyclerView();
         initGlobalLayoutListener();
         initSwipeRefreshLayout();
+        initWebResolve();
 
         if (mAutoRefreshEnable) {
             onRefresh();
@@ -110,6 +114,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (RecyclerView.SCROLL_STATE_IDLE == newState && isBottom()) {
+                    if (mWebData.isEmpty()) {
+                        return;
+                    }
                     bottomLoad();
                 }
             }
@@ -128,7 +135,13 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 return true;
             }
         });
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mWebData = new ArrayList<>();
+        mAdapter = new RecyclerViewAdapter<>(
+                mWebData, mUseCardStyle);
+        mAdapter.setItemDialogEnable(true);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -153,29 +166,22 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mUseCardStyle = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
     }
 
+    private void initWebResolve() {
+        mWebResolve = new WebResolve(getActivity());
+        mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
+            @Override
+            public void taskOver(List<HashMap<String, String>> dataList) {
+                if (!dataList.isEmpty()) {
+                    mAdapter.addItems(mAdapter.getItemCount(), dataList);
+                } else {
+                    Toast.makeText(mContext, getString(R.string.net_error), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
     @Override
     public void onRefresh() {
-        if (null == mWebResolve) {
-            mWebResolve = new WebResolve(getActivity());
-            mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
-                @Override
-                public void taskOver() {
-                    mWebData = mWebResolve.getValidData();
-                    if (mWebData.isEmpty()) {
-                        Toast.makeText(getActivity(), getString(R.string.net_error),Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (null == mRecyclerView.getAdapter()) {
-                            RecyclerViewAdapter<HashMap<String, String>> adapter = new RecyclerViewAdapter<>(
-                                    mWebData, mUseCardStyle);
-                            adapter.setItemDialogEnable(true);
-                            mRecyclerView.setAdapter(adapter);
-                        }
-                        mRecyclerView.getAdapter().notifyDataSetChanged();
-                    }
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-            });
-        }
         if (mWebResolve.isFinished()) {
             mWebResolve.cleanData();
             mWebResolve.startTask(mMainPageFlag);
@@ -198,12 +204,12 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mAbsActivity = (AbsActivity)activity;
+            AbsActivity a = (AbsActivity)activity;
+            mContext = activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + "must extents AbsActivity");
         }

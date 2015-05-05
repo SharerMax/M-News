@@ -115,12 +115,12 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     }
 
     public void addItem(int position, T map) {
-        data.add(position, map);
+        data.add(position-1, map);
         notifyItemInserted(position);
     }
 
     public void addItems(int startPosition, List<T> list) {
-        data.addAll(startPosition, list);
+        data.addAll(startPosition-1, list);
         notifyItemRangeInserted(startPosition, list.size());
     }
 

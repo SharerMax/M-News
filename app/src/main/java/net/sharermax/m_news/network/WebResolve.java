@@ -74,7 +74,7 @@ public class WebResolve {
     }
     
     public static interface TaskOverListener {
-        public abstract void taskOver();
+        public abstract void taskOver(List<HashMap<String, String>> dataList);
     }
     
     public void setTaskOverListener(TaskOverListener taskOverListener) {
@@ -93,12 +93,13 @@ public class WebResolve {
 
     private void resolveData(String url) {
         isFinished = false;
+        cleanData();
         StringRequest stringRequest = new StringRequest(url, new ResponseListener(),
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (mTaskOverListener != null) {
-                            mTaskOverListener.taskOver();
+                            mTaskOverListener.taskOver(mValidData);
                         }
                         isFinished = true;
                     }
@@ -126,7 +127,7 @@ public class WebResolve {
             }
 
             if (mTaskOverListener != null) {
-                mTaskOverListener.taskOver();
+                mTaskOverListener.taskOver(mValidData);
             }
             isFinished = true;
         }
