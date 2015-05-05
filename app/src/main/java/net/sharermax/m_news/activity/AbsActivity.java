@@ -1,5 +1,6 @@
 package net.sharermax.m_news.activity;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -39,12 +40,8 @@ public class AbsActivity extends AppCompatActivity implements SwipeBackActivityB
             mStatusBarHeight = Utility.getStatusBarHeight(getApplication());
         }
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            mStatusBarHeight = 0;
-//        }
-
-        boolean swipeback = Setting.getInstance(this).getBoolen(Setting.KEY_SWIPE_BACK, true);
-        setSwipeBackEnable(swipeback);
+        boolean swipeBack = Setting.getInstance(this).getBoolen(Setting.KEY_SWIPE_BACK, true);
+        setSwipeBackEnable(swipeBack);
     }
 
     @Override
