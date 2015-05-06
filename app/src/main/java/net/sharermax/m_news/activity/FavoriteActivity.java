@@ -70,9 +70,10 @@ public class FavoriteActivity extends AbsActivity{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (null != msg.obj) {
+            List<DatabaseAdapter.NewsDataRecord> list = (List<DatabaseAdapter.NewsDataRecord>)msg.obj;
+            if (!list.isEmpty()) {
                 FavoriteActivity favoriteActivity = mActivity.get();
-                favoriteActivity.updateData((List<DatabaseAdapter.NewsDataRecord>)msg.obj);
+                favoriteActivity.updateData(list);
             }
         }
     }
