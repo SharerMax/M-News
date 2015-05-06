@@ -50,8 +50,8 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
                     mUseCardView ? R.layout.main_content_item : R.layout.main_content_item_no_card, parent, false);
             return new RecyclerItemViewHolder(view);
         }
-        throw new RuntimeException("There is no type that matches the type " + viewType +
-                " + make sure your using types correctly");
+        throw new RuntimeException("There is no type that matches the type" +
+                " make sure your using types correctly");
     }
 
     @Override
@@ -66,8 +66,8 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    String title = RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_TITLE);
-                    String url = RecyclerViewAdapter.this.data.get(position-1).get(WebResolve.FIELD_URL);
+                    String title = data.get(position-1).get(WebResolve.FIELD_TITLE);
+                    String url = data.get(position-1).get(WebResolve.FIELD_URL);
                     String sendData = title + url;
                     if (mItemDialogEnable) {
                         showItemDialog(v.getContext(), title, url);

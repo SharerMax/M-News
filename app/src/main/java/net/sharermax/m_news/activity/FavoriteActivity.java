@@ -9,12 +9,11 @@ import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.DatabaseAdapter;
-import net.sharermax.m_news.adapter.RecyclerViewAdapter;
+import net.sharermax.m_news.adapter.FavoriteViewAdapter;
 import net.sharermax.m_news.support.Setting;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,8 +24,8 @@ import java.util.List;
 public class FavoriteActivity extends AbsActivity{
     public static final String CLASS_NAME = "FavoriteActivity";
     ObservableRecyclerView mRecyclerView;
-    List<HashMap<String, String>> mDataList;
-    RecyclerViewAdapter<HashMap<String, String>> mAdapter;
+    List<DatabaseAdapter.NewsDataRecord> mDataList;
+    FavoriteViewAdapter mAdapter;
     private Handler dbHandler;
 
     @Override
@@ -42,24 +41,24 @@ public class FavoriteActivity extends AbsActivity{
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         boolean mUseCardStyle = Setting.getInstance(this).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
         mDataList = new ArrayList<>();
-        mAdapter = new RecyclerViewAdapter<>(mDataList, mUseCardStyle);
-        mAdapter.setItemDialogEnable(false);
+        mAdapter = new FavoriteViewAdapter(mDataList, mUseCardStyle);
         mRecyclerView.setAdapter(mAdapter);
         dbHandler = new DbHandler(this);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 DatabaseAdapter dbAdapter = DatabaseAdapter.getInstance(FavoriteActivity.this);
-                dbAdapter.queryAllData();
+                List<DatabaseAdapter.NewsDataRecord> dataList = dbAdapter.queryAllData();
                 Message msg = dbHandler.obtainMessage();
-                msg.what = 0;
+                msg.obj = dataList;
                 dbHandler.sendMessage(msg);
             }
         });
     }
 
-    public void updateData() {
-
+    public void updateData(List<DatabaseAdapter.NewsDataRecord> dataList) {
+        mDataList.addAll(mAdapter.getItemCount() -1, dataList);
+        mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), dataList.size());
     }
 
     private static class DbHandler extends Handler {
@@ -71,8 +70,10 @@ public class FavoriteActivity extends AbsActivity{
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            FavoriteActivity favoriteActivity = mActivity.get();
-            favoriteActivity.updateData();
+            if (null != msg.obj) {
+                FavoriteActivity favoriteActivity = mActivity.get();
+                favoriteActivity.updateData((List<DatabaseAdapter.NewsDataRecord>)msg.obj);
+            }
         }
     }
 }
