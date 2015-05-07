@@ -37,22 +37,15 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == FLAG_HEADER) {
-            View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.padding, parent, false);
-            return new RecyclerHeaderHolderView(view1);
-        } else if (viewType == FLAG_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    mUseCardView ? R.layout.main_content_item : R.layout.main_content_item_no_card, parent, false);
-            return new RecyclerItemViewHolder(view);
-        }
-        throw new RuntimeException("There is no type that matches the type " +
-                " make sure your using types correctly");
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                mUseCardView ? R.layout.main_content_item : R.layout.main_content_item_no_card, parent, false);
+        return new RecyclerItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof RecyclerItemViewHolder) {
-            ((RecyclerItemViewHolder) holder).textView.setText(mRecordList.get(position-1).title);
+            ((RecyclerItemViewHolder) holder).textView.setText(mRecordList.get(position).title);
             Animator animator = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0.1f, 1f);
             animator.setDuration(300);
             animator.start();
@@ -60,8 +53,8 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    String title = mRecordList.get(position-1).title;
-                    String url = mRecordList.get(position-1).url;
+                    String title = mRecordList.get(position).title;
+                    String url = mRecordList.get(position).url;
                     String sendData = title + url;
                     showActivity(v.getContext(), sendData);
                     return true;
@@ -70,7 +63,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = mRecordList.get(position - 1).url;
+                    String url = mRecordList.get(position).url;
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
@@ -82,15 +75,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return mRecordList.size() + 1;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (0 == position) {
-            return FLAG_HEADER;
-        }
-        return FLAG_ITEM;
+        return mRecordList.size();
     }
 
     private class FavoriteViewHolder extends RecyclerView.ViewHolder {

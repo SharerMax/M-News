@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import net.sharermax.m_news.network.WebResolve;
 import net.sharermax.m_news.support.DatabaseHelper;
@@ -17,6 +18,7 @@ import java.util.List;
  * E-Mail: mdcw1103@gmail.com
  */
 public class DatabaseAdapter {
+    public static final String CLASS_NAME = "DatabaseAdapter";
     private static final String FIELD_TITLE = WebResolve.FIELD_TITLE;
     private static final String FIELD_URL = WebResolve.FIELD_URL;
     private static final String FIELD_TIME = "star_time";
@@ -67,7 +69,8 @@ public class DatabaseAdapter {
         Cursor result = mDataBase.query(DatabaseHelper.MyBaseColumns.TABLE_NAME, projection,
                 null, null, null, null, null);
         int count = result.getCount();
-
+        Log.v(CLASS_NAME, count + "");
+        result.moveToFirst();
         for (int i = 0; i<count; i++) {
             NewsDataRecord record = new NewsDataRecord();
             record._id = result.getLong(result.getColumnIndex(DatabaseHelper.MyBaseColumns._ID));

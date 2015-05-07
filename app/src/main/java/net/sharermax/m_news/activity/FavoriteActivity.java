@@ -53,11 +53,11 @@ public class FavoriteActivity extends AbsActivity{
                 msg.obj = dataList;
                 dbHandler.sendMessage(msg);
             }
-        });
+        }).start();
     }
 
     public void updateData(List<DatabaseAdapter.NewsDataRecord> dataList) {
-        mDataList.addAll(mAdapter.getItemCount() -1, dataList);
+        mDataList.addAll(mAdapter.getItemCount(), dataList);
         mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), dataList.size());
     }
 
