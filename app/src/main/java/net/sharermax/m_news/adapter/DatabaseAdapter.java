@@ -33,6 +33,11 @@ public class DatabaseAdapter {
     public static DatabaseAdapter getInstance(Context context) {
         if (null == sDatabaseAdapter) {
             sDatabaseAdapter = new DatabaseAdapter(context);
+            Log.v(CLASS_NAME, "null");
+        } else {
+            if (!sDatabaseAdapter.getDataBase().isOpen()) {
+                sDatabaseAdapter.open();
+            }
         }
         return sDatabaseAdapter;
     }
@@ -42,6 +47,11 @@ public class DatabaseAdapter {
         mContentValues = new ContentValues();
         mRecordList = new ArrayList<NewsDataRecord>();
     }
+
+    public SQLiteDatabase getDataBase() {
+        return this.mDataBase;
+    }
+
 
     public void insert (NewsDataRecord record) {
         if (null == record) {
@@ -84,15 +94,15 @@ public class DatabaseAdapter {
         return mRecordList;
     }
 
+    public void open() {
+        mDataBase = mDatabaseHelper.getWritableDatabase();
+    }
+
     public static void close() {
         if (null == sDatabaseAdapter) {
             return;
         }
-
-        SQLiteDatabase db = sDatabaseAdapter.mDataBase;
-        if (null != db && db.isOpen()) {
-            db.close();
-        }
+        sDatabaseAdapter.mDatabaseHelper.close();
     }
 
     public void setItemRecord(NewsDataRecord record) {
