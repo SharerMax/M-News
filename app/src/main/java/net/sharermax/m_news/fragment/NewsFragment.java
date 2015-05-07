@@ -176,6 +176,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 } else {
                     Toast.makeText(mContext, getString(R.string.net_error), Toast.LENGTH_LONG).show();
                 }
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
