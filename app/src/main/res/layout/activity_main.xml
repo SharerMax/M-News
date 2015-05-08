@@ -32,7 +32,8 @@
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@android:color/background_light">
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/header_toolbar"
                         android:layout_height="?attr/actionBarSize"
