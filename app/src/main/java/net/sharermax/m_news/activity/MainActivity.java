@@ -291,7 +291,7 @@ public class MainActivity extends AbsActivity
                 scrollView.scrollVerticallyTo(0);
             }
         } else {
-            // Scroll down (to hide padding)
+            // Scroll down (to hide padding_toolbar)
             if (scrollView.getCurrentScrollY() < toolbarHeight) {
                 scrollView.scrollVerticallyTo(toolbarHeight);
             }

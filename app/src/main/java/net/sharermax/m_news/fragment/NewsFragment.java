@@ -106,9 +106,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mRecyclerView = (ObservableRecyclerView) mRootView.findViewById(R.id.news_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setPadding(
-                mRecyclerView.getPaddingLeft(), mToolBarHeight,
-                mRecyclerView.getPaddingRight(), mRecyclerView.getPaddingBottom());
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

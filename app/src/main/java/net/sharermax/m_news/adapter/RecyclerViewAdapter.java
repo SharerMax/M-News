@@ -28,8 +28,9 @@ import java.util.Map;
  */
 public class RecyclerViewAdapter<T extends Map<String, String>> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final String CLASS_NAME = "RecyclerViewAdapter";
-    public static final int FLAG_HEADER = 0;
-    public static final int FLAG_ITEM = 1;
+    public static final int FLAG_HEADER_TOOLBAR = 0;
+    public static final int FLAG_HEADER_TAB = 1;
+    public static final int FLAG_ITEM = 2;
     private List<T> data;
     private boolean mUseCardView;
     private boolean mItemDialogEnable;
@@ -41,15 +42,31 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Log.v(CLASS_NAME, "create");
-        if (viewType == FLAG_HEADER) {
-            View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.padding, parent, false);
-            return new RecyclerHeaderHolderView(view1);
-        } else if (viewType == FLAG_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    mUseCardView ? R.layout.main_content_item : R.layout.main_content_item_no_card, parent, false);
-            return new RecyclerItemViewHolder(view);
+//        Log.v(CLASS_NAME, "create");
+//        if (viewType == FLAG_HEADER_TOOLBAR) {
+//            View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.padding_toolbar, parent, false);
+//            return new RecyclerHeaderHolderView(view1);
+//        } else if (viewType == FLAG_ITEM) {
+//            View view = LayoutInflater.from(parent.getContext()).inflate(
+//                    mUseCardView ? R.layout.main_content_item : R.layout.main_content_item_no_card, parent, false);
+//            return new RecyclerItemViewHolder(view);
+//        }
+
+        switch (viewType) {
+            case FLAG_HEADER_TOOLBAR:
+                View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.padding_toolbar, parent, false);
+                return new RecyclerHeaderHolderView(view1);
+            case FLAG_HEADER_TAB:
+                View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.padding_tab, parent, false);
+                return new RecyclerHeaderHolderView(view2);
+            case FLAG_ITEM:
+                View view = LayoutInflater.from(parent.getContext()).inflate(
+                        mUseCardView ? R.layout.main_content_item : R.layout.main_content_item_no_card, parent, false);
+                return new RecyclerItemViewHolder(view);
+            default:
+                break;
         }
+
         throw new RuntimeException("There is no type that matches the type" +
                 " make sure your using types correctly");
     }
@@ -58,7 +75,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof RecyclerItemViewHolder) {
-            ((RecyclerItemViewHolder) holder).textView.setText(data.get(position-1).get("title"));
+            ((RecyclerItemViewHolder) holder).textView.setText(data.get(position-2).get("title"));
             Animator animator = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0.1f, 1f);
             animator.setDuration(300);
             animator.start();
@@ -66,31 +83,21 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    String title = data.get(position-1).get(WebResolve.FIELD_TITLE);
-                    String url = data.get(position-1).get(WebResolve.FIELD_URL);
+                    String title = data.get(position-2).get(WebResolve.FIELD_TITLE);
+                    String url = data.get(position-2).get(WebResolve.FIELD_URL);
                     String sendData = title + url;
                     if (mItemDialogEnable) {
                         showItemDialog(v.getContext(), title, url);
                         return true;
                     }
                     showActivity(v.getContext(), sendData);
-//                    DatabaseAdapter databaseAdapter = DatabaseAdapter.getInstance(v.getContext());
-//                    databaseAdapter.setSendData(sendData);
-//                    DatabaseAdapter.NewsDataRecord itemRecord = new DatabaseAdapter.NewsDataRecord();
-//                    itemRecord.title = title;
-//                    itemRecord.url = url;
-//                    itemRecord.time = System.currentTimeMillis();
-//                    databaseAdapter.setItemRecord(itemRecord);
-//                    ItemDialog dialog = ItemDialog.getInstance(v.getContext());
-//                    dialog.setAdapter(databaseAdapter);
-//                    dialog.show();
                     return true;
                 }
             });
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = RecyclerViewAdapter.this.data.get(position-1).get("url");
+                    String url = RecyclerViewAdapter.this.data.get(position-2).get("url");
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
@@ -103,24 +110,26 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public int getItemCount() {
-        return data.size() + 1;
+        return data.size() + 2;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
-            return FLAG_HEADER;
+            return FLAG_HEADER_TOOLBAR;
+        } else if (position == 1) {
+            return FLAG_HEADER_TAB;
         }
         return FLAG_ITEM;
     }
 
     public void addItem(int position, T map) {
-        data.add(position-1, map);
+        data.add(position-2, map);
         notifyItemInserted(position);
     }
 
     public void addItems(int startPosition, List<T> list) {
-        data.addAll(startPosition-1, list);
+        data.addAll(startPosition-2, list);
         notifyItemRangeInserted(startPosition, list.size());
     }
 
