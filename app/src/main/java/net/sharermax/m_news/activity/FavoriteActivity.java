@@ -48,6 +48,9 @@ public class FavoriteActivity extends AbsActivity{
             @Override
             public void run() {
                 DatabaseAdapter dbAdapter = DatabaseAdapter.getInstance(FavoriteActivity.this);
+                if (!dbAdapter.isOpen()) {
+                    dbAdapter.open();
+                }
                 List<DatabaseAdapter.NewsDataRecord> dataList = dbAdapter.queryAllData();
                 Message msg = dbHandler.obtainMessage();
                 msg.obj = dataList;

@@ -33,11 +33,6 @@ public class DatabaseAdapter {
     public static DatabaseAdapter getInstance(Context context) {
         if (null == sDatabaseAdapter) {
             sDatabaseAdapter = new DatabaseAdapter(context);
-            Log.v(CLASS_NAME, "null");
-        } else {
-            if (!sDatabaseAdapter.getDataBase().isOpen()) {
-                sDatabaseAdapter.open();
-            }
         }
         return sDatabaseAdapter;
     }
@@ -98,6 +93,10 @@ public class DatabaseAdapter {
         mDataBase = mDatabaseHelper.getWritableDatabase();
     }
 
+    public boolean isOpen() {
+        return mDataBase.isOpen();
+    }
+
     public static void close() {
         if (null == sDatabaseAdapter) {
             return;
@@ -109,8 +108,17 @@ public class DatabaseAdapter {
         mNewsDataRecord = record;
     }
 
+
     public NewsDataRecord getItemRecord() {
         return mNewsDataRecord;
+    }
+
+    public boolean isExist() {
+        Cursor cursor = mDataBase.query(DatabaseHelper.MyBaseColumns.TABLE_NAME,
+                new String[]{DatabaseHelper.MyBaseColumns.COLUMN_NAME_URL},
+                DatabaseHelper.MyBaseColumns.COLUMN_NAME_URL + " LIKE ?",
+                new String[] {mNewsDataRecord.url}, null, null, null);
+        return cursor.getCount() > 0;
     }
 
     public void setSendData(String sendData) {

@@ -2,7 +2,9 @@ package net.sharermax.m_news.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -16,6 +18,7 @@ import net.sharermax.m_news.adapter.DatabaseAdapter;
  * E-Mail: mdcw1103@gmail.com
  */
 public class ItemDialog {
+    public static final String CLASS_NAME = "ItemDialog";
     private Context mContext;
     private MaterialDialog mMaterialDialog;
     private DatabaseAdapter mAdapter;
@@ -39,7 +42,14 @@ public class ItemDialog {
                 }
                 switch (which) {
                     case 0:
-                        mAdapter.insert();
+                        if (!mAdapter.isOpen()) {
+                            mAdapter.open();
+                        }
+                        if (mAdapter.isExist()) {
+                            Toast.makeText(mContext, "has been favorited", Toast.LENGTH_LONG).show();
+                        } else {
+                            mAdapter.insert();
+                        }
                         break;
                     case 1:
                         Intent sendIntent = new Intent();
