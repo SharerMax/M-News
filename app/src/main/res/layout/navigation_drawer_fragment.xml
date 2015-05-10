@@ -22,8 +22,8 @@
             android:layout_height="match_parent">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="@dimen/toolbar_height"
-                android:layout_height="@dimen/toolbar_height"
+                android:layout_width="@dimen/nav_profile_image_size"
+                android:layout_height="@dimen/nav_profile_image_size"
                 android:layout_gravity="center_vertical"
                 android:layout_above="@+id/profile_idstr"
                 android:layout_marginBottom="@dimen/item_pacing"
@@ -37,12 +37,13 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:text="@string/unknown"
-                android:textSize="24sp"
+                android:textSize="@dimen/nav_profile_text_size"
                 android:typeface="sans"
                 android:textStyle="bold"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="@dimen/list_margin_left"
-                android:layout_marginBottom="@dimen/item_pacing"/>
+                android:layout_marginBottom="@dimen/item_pacing"
+                tools:text="@string/author_Weibo_summary"/>
 
         </RelativeLayout>
     </FrameLayout>

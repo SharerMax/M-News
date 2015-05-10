@@ -7,11 +7,6 @@
             android:title="@string/auto_refresh_title"
             android:summary="@string/auto_refresh_summary"
             android:defaultValue="true"/>
-        <CheckBoxPreference
-            android:key="double_to_top"
-            android:title="@string/double_to_top_title"
-            android:summary="@string/double_to_top_summary"
-            android:defaultValue="true"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/view">

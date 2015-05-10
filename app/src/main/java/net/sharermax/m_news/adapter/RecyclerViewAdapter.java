@@ -97,7 +97,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = RecyclerViewAdapter.this.data.get(position-2).get("url");
+                    String url = data.get(position-2).get("url");
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));

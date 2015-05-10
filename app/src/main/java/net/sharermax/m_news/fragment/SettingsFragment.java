@@ -20,7 +20,7 @@ import net.sharermax.m_news.support.Utility;
  */
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
-    private SwitchPreference mAutoRefreshPreference;
+    private SwitchPreference mCardViewPreference;
     private SwitchPreference mSwipeBackPreference;
     private Preference mWeiboPreference;
     private Preference mTwitterPreference;
@@ -35,7 +35,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.prefer_main);
-        mAutoRefreshPreference = (SwitchPreference)findPreference(Setting.KEY_USE_CARD_VIEW);
+        mCardViewPreference = (SwitchPreference)findPreference(Setting.KEY_USE_CARD_VIEW);
         mSwipeBackPreference = (SwitchPreference)findPreference(Setting.KEY_SWIPE_BACK);
         mWeiboPreference = findPreference(Setting.KEY_WEIBO);
         mTwitterPreference = findPreference(Setting.KEY_TWITTER);
@@ -43,7 +43,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mLicensePreference = findPreference(Setting.KEY_LICENSE);
         mVersionPreference = findPreference(Setting.KEY_VERSION);
         mVersionPreference.setSummary(Utility.getVersionInfo(getActivity()));
-        mAutoRefreshPreference.setOnPreferenceClickListener(this);
+        mCardViewPreference.setOnPreferenceClickListener(this);
         mSwipeBackPreference.setOnPreferenceClickListener(this);
         mWeiboPreference.setOnPreferenceClickListener(this);
         mTwitterPreference.setOnPreferenceClickListener(this);
@@ -54,7 +54,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if (preference == mAutoRefreshPreference
+        if (preference == mCardViewPreference
                 || preference == mSwipeBackPreference) {
             Toast.makeText(getActivity(), getString(R.string.toast_you_need_restart), Toast.LENGTH_LONG).show();
             return true;
