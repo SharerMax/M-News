@@ -40,6 +40,7 @@ public class MainActivity extends AbsActivity
 
     public static final String CLASS_NAME = "MainActivty";
     public static final int FLAG_ACTIVITY_SUB = 0;
+    public static final int FLAG_ACTIVITY_SET = 1;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar mToolbar;
@@ -135,7 +136,7 @@ public class MainActivity extends AbsActivity
             case NavigationDrawerFragment.LISTVIEW_POSITION_SETTING:
                 Intent settingIntent = new Intent();
                 settingIntent.setClass(this, SettingsActivity.class);
-                startActivity(settingIntent);
+                startActivityForResult(settingIntent, FLAG_ACTIVITY_SET);
                 break;
             case NavigationDrawerFragment.LISTVIEW_POSITION_ACCOUNT:
                 Intent accountIntent = new Intent();
@@ -181,8 +182,6 @@ public class MainActivity extends AbsActivity
 
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-        Log.v(CLASS_NAME, "" + scrollY);
-//        mHeaderView.animate().translationY(-mToolbar.getHeight());
         if (dragging) {
             int toolbarHeight = mToolbar.getHeight();
             float currentHeaderTranslationY = ViewHelper.getTranslationY(mHeaderView);
@@ -343,6 +342,16 @@ public class MainActivity extends AbsActivity
                 if (Activity.RESULT_OK == resultCode) {
                     mViewPagerAdapter.notifyDataSetChanged();
                     mSlidingTabLayout.setViewPager(mViewPager);
+                }
+                break;
+            case FLAG_ACTIVITY_SET:
+                if (Activity.RESULT_OK == resultCode) {
+                    for (int i =0; i<mViewPagerAdapter.getCount(); i++) {
+                        Fragment fragment = mViewPagerAdapter.getItem(i);
+                        if (null != fragment) {
+
+                        }
+                    }
                 }
                 break;
             default:

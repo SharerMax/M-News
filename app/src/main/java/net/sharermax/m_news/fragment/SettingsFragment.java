@@ -1,11 +1,13 @@
 package net.sharermax.m_news.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
+import android.util.Log;
 import android.widget.Toast;
 
 import net.sharermax.m_news.R;
@@ -20,6 +22,7 @@ import net.sharermax.m_news.support.Utility;
  */
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
+    public static final String CLASS_NAME = "SettingsFragment";
     private SwitchPreference mCardViewPreference;
     private SwitchPreference mSwipeBackPreference;
     private Preference mWeiboPreference;
@@ -27,6 +30,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private Preference mGithubPreference;
     private Preference mLicensePreference;
     private Preference mVersionPreference;
+    private boolean mUserCardView;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -49,7 +53,18 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         mTwitterPreference.setOnPreferenceClickListener(this);
         mGithubPreference.setOnPreferenceClickListener(this);
         mLicensePreference.setOnPreferenceClickListener(this);
+        mUserCardView = mCardViewPreference.isChecked();
 //        mVersionPreference.setOnPreferenceClickListener(this);
+
+        mCardViewPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (mUserCardView != (boolean)newValue) {
+                    getActivity().setResult(Activity.RESULT_OK);
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -86,5 +101,10 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private void openWebSite(String url) {
         Uri uri = Uri.parse(url);
         startActivity(new Intent(Intent.ACTION_VIEW, uri));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

@@ -182,6 +182,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         if (mWebResolve.isFinished()) {
             mWebResolve.cleanData();
+            mWebData.clear();
+            mAdapter.notifyDataSetChanged();
             mWebResolve.startTask(mMainPageFlag);
         }
     }
@@ -215,7 +217,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onStart() {
         super.onStart();
-
     }
     @Override
     public void onResume() {

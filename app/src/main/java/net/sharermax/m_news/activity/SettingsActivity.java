@@ -1,5 +1,6 @@
 package net.sharermax.m_news.activity;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -51,5 +52,16 @@ public class SettingsActivity extends AbsActivity {
         intent.setClass(context, SettingsActivity.class);
         intent.putExtra(EXTRA_FLAG, flag);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        finish();
+        super.onDestroy();
     }
 }

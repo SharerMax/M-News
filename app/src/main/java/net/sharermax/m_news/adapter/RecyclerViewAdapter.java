@@ -157,4 +157,12 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
         sendIntent.setClass(context, EditWeiboActivity.class);
         context.startActivity(sendIntent);
     }
+
+    public void setUseCardView(boolean enable) {
+        mUseCardView = enable;
+    }
+
+    public boolean getUseCardView() {
+        return mUseCardView;
+    }
 }
