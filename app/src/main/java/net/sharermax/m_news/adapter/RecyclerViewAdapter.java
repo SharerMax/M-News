@@ -31,6 +31,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     public static final int FLAG_HEADER_TOOLBAR = 0;
     public static final int FLAG_HEADER_TAB = 1;
     public static final int FLAG_ITEM = 2;
+    public static final int HEADER_COUNT = 2;
     private List<T> data;
     private boolean mUseCardView;
     private boolean mItemDialogEnable;
@@ -75,7 +76,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof RecyclerItemViewHolder) {
-            ((RecyclerItemViewHolder) holder).textView.setText(data.get(position-2).get("title"));
+            ((RecyclerItemViewHolder) holder).textView.setText(data.get(position-HEADER_COUNT).get("title"));
             Animator animator = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0.1f, 1f);
             animator.setDuration(300);
             animator.start();
@@ -83,8 +84,8 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    String title = data.get(position-2).get(WebResolve.FIELD_TITLE);
-                    String url = data.get(position-2).get(WebResolve.FIELD_URL);
+                    String title = data.get(position-HEADER_COUNT).get(WebResolve.FIELD_TITLE);
+                    String url = data.get(position-HEADER_COUNT).get(WebResolve.FIELD_URL);
                     String sendData = title + url;
                     if (mItemDialogEnable) {
                         showItemDialog(v.getContext(), title, url);
@@ -97,7 +98,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = data.get(position-2).get("url");
+                    String url = data.get(position-HEADER_COUNT).get("url");
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
@@ -110,7 +111,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public int getItemCount() {
-        return data.size() + 2;
+        return data.size() + HEADER_COUNT;
     }
 
     @Override
@@ -124,13 +125,22 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     }
 
     public void addItem(int position, T map) {
-        data.add(position-2, map);
-        notifyItemInserted(position);
+        data.add(position, map);
+        notifyItemInserted(position + HEADER_COUNT);
     }
 
     public void addItems(int startPosition, List<T> list) {
-        data.addAll(startPosition-2, list);
-        notifyItemRangeInserted(startPosition, list.size());
+        data.addAll(startPosition, list);
+        notifyItemRangeInserted(startPosition + HEADER_COUNT, list.size());
+    }
+
+    public void clean() {
+        data.clear();
+        notifyDataSetChanged();
+    }
+
+    public int getDataSize() {
+        return data.size();
     }
 
     public void setItemDialogEnable(boolean enable) {

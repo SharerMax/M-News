@@ -72,6 +72,7 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
             args.putInt(NewsFragment.FLAG_INITIAL_POSITION, 1);
         }
         fragment.setArguments(args);
+        mFm.beginTransaction().add(fragment,"NewsFragment" + position);
         return fragment;
     }
 

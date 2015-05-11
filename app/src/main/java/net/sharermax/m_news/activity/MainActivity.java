@@ -26,6 +26,7 @@ import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.DatabaseAdapter;
 import net.sharermax.m_news.adapter.MainViewPagerAdapter;
 import net.sharermax.m_news.fragment.NavigationDrawerFragment;
+import net.sharermax.m_news.fragment.NewsFragment;
 import net.sharermax.m_news.support.CrashHandler;
 import net.sharermax.m_news.view.SlidingTabLayout;
 
@@ -347,9 +348,16 @@ public class MainActivity extends AbsActivity
             case FLAG_ACTIVITY_SET:
                 if (Activity.RESULT_OK == resultCode) {
                     for (int i =0; i<mViewPagerAdapter.getCount(); i++) {
-                        Fragment fragment = mViewPagerAdapter.getItem(i);
+                        Fragment fragment = mViewPagerAdapter.getItemAt(i);
                         if (null != fragment) {
-
+                            try {
+                                ((NewsFragment)fragment).updateItemView();
+                                if (toolbarIsHidden()) {
+                                    showToolbar();
+                                }
+                            } catch (ClassCastException e) {
+                                Log.v(CLASS_NAME, e.toString());
+                            }
                         }
                     }
                 }

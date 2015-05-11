@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -169,7 +168,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void taskOver(List<HashMap<String, String>> dataList) {
                 if (!dataList.isEmpty()) {
-                    mAdapter.addItems(mAdapter.getItemCount(), dataList);
+                    mAdapter.addItems(mAdapter.getDataSize(), dataList);
                 } else {
                     Toast.makeText(mContext, getString(R.string.net_error), Toast.LENGTH_LONG).show();
                 }
@@ -202,6 +201,16 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if (mWebResolve != null && null != mWebData && !mWebData.isEmpty()) {
             mWebResolve.startTask(mNextPageFlag);
         }
+    }
+
+    public void updateItemView() {
+        mUseCardStyle = Setting.getInstance(mContext).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        mWebData.clear();
+        mAdapter = new RecyclerViewAdapter<>(
+                mWebData, mUseCardStyle);
+        mAdapter.setItemDialogEnable(true);
+        mRecyclerView.setAdapter(mAdapter);
+        onRefresh();
     }
 
     @Override

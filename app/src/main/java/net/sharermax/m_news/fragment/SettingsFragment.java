@@ -61,6 +61,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (mUserCardView != (boolean)newValue) {
                     getActivity().setResult(Activity.RESULT_OK);
+                } else {
+                    getActivity().setResult(Activity.RESULT_CANCELED);
                 }
                 return true;
             }
@@ -69,8 +71,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if (preference == mCardViewPreference
-                || preference == mSwipeBackPreference) {
+        if (preference == mSwipeBackPreference) {
             Toast.makeText(getActivity(), getString(R.string.toast_you_need_restart), Toast.LENGTH_LONG).show();
             return true;
         }
