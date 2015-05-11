@@ -128,21 +128,25 @@ public class MainActivity extends AbsActivity
                 Intent favIntent = new Intent();
                 favIntent.setClass(this, FavoriteActivity.class);
                 startActivity(favIntent);
+                overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
             case NavigationDrawerFragment.LISTVIEW_POSITION_SUBSCRIPTION:
                 Intent subIntent = new Intent();
                 subIntent.setClass(this, SubscriptionActivity.class);
                 startActivityForResult(subIntent, FLAG_ACTIVITY_SUB);
+                overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
             case NavigationDrawerFragment.LISTVIEW_POSITION_SETTING:
                 Intent settingIntent = new Intent();
                 settingIntent.setClass(this, SettingsActivity.class);
                 startActivityForResult(settingIntent, FLAG_ACTIVITY_SET);
+                overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
             case NavigationDrawerFragment.LISTVIEW_POSITION_ACCOUNT:
                 Intent accountIntent = new Intent();
                 accountIntent.setClass(this, AccountBindActivity.class);
                 startActivity(accountIntent);
+                overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
             default:
                 break;
@@ -368,8 +372,15 @@ public class MainActivity extends AbsActivity
     }
 
     @Override
+    public void finish() {
+        enableOverrideFinishAnimation(false);
+        super.finish();
+    }
+
+    @Override
     protected void onDestroy() {
         DatabaseAdapter.close();
+
         super.onDestroy();
     }
 }

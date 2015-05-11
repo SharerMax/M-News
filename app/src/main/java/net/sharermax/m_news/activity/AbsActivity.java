@@ -31,6 +31,7 @@ public class AbsActivity extends AppCompatActivity implements SwipeBackActivityB
     protected int mStatusBarHeight = 0;
     private Toolbar mToolBar;
     private View mStatusHeaderView;
+    private boolean mOverrideFinishAnimation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,7 @@ public class AbsActivity extends AppCompatActivity implements SwipeBackActivityB
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mStatusBarHeight = Utility.getStatusBarHeight(getApplication());
         }
-
+        mOverrideFinishAnimation = true;
         boolean swipeBack = Setting.getInstance(this).getBoolen(Setting.KEY_SWIPE_BACK, true);
         setSwipeBackEnable(swipeBack);
     }
@@ -111,5 +112,18 @@ public class AbsActivity extends AppCompatActivity implements SwipeBackActivityB
 
     public View getmStatusHeaderView() {
         return mStatusHeaderView;
+    }
+
+    public void enableOverrideFinishAnimation(boolean enable) {
+        mOverrideFinishAnimation = enable;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (mOverrideFinishAnimation) {
+            overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
+        }
+
     }
 }

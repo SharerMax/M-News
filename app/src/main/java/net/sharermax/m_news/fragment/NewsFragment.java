@@ -54,7 +54,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private int mNextPageFlag;
     private boolean mUseCardStyle;
     private RecyclerViewAdapter<HashMap<String, String>> mAdapter;
-    private Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -170,7 +169,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 if (!dataList.isEmpty()) {
                     mAdapter.addItems(mAdapter.getDataSize(), dataList);
                 } else {
-                    Toast.makeText(mContext, getString(R.string.net_error), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.net_error), Toast.LENGTH_LONG).show();
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -204,7 +203,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void updateItemView() {
-        mUseCardStyle = Setting.getInstance(mContext).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        mUseCardStyle = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
         mWebData.clear();
         mAdapter = new RecyclerViewAdapter<>(
                 mWebData, mUseCardStyle);
@@ -218,7 +217,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         super.onAttach(activity);
         try {
             AbsActivity a = (AbsActivity)activity;
-            mContext = activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + "must extents AbsActivity");
         }
