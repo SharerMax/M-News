@@ -1,9 +1,7 @@
 package net.sharermax.m_news.activity;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -47,16 +45,23 @@ public class SettingsActivity extends AbsActivity {
         fragmentManager.beginTransaction().replace(R.id.container, mFragment).commit();
     }
 
-    public static void launcherActivity(Context context, int flag) {
+    public void launcherActivity(int flag) {
         Intent intent = new Intent();
-        intent.setClass(context, SettingsActivity.class);
+        intent.setClass(this, SettingsActivity.class);
         intent.putExtra(EXTRA_FLAG, flag);
-        context.startActivity(intent);
+        this.startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void finish() {
+//        enableOverrideFinishAnimation(false);
+        super.finish();
     }
 
     @Override

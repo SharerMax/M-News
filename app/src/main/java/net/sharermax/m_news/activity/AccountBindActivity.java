@@ -144,7 +144,6 @@ public class AccountBindActivity extends AbsActivity
 
     @Override
     public void onResponse(Map userInfo) {
-        Log.v(CLASS_NAME, "REPONSE");
         mlist = getListData(userInfo);
         mAdapter.notifyDataSetChanged();
     }

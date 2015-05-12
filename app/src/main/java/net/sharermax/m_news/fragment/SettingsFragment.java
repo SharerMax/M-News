@@ -92,7 +92,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         }
 
         if (preference == mLicensePreference) {
-            SettingsActivity.launcherActivity(getActivity(), SettingsActivity.FLAG_LICENSE);
+            ((SettingsActivity)getActivity()).launcherActivity(SettingsActivity.FLAG_LICENSE);
             return true;
         }
 
