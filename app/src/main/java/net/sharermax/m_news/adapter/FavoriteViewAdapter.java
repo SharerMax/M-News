@@ -12,9 +12,7 @@ import android.view.ViewGroup;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
-import net.sharermax.m_news.adapter.viewholder.RecyclerHeaderHolderView;
 import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
-import net.sharermax.m_news.network.WebResolve;
 
 import java.util.List;
 

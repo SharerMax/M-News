@@ -1,15 +1,14 @@
 package net.sharermax.m_news.adapter;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
@@ -77,9 +76,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
         if (holder instanceof RecyclerItemViewHolder) {
             ((RecyclerItemViewHolder) holder).textView.setText(data.get(position-HEADER_COUNT).get("title"));
-            Animator animator = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0.1f, 1f);
-            animator.setDuration(300);
-            animator.start();
+            initAnimation(holder.itemView);
 
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -107,6 +104,11 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             });
         }
 
+    }
+
+    private void initAnimation(View itemView) {
+        Animation animation = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.scale_in_bottom);
+        itemView.startAnimation(animation);
     }
 
     @Override
