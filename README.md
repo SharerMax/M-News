@@ -23,3 +23,12 @@ A News Client for Programer(or Coder)
 ###[ksoichiro](https://github.com/ksoichiro)
 >[Android-ObservableScrollView](https://github.com/ksoichiro/Android-ObservableScrollView)
 
+###[ike_w0ng](https://github.com/ikew0ng)
+>[SwipeBackLayout](https://github.com/ikew0ng/SwipeBackLayout)
+
+###[Aidan Follestad](https://github.com/afollestad)
+>[material-dialogs](https://github.com/afollestad/material-dialogs)
+
+###[Facebook](https://github.com/facebook)
+>[Stetho](https://github.com/facebook/stetho) 
+
