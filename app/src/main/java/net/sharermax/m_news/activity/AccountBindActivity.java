@@ -1,5 +1,6 @@
 package net.sharermax.m_news.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -144,7 +145,13 @@ public class AccountBindActivity extends AbsActivity
 
     @Override
     public void onResponse(Map userInfo) {
-        mlist = getListData(userInfo);
-        mAdapter.notifyDataSetChanged();
+        if (UserHelper.isUserInfoVailed(userInfo)) {
+            setResult(Activity.RESULT_OK);
+            mlist.clear();
+            mlist.addAll(0, getListData(userInfo));
+            mAdapter.notifyDataSetChanged();
+            return;
+        }
+        setResult(Activity.RESULT_CANCELED);
     }
 }

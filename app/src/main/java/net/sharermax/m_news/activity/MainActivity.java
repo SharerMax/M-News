@@ -42,6 +42,7 @@ public class MainActivity extends AbsActivity
     public static final String CLASS_NAME = "MainActivty";
     public static final int FLAG_ACTIVITY_SUB = 0;
     public static final int FLAG_ACTIVITY_SET = 1;
+    public static final int FLAG_ACTIVITY_ACC = 2;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar mToolbar;
@@ -145,7 +146,7 @@ public class MainActivity extends AbsActivity
             case NavigationDrawerFragment.LISTVIEW_POSITION_ACCOUNT:
                 Intent accountIntent = new Intent();
                 accountIntent.setClass(this, AccountBindActivity.class);
-                startActivity(accountIntent);
+                startActivityForResult(accountIntent, FLAG_ACTIVITY_ACC);
                 overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
             default:
@@ -364,6 +365,13 @@ public class MainActivity extends AbsActivity
                             }
                         }
                     }
+                }
+                break;
+            case FLAG_ACTIVITY_ACC:
+                if (Activity.RESULT_OK == resultCode) {
+                    NavigationDrawerFragment fragment =
+                            (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigationDrawer_fragment);
+                    fragment.updateProfileImage();
                 }
                 break;
             default:

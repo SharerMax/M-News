@@ -83,6 +83,11 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
         mImageView.setDefaultImageResId(R.drawable.background);
         mProfileImage = (CircleImageView)mRootView.findViewById(R.id.profile_image);
         mProfileIDView = (TextView)mRootView.findViewById(R.id.profile_idstr);
+        updateProfileImage();
+
+    }
+
+    public void updateProfileImage() {
         ImageLoader imageLoader = new ImageLoader(Utility.getRequestQueue(getActivity()), new ImageLoader.ImageCache() {
             @Override
             public Bitmap getBitmap(String url) {
@@ -118,7 +123,6 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
             Utility.getRequestQueue(getActivity()).add(imageRequest);
             mProfileIDView.setText(profile_idstr);
         }
-
     }
 
     private void initListView() {

@@ -68,6 +68,7 @@ public class AccountBindAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
+        Log.v(CLASS_NAME, "getview");
         Map map = mData.get(position);
         viewHolder.textView.setText((String) map.get(FLAG_TEXT));
         if (map.get(FLAG_CIRCLE_IMAGE) instanceof String) {

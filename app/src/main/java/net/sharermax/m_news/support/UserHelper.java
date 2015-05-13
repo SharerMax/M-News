@@ -51,7 +51,7 @@ public class UserHelper {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.v(CLASS_NAME, response.toString());
+//                        Log.v(CLASS_NAME, response.toString());
                         writeUserInfo(context, response);
                         if (null != listener) {
                             listener.onResponse(readUserInfo(context));
