@@ -8,8 +8,8 @@ android {
         applicationId "net.sharermax.m_news"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1004
-        versionName "1.0"
+        versionCode 1005
+        versionName "1.0[alpha]"
     }
     sourceSets {
         main {
