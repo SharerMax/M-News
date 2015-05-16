@@ -13,4 +13,11 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"/>
     </android.support.v4.widget.SwipeRefreshLayout>
+    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+        android:id="@+id/circular_progress_bar"
+        android:layout_width="@dimen/progress_bar_circle_size"
+        android:layout_height="@dimen/progress_bar_circle_size"
+        android:layout_gravity="center"
+        android:background="@color/blue_500"
+        android:visibility="visible"/>
 </FrameLayout>

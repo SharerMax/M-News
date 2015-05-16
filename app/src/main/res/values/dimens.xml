@@ -23,6 +23,8 @@
 
     <dimen name="profile_image_height">40dp</dimen>
     <dimen name="profile_image_width">40dp</dimen>
+
+    <dimen name="progress_bar_circle_size">48dp</dimen>
     
     <dimen name="item_pacing">8dp</dimen>
 </resources>

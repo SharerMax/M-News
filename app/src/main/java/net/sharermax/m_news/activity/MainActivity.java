@@ -56,7 +56,7 @@ public class MainActivity extends AbsActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
-        initCrashHandler();
+        //initCrashHandler();
         setContentView(R.layout.activity_main);
         initDrawerLayout();
         initHeaderView();
@@ -101,17 +101,18 @@ public class MainActivity extends AbsActivity
         mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                Log.v(CLASS_NAME, "scrolled");
             }
 
             @Override
             public void onPageSelected(int position) {
                 propagateToolbarState(toolbarIsShown());
+                Log.v(CLASS_NAME, "selected");
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                Log.v(CLASS_NAME, "changed");
             }
         });
     }
@@ -259,7 +260,6 @@ public class MainActivity extends AbsActivity
 
     private void propagateToolbarState(boolean isShown) {
         int toolbarHeight = mToolbar.getHeight();
-        Log.v(CLASS_NAME, "" + isShown);
 
         // Set scrollY for the fragments that are not created yet
         mViewPagerAdapter.setScrollY(isShown ? 0 : toolbarHeight);
