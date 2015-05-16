@@ -3,6 +3,7 @@ package net.sharermax.m_news.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
@@ -52,6 +54,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private int mMainPageFlag;
     private int mNextPageFlag;
     private boolean mUseCardStyle;
+    private ProgressBarCircularIndeterminate mCircularPB;
     private RecyclerViewAdapter<HashMap<String, String>> mAdapter;
 
     @Override
@@ -84,9 +87,13 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         initGlobalLayoutListener();
         initSwipeRefreshLayout();
         initWebResolve();
-
+        mCircularPB = (ProgressBarCircularIndeterminate)mRootView.findViewById(R.id.circular_progress_bar);
+        ViewCompat.setElevation(mCircularPB, R.dimen.progress_bar_circle_elevation);
         if (mAutoRefreshEnable) {
             onRefresh();
+            mCircularPB.setVisibility(View.VISIBLE);
+        } else {
+            mCircularPB.setVisibility(View.GONE);
         }
 
         return mRootView;
@@ -165,6 +172,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
             @Override
             public void taskOver(List<HashMap<String, String>> dataList) {
+                mCircularPB.setVisibility(View.GONE);
                 if (!dataList.isEmpty()) {
                     mAdapter.addItems(mAdapter.getDataSize(), dataList);
                 } else {

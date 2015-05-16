@@ -101,18 +101,18 @@ public class MainActivity extends AbsActivity
         mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.v(CLASS_NAME, "scrolled");
+//                Log.v(CLASS_NAME, "scrolled");
             }
 
             @Override
             public void onPageSelected(int position) {
                 propagateToolbarState(toolbarIsShown());
-                Log.v(CLASS_NAME, "selected");
+//                Log.v(CLASS_NAME, "selected");
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                Log.v(CLASS_NAME, "changed");
+//                Log.v(CLASS_NAME, "changed");
             }
         });
     }

@@ -25,6 +25,7 @@
     <dimen name="profile_image_width">40dp</dimen>
 
     <dimen name="progress_bar_circle_size">48dp</dimen>
+    <dimen name="progress_bar_circle_elevation">@dimen/toolbar_elevation</dimen>
     
     <dimen name="item_pacing">8dp</dimen>
 </resources>

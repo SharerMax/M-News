@@ -19,5 +19,5 @@
         android:layout_height="@dimen/progress_bar_circle_size"
         android:layout_gravity="center"
         android:background="@color/blue_500"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 </FrameLayout>
