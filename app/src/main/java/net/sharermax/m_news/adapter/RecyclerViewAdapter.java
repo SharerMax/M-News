@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +31,16 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     public static final int FLAG_HEADER_TOOLBAR = 0;
     public static final int FLAG_HEADER_TAB = 1;
     public static final int FLAG_ITEM = 2;
+    public static final int FLAG_FOOTER = 3;
     public static final int HEADER_COUNT = 2;
     private List<T> data;
     private boolean mUseCardView;
     private boolean mItemDialogEnable;
+    private int mFooterPosition;
     public RecyclerViewAdapter(List<T> data, boolean useCardView) {
         this.data = data;
         this.mUseCardView = useCardView;
+        mFooterPosition = getItemCount() - 1;
     }
 
     @Override
@@ -63,6 +67,9 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
                 View view = LayoutInflater.from(parent.getContext()).inflate(
                         mUseCardView ? R.layout.main_content_item : R.layout.main_content_item_no_card, parent, false);
                 return new RecyclerItemViewHolder(view);
+            case FLAG_FOOTER:
+                View view3 = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_content_footer, parent, false);
+                return new RecyclerHeaderHolderView(view3);
             default:
                 break;
         }
@@ -104,6 +111,12 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             });
         }
 
+        if ((position == 2) && (mFooterPosition == 2)) {
+            holder.itemView.setVisibility(View.GONE);
+        } else {
+            holder.itemView.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void initAnimation(View itemView) {
@@ -113,15 +126,18 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public int getItemCount() {
-        return data.size() + HEADER_COUNT;
+        return data.size() + HEADER_COUNT + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
+        Log.v(CLASS_NAME, "" + position);
         if (position == 0) {
             return FLAG_HEADER_TOOLBAR;
         } else if (position == 1) {
             return FLAG_HEADER_TAB;
+        } else if (position == mFooterPosition) {
+            return FLAG_FOOTER;
         }
         return FLAG_ITEM;
     }
@@ -132,13 +148,19 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     }
 
     public void addItems(int startPosition, List<T> list) {
+        removeItem(mFooterPosition);
         data.addAll(startPosition, list);
         notifyItemRangeInserted(startPosition + HEADER_COUNT, list.size());
+        mFooterPosition = getItemCount() - 1;
     }
 
     public void clean() {
         data.clear();
         notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        notifyItemRemoved(position);
     }
 
     public int getDataSize() {

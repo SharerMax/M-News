@@ -28,4 +28,5 @@
     <dimen name="progress_bar_circle_elevation">@dimen/toolbar_elevation</dimen>
     
     <dimen name="item_pacing">8dp</dimen>
+    <dimen name="item_height">64dp</dimen>
 </resources>

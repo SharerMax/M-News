@@ -118,7 +118,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     if (mWebData.isEmpty()) {
                         return;
                     }
-                    bottomLoad();
+//                    bottomLoad();
                 }
             }
 
@@ -195,7 +195,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private boolean isBottom() {
         LinearLayoutManager manager = (LinearLayoutManager)mRecyclerView.getLayoutManager();
-        return manager.findLastCompletelyVisibleItemPosition() == (manager.getItemCount() - 1);
+        return manager.findLastCompletelyVisibleItemPosition() >= (manager.getItemCount() - 2);
     }
 
     private boolean isTop() {
