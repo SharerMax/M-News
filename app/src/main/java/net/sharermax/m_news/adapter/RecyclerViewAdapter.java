@@ -3,6 +3,7 @@ package net.sharermax.m_news.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,10 +38,12 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     private boolean mUseCardView;
     private boolean mItemDialogEnable;
     private int mFooterPosition;
+    private boolean mFooterShow;
     public RecyclerViewAdapter(List<T> data, boolean useCardView) {
         this.data = data;
         this.mUseCardView = useCardView;
         mFooterPosition = getItemCount() - 1;
+        mFooterShow = false;
     }
 
     @Override
@@ -82,14 +85,17 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof RecyclerItemViewHolder) {
-            ((RecyclerItemViewHolder) holder).textView.setText(data.get(position-HEADER_COUNT).get("title"));
-            initAnimation(holder.itemView);
+            ((RecyclerItemViewHolder) holder).textView.setText(data.get(position - HEADER_COUNT).get("title"));
+//            initAnimation(holder.itemView);
+//            if (mUseCardView) {
+//                ViewCompat.setElevation(holder.itemView, holder.itemView.getResources().getDimension(R.dimen.tab_elevation));
+//            }
 
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    String title = data.get(position-HEADER_COUNT).get(WebResolve.FIELD_TITLE);
-                    String url = data.get(position-HEADER_COUNT).get(WebResolve.FIELD_URL);
+                    String title = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_TITLE);
+                    String url = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_URL);
                     String sendData = title + url;
                     if (mItemDialogEnable) {
                         showItemDialog(v.getContext(), title, url);
@@ -102,21 +108,24 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = data.get(position-HEADER_COUNT).get("url");
+                    String url = data.get(position - HEADER_COUNT).get("url");
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
                     v.getContext().startActivity(intent);
                 }
             });
-        }
 
-        if ((position == 2) && (mFooterPosition == 2)) {
-            holder.itemView.setVisibility(View.GONE);
-        } else {
-            holder.itemView.setVisibility(View.VISIBLE);
-        }
+            if (!mFooterShow && (position == 2)) {
+                if (mFooterPosition == 2) {
+                    holder.itemView.setVisibility(View.GONE);
+                } else {
+                    holder.itemView.setVisibility(View.VISIBLE);
+                    mFooterShow = true;
+                }
+            }
 
+        }
     }
 
     private void initAnimation(View itemView) {
@@ -126,7 +135,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public int getItemCount() {
-        return data.size() + HEADER_COUNT + 1;
+        return data.size() + HEADER_COUNT;
     }
 
     @Override
@@ -154,7 +163,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
         mFooterPosition = getItemCount() - 1;
     }
 
-    public void clean() {
+    public void clear() {
         data.clear();
         notifyDataSetChanged();
     }
