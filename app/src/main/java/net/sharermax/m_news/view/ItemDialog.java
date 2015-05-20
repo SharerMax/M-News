@@ -45,9 +45,10 @@ public class ItemDialog {
                             mAdapter.open();
                         }
                         if (mAdapter.isExist()) {
-                            Toast.makeText(mContext, "has been favorited", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.itemdialog_fav_exist), Toast.LENGTH_LONG).show();
                         } else {
                             mAdapter.insert();
+                            Toast.makeText(mContext, mContext.getString(R.string.itemdialog_fav_success), Toast.LENGTH_LONG).show();
                         }
                         break;
                     case 1:
