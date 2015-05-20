@@ -47,7 +47,7 @@ public class FavoriteActivity extends AbsActivity{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                DatabaseAdapter dbAdapter = DatabaseAdapter.getInstance(FavoriteActivity.this);
+                DatabaseAdapter dbAdapter = DatabaseAdapter.getInstance(getApplicationContext());
                 if (!dbAdapter.isOpen()) {
                     dbAdapter.open();
                 }

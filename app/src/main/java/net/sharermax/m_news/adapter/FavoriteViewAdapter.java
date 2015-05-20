@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 
@@ -22,6 +24,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Author: SharerMax
@@ -57,10 +60,10 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             animator.start();
             // test start
             favVH.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
-            favVH.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, favVH.testView);
+            favVH.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, favVH.deleteImage);
 
 
-            favVH.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            favVH.itemNoCardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     String title = mRecordList.get(position).title;
@@ -70,7 +73,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     return true;
                 }
             });
-            favVH.cardView.setOnClickListener(new View.OnClickListener() {
+            favVH.itemNoCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String url = mRecordList.get(position).url;
@@ -78,6 +81,12 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
                     v.getContext().startActivity(intent);
+                }
+            });
+            favVH.deleteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "Delete", Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -96,8 +105,8 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public class FavoriteViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.test_id) public TextView testView;
-        @InjectView(R.id.main_item_cardview) public CardView cardView;
+        @InjectView(R.id.item_delete) public ImageView deleteImage;
+        @InjectView(R.id.item_no_card) public View itemNoCardView;
         @InjectView(R.id.main_item_textview) public TextView textView;
         @InjectView(R.id.swipe_layout) public SwipeLayout swipeLayout;
         public FavoriteViewHolder(View itemView) {

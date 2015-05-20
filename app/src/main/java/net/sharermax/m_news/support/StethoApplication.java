@@ -3,6 +3,7 @@ package net.sharermax.m_news.support;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Author: SharerMax
@@ -17,6 +18,6 @@ public class StethoApplication extends Application {
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                 .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                 .build());
-//        LeakCanary.install(this);
+        LeakCanary.install(this);
     }
 }

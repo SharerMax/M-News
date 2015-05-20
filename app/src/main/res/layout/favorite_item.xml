@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/test_id"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@color/green_500"
+    android:layout_height="@dimen/item_height">
+    <ImageView
+        android:id="@+id/item_delete"
+        android:layout_width="@dimen/item_delete_size"
+        android:layout_height="@dimen/item_delete_size"
+        android:background="@color/red_500"
+        android:src="@drawable/ic_action_delete"
         android:gravity="center"
-        android:text="Test"
-        tools:text="Test"
-        tools:visibility="gone"/>
-    <include layout="@layout/main_content_item"/>
+        android:scaleType="center"
+        tools:visibility="visible"/>
+    <include layout="@layout/main_content_item_no_card"/>
 </com.daimajia.swipe.SwipeLayout>
