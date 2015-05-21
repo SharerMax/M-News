@@ -21,14 +21,8 @@ public class ItemDialog {
     private Context mContext;
     private MaterialDialog mMaterialDialog;
     private DatabaseAdapter mAdapter;
-    private static ItemDialog sItemDialog;
-    public static ItemDialog getInstance(Context context) {
-        if (null == sItemDialog) {
-            sItemDialog = new ItemDialog(context);
-        }
-        return sItemDialog;
-    }
-    private ItemDialog(Context context) {
+
+    public ItemDialog(Context context) {
         mContext = context;
         MaterialDialog.Builder builder = new MaterialDialog.Builder(mContext);
         builder.cancelable(true);

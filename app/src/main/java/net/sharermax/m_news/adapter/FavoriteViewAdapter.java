@@ -59,7 +59,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             animator.setDuration(300);
             animator.start();
             // test start
-            favVH.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+            favVH.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
             favVH.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, favVH.deleteImage);
 
 

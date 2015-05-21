@@ -182,14 +182,14 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     private void showItemDialog(Context context, String title, String url) {
         String sendData = title + url;
-        DatabaseAdapter databaseAdapter = DatabaseAdapter.getInstance(context);
+        DatabaseAdapter databaseAdapter = DatabaseAdapter.getInstance(context.getApplicationContext());
         databaseAdapter.setSendData(sendData);
         DatabaseAdapter.NewsDataRecord itemRecord = new DatabaseAdapter.NewsDataRecord();
         itemRecord.title = title;
         itemRecord.url = url;
         itemRecord.time = System.currentTimeMillis();
         databaseAdapter.setItemRecord(itemRecord);
-        ItemDialog dialog = ItemDialog.getInstance(context);
+        ItemDialog dialog = new ItemDialog(context);
         dialog.setAdapter(databaseAdapter);
         dialog.show();
     }
