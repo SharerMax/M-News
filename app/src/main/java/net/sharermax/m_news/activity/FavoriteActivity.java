@@ -42,6 +42,7 @@ public class FavoriteActivity extends AbsActivity{
         boolean mUseCardStyle = Setting.getInstance(this).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
         mDataList = new ArrayList<>();
         mAdapter = new FavoriteViewAdapter(mDataList, mUseCardStyle);
+        mAdapter.setDataBaseAdapter(DatabaseAdapter.getInstance(getApplicationContext()));
         mRecyclerView.setAdapter(mAdapter);
         dbHandler = new DbHandler(this);
         new Thread(new Runnable() {

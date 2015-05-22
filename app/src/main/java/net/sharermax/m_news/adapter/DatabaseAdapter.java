@@ -47,7 +47,6 @@ public class DatabaseAdapter {
         return this.mDataBase;
     }
 
-
     public void insert (NewsDataRecord record) {
         if (null == record) {
             return;
@@ -61,6 +60,11 @@ public class DatabaseAdapter {
 
     public void insert() {
         insert(mNewsDataRecord);
+    }
+
+    public void delete(long _id) {
+        mDataBase.delete(DatabaseHelper.MyBaseColumns.TABLE_NAME,
+                DatabaseHelper.MyBaseColumns._ID + "==?", new String[] {"" + _id});
     }
 
     public List<NewsDataRecord> queryAllData() {

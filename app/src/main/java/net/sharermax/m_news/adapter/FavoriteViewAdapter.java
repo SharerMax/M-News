@@ -37,6 +37,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int FLAG_ITEM = 1;
     private List<DatabaseAdapter.NewsDataRecord> mRecordList;
     private boolean mUseCardView;
+    private DatabaseAdapter mDatabaseAdapter;
 
     public FavoriteViewAdapter(List<DatabaseAdapter.NewsDataRecord> recordList, boolean useCardView) {
         mRecordList = recordList;
@@ -87,6 +88,11 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), "Delete", Toast.LENGTH_LONG).show();
+                    if (null != mDatabaseAdapter) {
+                        mDatabaseAdapter.delete(mRecordList.get(position)._id);
+                        mRecordList.remove(position);
+                        notifyItemRemoved(position);
+                    }
                 }
             });
         }
@@ -95,6 +101,10 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemCount() {
         return mRecordList.size();
+    }
+
+    public void setDataBaseAdapter(DatabaseAdapter adapter) {
+        mDatabaseAdapter = adapter;
     }
 
     private void showActivity(Context context, String sendData) {
