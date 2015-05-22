@@ -102,7 +102,7 @@ public class AccountBindActivity extends AbsActivity
     public void onComplete(Bundle bundle) {
         mAccessToken = Oauth2AccessToken.parseAccessToken(bundle);
         if (mAccessToken.isSessionValid()) {
-            AccessTokenKeeper.writeAccessToken(this, mAccessToken);
+            AccessTokenKeeper.writeAccessToken(getApplicationContext(), mAccessToken);
             Log.v(CLASS_NAME, mAccessToken.getUid() + mAccessToken.getToken());
             mUserHelper.getUserInfo(mAccessToken.getToken(), mAccessToken.getUid(), this);
         } else {

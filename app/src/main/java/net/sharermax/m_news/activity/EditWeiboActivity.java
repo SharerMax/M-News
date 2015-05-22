@@ -73,7 +73,7 @@ public class EditWeiboActivity extends AbsActivity
     public void onLocationChanged(Location location) {
         if (null != location) {
             mLocation = location;
-            SharerToHelper.geoToAddress(getApplicationContext(), AccessTokenKeeper.readAccessToken(this).getToken(), location,
+            SharerToHelper.geoToAddress(getApplicationContext(), AccessTokenKeeper.readAccessToken(this.getApplicationContext()).getToken(), location,
                     new SharerToHelper.GeoToAddressListener() {
                         @Override
                         public void onResponse(String address) {
