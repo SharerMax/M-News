@@ -18,11 +18,11 @@ android {
     }
 
     signingConfigs {
-        debug {
-            storeFile file("../signingfile/signing_debug.jks")
-            storePassword "debug0624"
-            keyAlias "debug"
-            keyPassword "debug0624"
+        release {
+            storeFile file('../signingfile/signing_release.jks')
+            storePassword "release0624"
+            keyAlias "release"
+            keyPassword "release0624"
         }
 //        debug {
 //            storeFile file("../signingfile/debug.keystore")
@@ -33,6 +33,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     productFlavors {
@@ -44,7 +45,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.+'
     compile 'com.android.support:cardview-v7:22.+'
     compile 'com.android.support:recyclerview-v7:22.+'
@@ -55,13 +56,10 @@ dependencies {
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.1'
     compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
-//    compile 'com.android.support:palette-v7:22.1.0'
+    //    compile 'com.android.support:palette-v7:22.1.0'
     compile 'com.afollestad:material-dialogs:0.7.4.0'
-//    compile 'jp.wasabeef:recyclerview-animators:1.2.0@aar'
-    compile 'com.facebook.stetho:stetho:1.1.1'
+    //    compile 'jp.wasabeef:recyclerview-animators:1.2.0@aar'
     compile 'com.facebook.stetho:stetho-urlconnection:1.1.1'
     compile 'com.jakewharton:butterknife:6.1.0'
-    compile "com.daimajia.swipelayout:library:1.2.0@aar"
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    compile 'com.daimajia.swipelayout:library:1.2.0@aar'
 }

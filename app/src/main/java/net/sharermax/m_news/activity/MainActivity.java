@@ -56,7 +56,7 @@ public class MainActivity extends AbsActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSwipeBackEnable(false);
-        //initCrashHandler();
+        initCrashHandler();
         setContentView(R.layout.activity_main);
         initDrawerLayout();
         initHeaderView();
