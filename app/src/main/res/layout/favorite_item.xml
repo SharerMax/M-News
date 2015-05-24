@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.daimajia.swipe.SwipeLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipe_layout"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_height">
-    <ImageView
-        android:id="@+id/item_delete"
-        android:layout_width="@dimen/item_delete_size"
-        android:layout_height="@dimen/item_delete_size"
-        android:background="@color/red_500"
-        android:src="@drawable/ic_action_delete"
-        android:gravity="center"
-        android:scaleType="center"
-        tools:visibility="visible"/>
-    <include layout="@layout/main_content_item_no_card"/>
-</com.daimajia.swipe.SwipeLayout>
+    android:layout_marginLeft="@dimen/list_margin_left"
+    android:layout_marginRight="@dimen/list_margin_right"
+    android:layout_marginTop="@dimen/list_margin_top"
+    android:layout_marginBottom="@dimen/list_margin_bottom"
+    android:background="?attr/selectableItemBackground">
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/item_delete"
+            android:layout_width="@dimen/item_delete_size"
+            android:layout_height="@dimen/item_delete_size"
+            android:background="@color/red_500"
+            android:src="@drawable/ic_action_delete"
+            android:gravity="center"
+            android:scaleType="center"
+            tools:visibility="visible"/>
+        <TextView
+            android:id="@+id/main_item_textview"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:paddingLeft="@dimen/item_text_H_card_padding"
+            android:paddingRight="@dimen/item_text_H_card_padding"
+            android:gravity="center_vertical"
+            android:background="?attr/selectableItemBackground"
+            tools:text="Test"/>
+    </com.daimajia.swipe.SwipeLayout>
+</android.support.v7.widget.CardView>

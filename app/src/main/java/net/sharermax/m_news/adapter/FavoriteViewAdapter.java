@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +17,11 @@ import com.daimajia.swipe.SwipeLayout;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
-import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 /**
  * Author: SharerMax
@@ -33,8 +30,6 @@ import butterknife.OnClick;
  */
 public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int FLAG_HEADER = 0;
-    private static final int FLAG_ITEM = 1;
     private List<DatabaseAdapter.NewsDataRecord> mRecordList;
     private boolean mUseCardView;
     private DatabaseAdapter mDatabaseAdapter;
@@ -47,7 +42,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
-                mUseCardView ? R.layout.favorite_item : R.layout.main_content_item_no_card, parent, false);
+                mUseCardView ? R.layout.favorite_item : R.layout.favorite_item_no_card, parent, false);
         return new FavoriteViewHolder(view);
     }
 
@@ -64,7 +59,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             favVH.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, favVH.deleteImage);
 
 
-            favVH.itemNoCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            favVH.textView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     String title = mRecordList.get(position).title;
@@ -74,7 +69,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     return true;
                 }
             });
-            favVH.itemNoCardView.setOnClickListener(new View.OnClickListener() {
+            favVH.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String url = mRecordList.get(position).url;
@@ -116,7 +111,6 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public class FavoriteViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.item_delete) public ImageView deleteImage;
-        @InjectView(R.id.item_no_card) public View itemNoCardView;
         @InjectView(R.id.main_item_textview) public TextView textView;
         @InjectView(R.id.swipe_layout) public SwipeLayout swipeLayout;
         public FavoriteViewHolder(View itemView) {

@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonFlat;
-import com.gc.materialdesign.views.ButtonRectangle;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rengwuxian.materialedittext.validation.METValidator;
 

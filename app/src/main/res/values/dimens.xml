@@ -29,5 +29,8 @@
     
     <dimen name="item_pacing">8dp</dimen>
     <dimen name="item_height">64dp</dimen>
+    <dimen name="item_text_icon_H_padding">32dp</dimen>
+    <dimen name="item_text_H_card_padding">16dp</dimen>
+    <dimen name="item_text_H_padding">16dp</dimen>
     <dimen name="item_delete_size">@dimen/item_height</dimen>
 </resources>

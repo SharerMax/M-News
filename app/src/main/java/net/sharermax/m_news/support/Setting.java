@@ -59,8 +59,8 @@ public class Setting {
         return mSharedPreferences.getBoolean(key, defaultValue);
     }
 
-    public String getString(String key, String defultString) {
-        return mSharedPreferences.getString(key, defultString);
+    public String getString(String key, String defaultString) {
+        return mSharedPreferences.getString(key, defaultString);
     }
 
     public int getInteger(String key, int defaultValue) {
