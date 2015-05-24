@@ -56,6 +56,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private boolean mUseCardStyle;
     private ProgressBarCircularIndeterminate mCircularPB;
     private RecyclerViewAdapter<HashMap<String, String>> mAdapter;
+    private boolean mFirstLoad = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,15 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
         mSwipeRefreshLayout.setProgressViewOffset(true, mSwipeRefreshCircleStart, mSwipeRefreshCircleStart + mSwipeRefreshCircleStart / 2);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mFirstLoad) {
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -173,6 +183,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void taskOver(List<HashMap<String, String>> dataList) {
                 mCircularPB.setVisibility(View.GONE);
+                mFirstLoad = false;
                 if (!dataList.isEmpty()) {
                     mAdapter.addItems(mAdapter.getDataSize(), dataList);
                 } else {
@@ -190,9 +201,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             mAdapter.clear();
             mAdapter.notifyDataSetChanged();
             mWebResolve.startTask(mMainPageFlag);
-        } else {
-            mCircularPB.setVisibility(View.GONE);
-            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
