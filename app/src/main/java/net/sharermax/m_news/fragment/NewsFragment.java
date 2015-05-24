@@ -130,7 +130,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (mWebResolve != null && mWebResolve.isFinished()) {
+                if (null != mAdapter && (mAdapter.getDataSize() > 0)) {
                     return false;
                 }
                 return true;
@@ -190,6 +190,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             mAdapter.clear();
             mAdapter.notifyDataSetChanged();
             mWebResolve.startTask(mMainPageFlag);
+        } else {
+            mCircularPB.setVisibility(View.GONE);
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 

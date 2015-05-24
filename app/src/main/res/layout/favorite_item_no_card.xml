@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height">
+    <ImageView
+        android:id="@+id/item_delete"
+        android:layout_width="@dimen/item_delete_size"
+        android:layout_height="@dimen/item_delete_size"
+        android:background="@color/red_500"
+        android:src="@drawable/ic_action_delete"
+        android:gravity="center"
+        android:scaleType="center"
+        tools:visibility="visible"/>
+    <include layout="@layout/main_content_item_no_card"/>
+</com.daimajia.swipe.SwipeLayout>
