@@ -56,6 +56,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private boolean mUseCardStyle;
     private ProgressBarCircularIndeterminate mCircularPB;
     private RecyclerViewAdapter<HashMap<String, String>> mAdapter;
+    private boolean mFirstLoad = true;
+    private boolean mListAnimationEnable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,15 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red_500);
         mSwipeRefreshLayout.setProgressViewOffset(true, mSwipeRefreshCircleStart, mSwipeRefreshCircleStart + mSwipeRefreshCircleStart / 2);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mFirstLoad) {
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -142,6 +153,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mAdapter = new RecyclerViewAdapter<>(
                 mWebData, mUseCardStyle);
         mAdapter.setItemDialogEnable(true);
+        mAdapter.setListAnimationEnable(mListAnimationEnable);
         mRecyclerView.setAdapter(mAdapter);
 
     }
@@ -163,8 +175,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
     private void initSetting() {
-        mAutoRefreshEnable = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_AUTO_REFRESH, true);
-        mUseCardStyle = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        Setting setting = Setting.getInstance(getActivity());
+        mAutoRefreshEnable = setting.getBoolen(Setting.KEY_AUTO_REFRESH, true);
+        mUseCardStyle = setting.getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        mListAnimationEnable = !setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, false);
     }
 
     private void initWebResolve() {
@@ -173,6 +187,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void taskOver(List<HashMap<String, String>> dataList) {
                 mCircularPB.setVisibility(View.GONE);
+                mFirstLoad = false;
                 if (!dataList.isEmpty()) {
                     mAdapter.addItems(mAdapter.getDataSize(), dataList);
                 } else {
@@ -190,9 +205,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             mAdapter.clear();
             mAdapter.notifyDataSetChanged();
             mWebResolve.startTask(mMainPageFlag);
-        } else {
-            mCircularPB.setVisibility(View.GONE);
-            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -213,11 +225,14 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void updateItemView() {
-        mUseCardStyle = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        Setting setting = Setting.getInstance(getActivity());
+        mUseCardStyle = setting.getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        mListAnimationEnable = !setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, false);
         mWebData.clear();
         mAdapter = new RecyclerViewAdapter<>(
                 mWebData, mUseCardStyle);
         mAdapter.setItemDialogEnable(true);
+        mAdapter.setListAnimationEnable(mListAnimationEnable);
         mRecyclerView.setAdapter(mAdapter);
         onRefresh();
     }

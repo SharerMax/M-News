@@ -18,6 +18,11 @@
             android:key="swipe_to_back"
             android:title="@string/swipe_back_title"
             android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="disable_animation"
+            android:title="@string/item_disable_animation"
+            android:summary="@string/item_disable_animation_desc"
+            android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/about_title">

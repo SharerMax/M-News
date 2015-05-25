@@ -23,6 +23,7 @@ public class Setting {
     public static final String KEY_DOUBLE_TO_TOP = "double_to_top";
     public static final String KEY_USE_CARD_VIEW = "use_card_view";
     public static final String KEY_SWIPE_BACK = "swipe_to_back";
+    public static final String KEY_DISABLE_LIST_ANIMATION = "disable_animation";
     public static final String KEY_WEIBO = "weibo";
     public static final String KEY_TWITTER = "twitter";
     public static final String KEY_GITHUB = "github";
