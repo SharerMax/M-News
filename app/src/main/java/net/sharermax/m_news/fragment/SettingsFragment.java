@@ -19,17 +19,20 @@ import net.sharermax.m_news.support.Utility;
  * Time  : 2015/3/22
  * E-Mail: mdcw1103@gmail.com
  */
-public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+public class SettingsFragment extends PreferenceFragment
+        implements Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
 
     public static final String CLASS_NAME = "SettingsFragment";
     private SwitchPreference mCardViewPreference;
     private SwitchPreference mSwipeBackPreference;
+    private SwitchPreference mDListAnimationPreference;
     private Preference mWeiboPreference;
     private Preference mTwitterPreference;
     private Preference mGithubPreference;
     private Preference mLicensePreference;
     private Preference mVersionPreference;
-    private boolean mUserCardView;
+    private boolean mCardViewEnable;
+    private boolean mListAnimationEnable;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -40,32 +43,36 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         addPreferencesFromResource(R.xml.prefer_main);
         mCardViewPreference = (SwitchPreference)findPreference(Setting.KEY_USE_CARD_VIEW);
         mSwipeBackPreference = (SwitchPreference)findPreference(Setting.KEY_SWIPE_BACK);
+        mDListAnimationPreference = (SwitchPreference)findPreference(Setting.KEY_DISABLE_LIST_ANIMATION);
         mWeiboPreference = findPreference(Setting.KEY_WEIBO);
         mTwitterPreference = findPreference(Setting.KEY_TWITTER);
         mGithubPreference = findPreference(Setting.KEY_GITHUB);
         mLicensePreference = findPreference(Setting.KEY_LICENSE);
         mVersionPreference = findPreference(Setting.KEY_VERSION);
         mVersionPreference.setSummary(Utility.getVersionInfo(getActivity()));
-        mCardViewPreference.setOnPreferenceClickListener(this);
         mSwipeBackPreference.setOnPreferenceClickListener(this);
         mWeiboPreference.setOnPreferenceClickListener(this);
         mTwitterPreference.setOnPreferenceClickListener(this);
         mGithubPreference.setOnPreferenceClickListener(this);
         mLicensePreference.setOnPreferenceClickListener(this);
-        mUserCardView = mCardViewPreference.isChecked();
+        Setting setting = Setting.getInstance(getActivity().getApplicationContext());
+        mCardViewEnable = setting.getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        mListAnimationEnable = setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, false);
 //        mVersionPreference.setOnPreferenceClickListener(this);
 
-        mCardViewPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (mUserCardView != (boolean)newValue) {
-                    getActivity().setResult(Activity.RESULT_OK);
-                } else {
-                    getActivity().setResult(Activity.RESULT_CANCELED);
-                }
-                return true;
-            }
-        });
+        mCardViewPreference.setOnPreferenceChangeListener(this);
+        mDListAnimationPreference.setOnPreferenceChangeListener(this);
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if ((mCardViewEnable != (boolean)newValue)
+                || (mListAnimationEnable != (boolean)newValue)) {
+            getActivity().setResult(Activity.RESULT_OK);
+        } else {
+            getActivity().setResult(Activity.RESULT_CANCELED);
+        }
+        return true;
     }
 
     @Override
@@ -107,4 +114,5 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public void onStop() {
         super.onStop();
     }
+
 }

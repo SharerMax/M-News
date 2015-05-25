@@ -57,6 +57,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ProgressBarCircularIndeterminate mCircularPB;
     private RecyclerViewAdapter<HashMap<String, String>> mAdapter;
     private boolean mFirstLoad = true;
+    private boolean mListAnimationEnable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,6 +153,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mAdapter = new RecyclerViewAdapter<>(
                 mWebData, mUseCardStyle);
         mAdapter.setItemDialogEnable(true);
+        mAdapter.setListAnimationEnable(mListAnimationEnable);
         mRecyclerView.setAdapter(mAdapter);
 
     }
@@ -173,8 +175,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
     private void initSetting() {
-        mAutoRefreshEnable = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_AUTO_REFRESH, true);
-        mUseCardStyle = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        Setting setting = Setting.getInstance(getActivity());
+        mAutoRefreshEnable = setting.getBoolen(Setting.KEY_AUTO_REFRESH, true);
+        mUseCardStyle = setting.getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        mListAnimationEnable = !setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, false);
     }
 
     private void initWebResolve() {
@@ -221,11 +225,14 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void updateItemView() {
-        mUseCardStyle = Setting.getInstance(getActivity()).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        Setting setting = Setting.getInstance(getActivity());
+        mUseCardStyle = setting.getBoolen(Setting.KEY_USE_CARD_VIEW, true);
+        mListAnimationEnable = !setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, false);
         mWebData.clear();
         mAdapter = new RecyclerViewAdapter<>(
                 mWebData, mUseCardStyle);
         mAdapter.setItemDialogEnable(true);
+        mAdapter.setListAnimationEnable(mListAnimationEnable);
         mRecyclerView.setAdapter(mAdapter);
         onRefresh();
     }

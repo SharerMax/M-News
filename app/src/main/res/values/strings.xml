@@ -27,6 +27,9 @@
     <string name="swipe_back_title">Swipe Back</string>
     <string name="toast_you_need_restart">Changes will apply after restarting the application</string>
 
+    <string name="item_disable_animation">Disable list animations</string>
+    <string name="item_disable_animation_desc">Recommend old devices to disable it</string>
+
     <string name="about_title">About</string>
     <string name="author_Weibo_title">Weibo</string>
     <string name="author_Weibo_summary">\@编代码的西瓜</string>

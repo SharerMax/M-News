@@ -8,9 +8,11 @@
         android:toYScale="1.0"
         android:pivotX="50%"
         android:pivotY="50%"
+        android:fillAfter="true"
         android:interpolator="@android:anim/accelerate_interpolator"/>
     <alpha
         android:duration="@android:integer/config_mediumAnimTime"
         android:fromAlpha="0.1"
-        android:toAlpha="1.0"/>
+        android:toAlpha="1.0"
+        android:fillAfter="true"/>
 </set>

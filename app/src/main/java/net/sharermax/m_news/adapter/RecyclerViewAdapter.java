@@ -3,6 +3,7 @@ package net.sharermax.m_news.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +39,9 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     private boolean mItemDialogEnable;
     private int mFooterPosition;
     private boolean mFooterShow;
+    private int mShowLastPosition = -1;
+    private boolean mFirstLoad = true;
+    private boolean mListAnimationEnable = true;
     public RecyclerViewAdapter(List<T> data, boolean useCardView) {
         this.data = data;
         this.mUseCardView = useCardView;
@@ -47,16 +51,6 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-//        Log.v(CLASS_NAME, "create");
-//        if (viewType == FLAG_HEADER_TOOLBAR) {
-//            View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.padding_toolbar, parent, false);
-//            return new RecyclerHeaderHolderView(view1);
-//        } else if (viewType == FLAG_ITEM) {
-//            View view = LayoutInflater.from(parent.getContext()).inflate(
-//                    mUseCardView ? R.layout.main_content_item : R.layout.main_content_item_no_card, parent, false);
-//            return new RecyclerItemViewHolder(view);
-//        }
 
         switch (viewType) {
             case FLAG_HEADER_TOOLBAR:
@@ -85,10 +79,6 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
         if (holder instanceof RecyclerItemViewHolder) {
             ((RecyclerItemViewHolder) holder).textView.setText(data.get(position - HEADER_COUNT).get("title"));
-//            initAnimation(holder.itemView);
-//            if (mUseCardView) {
-//                ViewCompat.setElevation(holder.itemView, holder.itemView.getResources().getDimension(R.dimen.tab_elevation));
-//            }
 
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -123,13 +113,46 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
                     mFooterShow = true;
                 }
             }
-
+            if (mListAnimationEnable) {
+                setAnimation(holder.itemView, position);
+            }
         }
     }
 
-    private void initAnimation(View itemView) {
-        Animation animation = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.scale_in_bottom);
-        itemView.startAnimation(animation);
+    private void setAnimation(final View itemView, final int position) {
+        if (position > mShowLastPosition) {
+            if (mFirstLoad) {
+                itemView.setVisibility(View.INVISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Animation animation = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.scale_in_bottom);
+                        animation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                itemView.setVisibility(View.VISIBLE);
+                                mFirstLoad = true;
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                mFirstLoad = false;
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        itemView.startAnimation(animation);
+                    }
+                }, (position - HEADER_COUNT) * 180);
+            } else {
+                Animation animation = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.scale_in_bottom);
+                itemView.startAnimation(animation);
+            }
+        }
+        mShowLastPosition = position;
     }
 
     @Override
@@ -193,6 +216,9 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
         dialog.show();
     }
 
+    public void setListAnimationEnable(boolean enable) {
+        mListAnimationEnable = enable;
+    }
     private void showActivity(Context context, String sendData) {
         Intent sendIntent = new Intent();
         sendIntent.putExtra(EditWeiboActivity.EXTRA_FLAG, sendData);
