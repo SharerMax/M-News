@@ -9,8 +9,7 @@
         android:layout_width="@dimen/profile_image_width"
         android:layout_height="@dimen/profile_image_height"
         android:layout_gravity="center"
-        app:border_color="@color/grey_500"
-        app:border_width="4dp"
+        android:src="@drawable/ic_action_account_circle_grey"
         app:paddingStart="4dp"
         app:paddingEnd="4dp"/>
     <TextView

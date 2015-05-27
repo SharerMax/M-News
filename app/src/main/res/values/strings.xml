@@ -13,6 +13,7 @@
     <string name="drawer_subscription_action">Subscription</string>
     <string name="drawer_setting_action">Setting</string>
     <string name="drawer_account_binding_action">Account Binding</string>
+    <string name="drawer_profile_id_anonymous">Anonymous</string>
 
     <!--Setting Activity-->
     <string name="app_label_setting">@string/drawer_setting_action</string>

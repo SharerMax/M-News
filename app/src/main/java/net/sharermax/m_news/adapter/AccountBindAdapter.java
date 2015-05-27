@@ -88,7 +88,7 @@ public class AccountBindAdapter extends BaseAdapter {
                     public void onResponse(Bitmap response) {
                         imageView.setImageBitmap(response);
                     }
-                }, 144, 144, ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565,
+                }, 0, 0, ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565,
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
