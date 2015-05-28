@@ -46,7 +46,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private WebResolve mWebResolve;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<HashMap<String, String>> mWebData;
-    private boolean mAutoRefreshEnable;
     private View mRootView;
     private int mSwipeRefreshCircleStart;
     private int mToolBarHeight;
@@ -91,12 +90,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         initWebResolve();
         mCircularPB = (ProgressBarCircularIndeterminate)mRootView.findViewById(R.id.circular_progress_bar);
         ViewCompat.setElevation(mCircularPB, R.dimen.progress_bar_circle_elevation);
-        if (mAutoRefreshEnable) {
-            onRefresh();
-            mCircularPB.setVisibility(View.VISIBLE);
-        } else {
-            mCircularPB.setVisibility(View.GONE);
-        }
+        onRefresh();
+        mCircularPB.setVisibility(View.VISIBLE);
 
         return mRootView;
     }
@@ -167,7 +162,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     @Override
                     public void run() {
                         mRecyclerView.scrollVerticallyToPosition(initialPosition);
-
                     }
                 });
             }
@@ -176,7 +170,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
     private void initSetting() {
         Setting setting = Setting.getInstance(getActivity());
-        mAutoRefreshEnable = setting.getBoolen(Setting.KEY_AUTO_REFRESH, true);
         mUseCardStyle = setting.getBoolen(Setting.KEY_USE_CARD_VIEW, true);
         mListAnimationEnable = !setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, false);
     }
@@ -229,6 +222,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mUseCardStyle = setting.getBoolen(Setting.KEY_USE_CARD_VIEW, true);
         mListAnimationEnable = !setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, false);
         mWebData.clear();
+        mRecyclerView.removeAllViews();
         mAdapter = new RecyclerViewAdapter<>(
                 mWebData, mUseCardStyle);
         mAdapter.setItemDialogEnable(true);
