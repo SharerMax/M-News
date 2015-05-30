@@ -69,7 +69,7 @@ public class AccountBindActivity extends AbsActivity
 
     private List<Map<String, Object>> getListData() {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put(FLAG_CIRCLE_IMAGE, R.drawable.ic_user_unlogin);
+        map.put(FLAG_CIRCLE_IMAGE, R.drawable.ic_action_account_circle_grey);
         map.put(FLAG_TEXT, getString(R.string.weibo_auto_item));
         return getListData(map);
     }
@@ -82,7 +82,7 @@ public class AccountBindActivity extends AbsActivity
         }
         Map<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put(FLAG_CIRCLE_IMAGE, map.get(UserHelper.KEY_PROFILE_IMAGE));
-        hashMap.put(FLAG_TEXT, (String)map.get(UserHelper.KEY_SCREEN_NAME));
+        hashMap.put(FLAG_TEXT, map.get(UserHelper.KEY_SCREEN_NAME));
         listData.add(hashMap);
         return listData;
     }

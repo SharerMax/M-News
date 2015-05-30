@@ -111,7 +111,7 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
                         public void onResponse(Bitmap response) {
                             mProfileImage.setImageBitmap(response);
                         }
-                    }, 144, 144, ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565,
+                    }, 0, 0, ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565,
                     new Response.ErrorListener() {
                         @SuppressLint("LongLogTag")
                         @Override

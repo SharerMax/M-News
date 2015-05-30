@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/action">
-        <CheckBoxPreference
-            android:key="auto_refresh"
-            android:title="@string/auto_refresh_title"
-            android:summary="@string/auto_refresh_summary"
-            android:defaultValue="true"/>
-    </PreferenceCategory>
-    <PreferenceCategory
         android:title="@string/view">
         <SwitchPreference
             android:key="use_card_view"
