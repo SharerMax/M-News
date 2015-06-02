@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -82,7 +83,7 @@ public class MainActivity extends AbsActivity
             }
         });
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     }
     private void initHeaderView() {
         mToolbar = (Toolbar)findViewById(R.id.header_toolbar);
@@ -154,15 +155,15 @@ public class MainActivity extends AbsActivity
                 break;
         }
         if (null != mDrawerLayout) {
-            mDrawerLayout.closeDrawer(Gravity.START);
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         }
 
     }
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
-            mDrawerLayout.closeDrawer(Gravity.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -177,10 +178,10 @@ public class MainActivity extends AbsActivity
         //noinspection SimplifiableIfStatement
         switch (id) {
             case android.R.id.home:
-                if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
-                    mDrawerLayout.closeDrawer(Gravity.START);
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
                 } else {
-                    mDrawerLayout.openDrawer(Gravity.START);
+                    mDrawerLayout.openDrawer(GravityCompat.START);
                 }
                 break;
         }
