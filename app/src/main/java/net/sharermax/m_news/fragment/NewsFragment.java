@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -57,7 +58,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private RecyclerViewAdapter<HashMap<String, String>> mAdapter;
     private boolean mFirstLoad = true;
     private boolean mListAnimationEnable;
-
+    private ButtonRectangle mRetryButton;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,9 +91,18 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         initWebResolve();
         mCircularPB = (ProgressBarCircularIndeterminate)mRootView.findViewById(R.id.circular_progress_bar);
         ViewCompat.setElevation(mCircularPB, R.dimen.progress_bar_circle_elevation);
-        onRefresh();
         mCircularPB.setVisibility(View.VISIBLE);
-
+        onRefresh();
+        mRetryButton = (ButtonRectangle)mRootView.findViewById(R.id.retry_button);
+        mRetryButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mCircularPB.setVisibility(View.VISIBLE);
+                mRetryButton.setVisibility(View.GONE);
+                onRefresh();
+                return false;
+            }
+        });
         return mRootView;
     }
 
@@ -182,9 +192,13 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 mCircularPB.setVisibility(View.GONE);
                 mFirstLoad = false;
                 if (!dataList.isEmpty()) {
+                    mRetryButton.setVisibility(View.GONE);
                     mAdapter.addItems(mAdapter.getDataSize(), dataList);
                 } else {
-                    Toast.makeText(getActivity(), getString(R.string.net_error), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.net_error), Toast.LENGTH_LONG).show();
+                    if (mAdapter.getDataSize() == 0) {
+                        mRetryButton.setVisibility(View.VISIBLE);
+                    }
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
