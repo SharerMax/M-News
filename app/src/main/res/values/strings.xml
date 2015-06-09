@@ -77,6 +77,9 @@
     <string name="itemdialog_fav_exist">This item had been exists</string>
     <string name="itemdialog_fav_success">Favorite successful</string>
 
+    <!--NewsFragment-->
+    <string name="newsfragment_retry">Retry</string>
+
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>
 

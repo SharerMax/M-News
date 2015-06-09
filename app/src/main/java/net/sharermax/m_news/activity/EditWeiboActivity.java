@@ -59,7 +59,7 @@ public class EditWeiboActivity extends AbsActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mLocationManager = Utility.updateLocation(this, this);
+        mLocationManager = Utility.updateLocation(getApplicationContext(), this);
     }
 
     @Override
@@ -107,14 +107,14 @@ public class EditWeiboActivity extends AbsActivity
             case R.id.weibo_send:
                 Log.v(CLASS_NAME, mWeiboEditText.getText().toString());
                 if (!(mWeiboEditText.getText().toString().length() > WEIBO_MAX_COUNT)) {
-                    SharerToHelper.sendToWeibo(v.getContext(),
+                    SharerToHelper.sendToWeibo(getApplicationContext(),
                             mWeiboEditText.getText().toString(),
                             getString(R.string.send_success),
                             getString(R.string.send_fail),
                             mLocation);
                     this.finish();
                 } else {
-                    Toast.makeText(this, getString(R.string.weibo_edit_error), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.weibo_edit_error), Toast.LENGTH_LONG).show();
                 }
                 break;
             default:

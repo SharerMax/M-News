@@ -39,7 +39,7 @@ public class Setting {
 
     public static Setting getInstance(Context context) {
         if (null == sInstance) {
-            sInstance = new Setting(context);
+            sInstance = new Setting(context.getApplicationContext());
         }
         return sInstance;
     }

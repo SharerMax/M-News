@@ -36,7 +36,7 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
         mFm = fm;
         mContext = context;
         mSetting = Setting.getInstance(mContext);
-        mTitles = new ArrayList<Map>();
+        mTitles = new ArrayList<>();
         initTitles();
     }
 
@@ -45,13 +45,13 @@ public class MainViewPagerAdapter extends CacheFragmentStatePagerAdapter{
             mTitles.clear();
         }
         if (mSetting.getBoolen(Setting.KEY_SUB_STARTUP, true)) {
-            HashMap map = new HashMap<String, Object>();
+            HashMap map = new HashMap<>();
             map.put("title", mContext.getString(R.string.title_startup));
             map.put("flag", NewsFragment.FLAG_NEWS_STARTUP);
             mTitles.add(map);
         }
         if (mSetting.getBoolen(Setting.KEY_SUB_HACKERNEWS, true)) {
-            HashMap map = new HashMap<String, Object>();
+            HashMap map = new HashMap<>();
             map.put("title", mContext.getString(R.string.title_hacker_news));
             map.put("flag", NewsFragment.FLAG_NEWS_HACKERNEWS);
             mTitles.add(map);

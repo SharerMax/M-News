@@ -32,7 +32,7 @@ public class DatabaseAdapter {
 
     public static DatabaseAdapter getInstance(Context context) {
         if (null == sDatabaseAdapter) {
-            sDatabaseAdapter = new DatabaseAdapter(context);
+            sDatabaseAdapter = new DatabaseAdapter(context.getApplicationContext());
         }
         return sDatabaseAdapter;
     }
