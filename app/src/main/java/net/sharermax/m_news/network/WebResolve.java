@@ -9,6 +9,11 @@ import com.android.volley.toolbox.StringRequest;
 
 import net.sharermax.m_news.support.Utility;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,8 +28,8 @@ import java.util.regex.Pattern;
 
 public class WebResolve {
     public static final String CLASS_NAME = "WebResolve";
-    public static final String START_UP_HOST_NAME = "http://news.dbanotes.net/";
-    public static final String HACKER_NEWS_HOST_NAME = "https://news.ycombinator.com/";
+    public static final String START_UP_HOST_NAME = "http://news.dbanotes.net";
+    public static final String HACKER_NEWS_HOST_NAME = "https://news.ycombinator.com";
     public static final int START_UP_MAIN_PAGES_FLAG = 0x01;
     public static final int START_UP_NEXT_PAGES_FLAG = 0x02;
     public static final int HACKER_NEWS_MAIN_PAGES_FLAG = 0x03;
@@ -112,18 +117,19 @@ public class WebResolve {
         @Override
         public void onResponse(String response) {
             if (null != response) {
-                Matcher urlListMatcher = mUrlListPattern.matcher(response);
-                while (urlListMatcher.find()) {
+                Document document = Jsoup.parse(response);
+                Elements titles = document.select("td.title");
+                Elements title = titles.select("a");
+                int size = title.size();
+                for (int i=0; i<size-1; i++) {
+                    Element t = title.get(i);
+                    Log.v(CLASS_NAME, "" + i + t.text() + t.attr("href"));
                     HashMap<String, String> map = new HashMap<>();
-                    map.put(FIELD_TITLE, urlListMatcher.group(2));
-                    map.put(FIELD_URL, urlListMatcher.group(1));
+                    map.put(FIELD_TITLE, t.text());
+                    map.put(FIELD_URL, t.attr("href"));
                     mValidData.add(map);
                 }
-                Matcher nextUrlMatcher = mNextUrlPattern.matcher(response);
-                if (nextUrlMatcher.find()) {
-                    mNextUrl = nextUrlMatcher.group(1);
-                    Log.v(CLASS_NAME, mNextUrl);
-                }
+                mNextUrl = title.last().attr("href");
             }
 
             if (mTaskOverListener != null) {
