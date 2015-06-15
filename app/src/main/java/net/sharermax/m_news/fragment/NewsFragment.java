@@ -25,6 +25,7 @@ import net.sharermax.m_news.adapter.RecyclerViewAdapter;
 import net.sharermax.m_news.network.WebResolve;
 import net.sharermax.m_news.support.Setting;
 import net.sharermax.m_news.support.Utility;
+import net.sharermax.m_news.view.decoration.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,6 +161,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mAdapter.setItemDialogEnable(true);
         mAdapter.setListAnimationEnable(mListAnimationEnable);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
 
     }
 
