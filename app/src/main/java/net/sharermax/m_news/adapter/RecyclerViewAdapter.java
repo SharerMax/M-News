@@ -38,15 +38,14 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     private boolean mUseCardView;
     private boolean mItemDialogEnable;
     private int mFooterPosition;
-    private boolean mFooterShow;
     private int mShowLastPosition = -1;
     private boolean mFirstLoad = true;
     private boolean mListAnimationEnable = true;
+    private int mFooterCount = 0;
     public RecyclerViewAdapter(List<T> data, boolean useCardView) {
         this.data = data;
         this.mUseCardView = useCardView;
-        mFooterPosition = getItemCount() - 1;
-        mFooterShow = false;
+        mFooterPosition = getItemCount();
     }
 
     @Override
@@ -105,14 +104,6 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
                 }
             });
 
-            if (!mFooterShow && (position == 2)) {
-                if (mFooterPosition == 2) {
-                    holder.itemView.setVisibility(View.GONE);
-                } else {
-                    holder.itemView.setVisibility(View.VISIBLE);
-                    mFooterShow = true;
-                }
-            }
             if (mListAnimationEnable) {
                 setAnimation(holder.itemView, position);
             }
@@ -157,7 +148,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public int getItemCount() {
-        return data.size() + HEADER_COUNT;
+        return data.size() + HEADER_COUNT + mFooterCount;
     }
 
     @Override
@@ -179,10 +170,12 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     }
 
     public void addItems(int startPosition, List<T> list) {
+        if (null == list || list.isEmpty()) return;
         removeItem(mFooterPosition);
         data.addAll(startPosition, list);
         notifyItemRangeInserted(startPosition + HEADER_COUNT, list.size());
-        mFooterPosition = getItemCount() - 1;
+        mFooterPosition += list.size();
+        mFooterCount = 1;
     }
 
     public void clear() {
