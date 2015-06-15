@@ -115,10 +115,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (mFirstLoad) {
-                    return true;
-                }
-                return false;
+                return mFirstLoad;
             }
         });
     }
