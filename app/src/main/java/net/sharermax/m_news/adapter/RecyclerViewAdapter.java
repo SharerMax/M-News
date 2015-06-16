@@ -175,7 +175,10 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
         data.addAll(startPosition, list);
         notifyItemRangeInserted(startPosition + HEADER_COUNT, list.size());
         mFooterPosition += list.size();
-        mFooterCount = 1;
+        if (0 == mFooterCount) {
+            mFooterCount = 1;
+            notifyItemInserted(mFooterPosition);
+        }
     }
 
     public void clear() {

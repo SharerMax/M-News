@@ -12,14 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.daimajia.swipe.SwipeLayout;
-
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
-
 import java.util.List;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 

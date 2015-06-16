@@ -50,7 +50,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private List<HashMap<String, String>> mWebData;
     private View mRootView;
     private int mSwipeRefreshCircleStart;
-    private int mToolBarHeight;
     private Bundle mBundle;
     private int mMainPageFlag;
     private int mNextPageFlag;
@@ -72,8 +71,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.news_fragment, container, false);
-        mToolBarHeight = Utility.getToolBarHeight(getActivity());
-        mSwipeRefreshCircleStart = mToolBarHeight * 2;
+        int toolBarHeight = Utility.getToolBarHeight(getActivity());
+        mSwipeRefreshCircleStart = toolBarHeight * 2;
         mBundle = getArguments();
         if (null != mBundle) {
             if (mBundle.containsKey(FLAG_INITIAL_NEWS)) {
