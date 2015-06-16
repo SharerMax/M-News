@@ -60,6 +60,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private boolean mFirstLoad = true;
     private boolean mListAnimationEnable;
     private ButtonRectangle mRetryButton;
+    private DividerItemDecoration mDividerItemDecoration;
+    private boolean mHaveDiver;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,14 +95,14 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mCircularPB = (ProgressBarCircularIndeterminate)mRootView.findViewById(R.id.circular_progress_bar);
         ViewCompat.setElevation(mCircularPB, R.dimen.progress_bar_circle_elevation);
         mCircularPB.setVisibility(View.VISIBLE);
-        onRefresh();
+        refeshData();
         mRetryButton = (ButtonRectangle)mRootView.findViewById(R.id.retry_button);
         mRetryButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mCircularPB.setVisibility(View.VISIBLE);
                 mRetryButton.setVisibility(View.GONE);
-                onRefresh();
+                refeshData();
                 return false;
             }
         });
@@ -144,22 +146,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (null != mAdapter && (mAdapter.getDataSize() > 0)) {
-                    return false;
-                }
-                return true;
+                return !(null != mAdapter && (mAdapter.getDataSize() > 0));
             }
         });
-
-//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mWebData = new ArrayList<>();
-        mAdapter = new RecyclerViewAdapter<>(
-                mWebData, mUseCardStyle);
-        mAdapter.setItemDialogEnable(true);
-        mAdapter.setListAnimationEnable(mListAnimationEnable);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
-
+        updateItemView();
     }
 
     private void initGlobalLayoutListener() {
@@ -214,6 +204,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
 
+    public void refeshData() {
+        onRefresh();
+    }
     private boolean isBottom() {
         LinearLayoutManager manager = (LinearLayoutManager)mRecyclerView.getLayoutManager();
         return manager.findLastCompletelyVisibleItemPosition() >= (manager.getItemCount() - 2);
@@ -231,17 +224,30 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void updateItemView() {
-        Setting setting = Setting.getInstance(getActivity());
-        mUseCardStyle = setting.getBoolen(Setting.KEY_USE_CARD_VIEW, true);
-        mListAnimationEnable = !setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, false);
-        mWebData.clear();
-        mRecyclerView.removeAllViews();
+        initSetting();
+        if (null == mWebData) {
+            mWebData = new ArrayList<>();
+        }
         mAdapter = new RecyclerViewAdapter<>(
                 mWebData, mUseCardStyle);
         mAdapter.setItemDialogEnable(true);
         mAdapter.setListAnimationEnable(mListAnimationEnable);
         mRecyclerView.setAdapter(mAdapter);
-        onRefresh();
+
+        if (!mUseCardStyle) {
+            if (null == mDividerItemDecoration) {
+                mDividerItemDecoration = new DividerItemDecoration(getActivity());
+            }
+            if (!mHaveDiver) {
+                mRecyclerView.addItemDecoration(mDividerItemDecoration);
+                mHaveDiver = true;
+            }
+        } else {
+            if (mHaveDiver) {
+                mRecyclerView.removeItemDecoration(mDividerItemDecoration);
+                mHaveDiver = false;
+            }
+        }
     }
 
     @Override
