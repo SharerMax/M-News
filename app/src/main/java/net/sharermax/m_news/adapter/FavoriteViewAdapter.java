@@ -107,7 +107,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public class FavoriteViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.item_delete) public ImageView deleteImage;
-        @InjectView(R.id.main_item_textview) public TextView textView;
+        @InjectView(R.id.main_item_title) public TextView textView;
         @InjectView(R.id.swipe_layout) public SwipeLayout swipeLayout;
         public FavoriteViewHolder(View itemView) {
             super(itemView);

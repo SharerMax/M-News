@@ -33,4 +33,7 @@
     <dimen name="item_text_H_card_padding">16dp</dimen>
     <dimen name="item_text_H_padding">16dp</dimen>
     <dimen name="item_delete_size">@dimen/item_height</dimen>
+
+    <dimen name="item_text_title_size">16sp</dimen>
+    <dimen name="item_text_second_size">14sp</dimen>
 </resources>
