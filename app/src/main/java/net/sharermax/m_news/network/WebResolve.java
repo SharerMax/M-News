@@ -113,11 +113,9 @@ public class WebResolve {
             if (null != response) {
                 Document document = Jsoup.parse(response, mCurrentHost);
                 Elements tbody = document.select("tbody tbody");
-                Elements titles = tbody.select(" td.title");
+                Elements titles = tbody.select("td.title");
                 Elements title = titles.select("a");
                 Elements subTexts = tbody.select("td.subtext");
-                Elements points = subTexts.select("span");
-                Elements users = subTexts.select("a[href|=user?id]");
                 int size = title.size();
                 for (int i=0; i<size-1; i++) {
                     Element t = title.get(i);
@@ -125,8 +123,9 @@ public class WebResolve {
                     HashMap<String, String> map = new HashMap<>();
                     map.put(FIELD_TITLE, t.text());
                     map.put(FIELD_URL, t.absUrl("href"));
-//                    map.put(FIELD_SUBTEXT, points.text() + " by " + users.get(i).text());
-//                    Log.v(CLASS_NAME,  points.text() + " by " + users.get(i).text());
+//                    Log.v(CLASS_NAME, subTexts.get(i).text().split("\\|")[0].trim());
+                    map.put(FIELD_SUBTEXT, subTexts.get(i).text().split("\\|")[0].trim());
+
                     mValidData.add(map);
                 }
                 mNextUrl = title.last().attr("href");

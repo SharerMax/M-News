@@ -89,8 +89,10 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             if (matcher.find()) {
                 hostname = matcher.group();
             }
-            itemVH.title.setText(data.get(position - HEADER_COUNT).get("title"));
+            String subText = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_SUBTEXT);
+            itemVH.title.setText(title);
             itemVH.hostname.setText(hostname);
+            itemVH.sbuText.setText(subText);
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

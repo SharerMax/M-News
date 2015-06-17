@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:text="4 points by scalers 4 hours ago"/>
+        tools:text="4 points by scalers 4 hours ago"/>
     <TextView
         android:id="@+id/main_item_title"
         android:layout_width="match_parent"
