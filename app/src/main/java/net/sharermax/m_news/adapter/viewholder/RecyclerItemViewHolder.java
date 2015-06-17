@@ -6,15 +6,22 @@ import android.widget.TextView;
 
 import net.sharermax.m_news.R;
 
+import java.nio.Buffer;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Author: SharerMax
  * Time  : 2015/4/14
  * E-Mail: mdcw1103@gmail.com
  */
 public class RecyclerItemViewHolder extends RecyclerView.ViewHolder{
-    public TextView textView;
+    @InjectView(R.id.main_item_title) public TextView title;
+    @InjectView(R.id.main_item_subtext) public TextView sbuText;
+    @InjectView(R.id.main_item_hostname) public TextView hostname;
     public RecyclerItemViewHolder(View itemView) {
         super(itemView);
-        textView = (TextView)itemView.findViewById(R.id.main_item_textview);
+        ButterKnife.inject(this, itemView);
     }
 }

@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/item_no_card"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_no_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/item_text_H_padding"
+    android:paddingRight="@dimen/item_text_H_padding"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="?attr/selectableItemBackground">
     <TextView
-        android:id="@+id/main_item_textview"
+        android:id="@+id/main_item_subtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        tools:text="4 points by scalers 4 hours ago"/>
+    <TextView
+        android:id="@+id/main_item_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_height"
-        android:paddingLeft="@dimen/item_text_H_padding"
-        android:paddingRight="@dimen/item_text_H_padding"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="@dimen/item_text_title_size"
+        android:textColor="@color/black"
         android:gravity="center_vertical"
-        android:background="?attr/selectableItemBackground"/>
+        tools:text="M-News的Android客户端"/>
+    <TextView
+        android:id="@+id/main_item_hostname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        tools:text="saeratom.us"/>
 
 </LinearLayout>

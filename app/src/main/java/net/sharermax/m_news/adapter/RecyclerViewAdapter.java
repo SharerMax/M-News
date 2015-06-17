@@ -21,6 +21,8 @@ import net.sharermax.m_news.view.ItemDialog;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Author: SharerMax
@@ -38,15 +40,14 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     private boolean mUseCardView;
     private boolean mItemDialogEnable;
     private int mFooterPosition;
-    private boolean mFooterShow;
     private int mShowLastPosition = -1;
     private boolean mFirstLoad = true;
     private boolean mListAnimationEnable = true;
+    private int mFooterCount = 0;
     public RecyclerViewAdapter(List<T> data, boolean useCardView) {
         this.data = data;
         this.mUseCardView = useCardView;
-        mFooterPosition = getItemCount() - 1;
-        mFooterShow = false;
+        mFooterPosition = getItemCount();
     }
 
     @Override
@@ -78,13 +79,25 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof RecyclerItemViewHolder) {
-            ((RecyclerItemViewHolder) holder).textView.setText(data.get(position - HEADER_COUNT).get("title"));
-
+            RecyclerItemViewHolder itemVH = (RecyclerItemViewHolder)holder;
+            final String title = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_TITLE);
+            final String url = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_URL);
+            Log.v(CLASS_NAME, url);
+            Pattern pattern = Pattern.compile("\\b([a-z0-9]+(-[a-z0-9]+)*\\.)+[a-z]{2,}\\b");
+            Matcher matcher = pattern.matcher(url);
+            String hostname ="";
+            if (matcher.find()) {
+                hostname = matcher.group();
+            }
+            String subText = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_SUBTEXT);
+            itemVH.title.setText(title);
+            itemVH.hostname.setText(hostname);
+            itemVH.sbuText.setText(subText);
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    String title = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_TITLE);
-                    String url = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_URL);
+//                    String title = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_TITLE);
+//                    String url = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_URL);
                     String sendData = title + url;
                     if (mItemDialogEnable) {
                         showItemDialog(v.getContext(), title, url);
@@ -105,14 +118,6 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
                 }
             });
 
-            if (!mFooterShow && (position == 2)) {
-                if (mFooterPosition == 2) {
-                    holder.itemView.setVisibility(View.GONE);
-                } else {
-                    holder.itemView.setVisibility(View.VISIBLE);
-                    mFooterShow = true;
-                }
-            }
             if (mListAnimationEnable) {
                 setAnimation(holder.itemView, position);
             }
@@ -157,12 +162,12 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public int getItemCount() {
-        return data.size() + HEADER_COUNT;
+        return data.size() + HEADER_COUNT + mFooterCount;
     }
 
     @Override
     public int getItemViewType(int position) {
-        Log.v(CLASS_NAME, "" + position);
+//        Log.v(CLASS_NAME, "" + position);
         if (position == 0) {
             return FLAG_HEADER_TOOLBAR;
         } else if (position == 1) {
@@ -179,14 +184,21 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     }
 
     public void addItems(int startPosition, List<T> list) {
+        if (null == list || list.isEmpty()) return;
         removeItem(mFooterPosition);
         data.addAll(startPosition, list);
         notifyItemRangeInserted(startPosition + HEADER_COUNT, list.size());
-        mFooterPosition = getItemCount() - 1;
+        mFooterPosition += list.size();
+        if (0 == mFooterCount) {
+            mFooterCount = 1;
+            notifyItemInserted(mFooterPosition);
+        }
     }
 
     public void clear() {
         data.clear();
+        mFooterCount = 0;
+        mFooterPosition = getItemCount();
         notifyDataSetChanged();
     }
 

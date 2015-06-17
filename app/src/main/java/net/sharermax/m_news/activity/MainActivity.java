@@ -357,6 +357,7 @@ public class MainActivity extends AbsActivity
                         if (null != fragment) {
                             try {
                                 ((NewsFragment)fragment).updateItemView();
+                                ((NewsFragment) fragment).refeshData();
                                 if (toolbarIsHidden()) {
                                     showToolbar();
                                 }
