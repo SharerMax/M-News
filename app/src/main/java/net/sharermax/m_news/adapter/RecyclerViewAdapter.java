@@ -197,6 +197,8 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     public void clear() {
         data.clear();
+        mFooterCount = 0;
+        mFooterPosition = getItemCount();
         notifyDataSetChanged();
     }
 
