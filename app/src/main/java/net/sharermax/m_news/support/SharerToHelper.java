@@ -1,7 +1,10 @@
 package net.sharermax.m_news.support;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.location.Location;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,10 +15,13 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
 
+import net.sharermax.m_news.R;
 import net.sharermax.m_news.api.weibo.StatusesAPI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Author: SharerMax
@@ -40,11 +46,21 @@ public class SharerToHelper {
             lat = location.getLatitude();
             log = location.getLongitude();
         }
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setSmallIcon(R.drawable.ic_action_send);
+        builder.setContentTitle("Test");
+        builder.setContentText("Sending");
+        final NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1, builder.build());
         StatusesAPI statusesAPI = new StatusesAPI(context,Constants.APP_KEY, oauth2AccessToken);
         statusesAPI.update(status, "" + lat, "" + log, new RequestListener() {
             @Override
             public void onComplete(String s) {
                 Log.v(CLASS_NAME, s);
+                builder.setSmallIcon(R.drawable.ic_action_done);
+                builder.setContentTitle("Test");
+                builder.setContentText("Sent successfully");
+                manager.notify(1, builder.build());
                 Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
             }
 
@@ -61,6 +77,7 @@ public class SharerToHelper {
         String coordinate = "" + location.getLongitude() + "," + location.getLatitude();
         String url = geoToAddress + "?access_token=" + accessToken + "&coordinate=" + coordinate;
         Log.v(CLASS_NAME, url);
+        final WeakReference<GeoToAddressListener> wf = new WeakReference<GeoToAddressListener>(listener);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -73,6 +90,7 @@ public class SharerToHelper {
                         } catch (JSONException e) {
                             Log.v(CLASS_NAME, e.toString());
                         }
+                        GeoToAddressListener listener = wf.get();
                         if (null != listener) {
                             listener.onResponse(address);
                         }
@@ -81,6 +99,7 @@ public class SharerToHelper {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.v(CLASS_NAME, error.toString());
+                GeoToAddressListener listener = wf.get();
                 if (null != listener) {
                     listener.onResponse(ERROR_ADDRESS);
                 }
@@ -90,8 +109,8 @@ public class SharerToHelper {
         Utility.getRequestQueue(context).add(jsonObjectRequest);
     }
     //坐标转地址监听接口
-    public static interface GeoToAddressListener {
-        abstract public void onResponse(String address);
+    public interface GeoToAddressListener {
+        void onResponse(String address);
     }
 
 }

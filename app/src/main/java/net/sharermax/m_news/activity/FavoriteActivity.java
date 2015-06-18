@@ -68,7 +68,7 @@ public class FavoriteActivity extends AbsActivity{
     private static class DbHandler extends Handler {
         private WeakReference<FavoriteActivity> mActivity;
         public DbHandler(FavoriteActivity activity) {
-            mActivity = new WeakReference<FavoriteActivity>(activity);
+            mActivity = new WeakReference<>(activity);
         }
 
         @Override
@@ -77,7 +77,7 @@ public class FavoriteActivity extends AbsActivity{
             List<DatabaseAdapter.NewsDataRecord> list = (List<DatabaseAdapter.NewsDataRecord>)msg.obj;
             if (!list.isEmpty()) {
                 FavoriteActivity favoriteActivity = mActivity.get();
-                favoriteActivity.updateData(list);
+                if (null != favoriteActivity) favoriteActivity.updateData(list);
             }
         }
     }

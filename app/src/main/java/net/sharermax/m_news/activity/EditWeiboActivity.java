@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rengwuxian.materialedittext.validation.METValidator;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.support.AccessTokenKeeper;
@@ -72,7 +73,8 @@ public class EditWeiboActivity extends AbsActivity
     public void onLocationChanged(Location location) {
         if (null != location) {
             mLocation = location;
-            SharerToHelper.geoToAddress(getApplicationContext(), AccessTokenKeeper.readAccessToken(this.getApplicationContext()).getToken(), location,
+            Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(this);
+            SharerToHelper.geoToAddress(getApplicationContext(), token.getToken(), location,
                     new SharerToHelper.GeoToAddressListener() {
                         @Override
                         public void onResponse(String address) {
