@@ -57,7 +57,7 @@ dependencies {
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
     //    compile 'com.android.support:palette-v7:22.1.0'
-    compile 'com.afollestad:material-dialogs:0.7.4.0'
+    compile 'com.afollestad:material-dialogs:0.7.6.0'
     //    compile 'jp.wasabeef:recyclerview-animators:1.2.0@aar'
     compile 'com.facebook.stetho:stetho:1.1.1'
     compile 'com.facebook.stetho:stetho-urlconnection:1.1.1'
