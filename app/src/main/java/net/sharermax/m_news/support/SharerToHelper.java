@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.location.Location;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -48,8 +49,9 @@ public class SharerToHelper {
         }
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.drawable.ic_action_send);
-        builder.setContentTitle("Test");
+        builder.setContentTitle("Send to weibo");
         builder.setContentText("Sending");
+        builder.setTicker("Sending");
         final NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(1, builder.build());
         StatusesAPI statusesAPI = new StatusesAPI(context,Constants.APP_KEY, oauth2AccessToken);
@@ -58,9 +60,18 @@ public class SharerToHelper {
             public void onComplete(String s) {
                 Log.v(CLASS_NAME, s);
                 builder.setSmallIcon(R.drawable.ic_action_done);
-                builder.setContentTitle("Test");
+                builder.setContentTitle("Send to weibo");
                 builder.setContentText("Sent successfully");
+                builder.setTicker("Sent successfully");
                 manager.notify(1, builder.build());
+                new Handler().postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                manager.cancel(1);
+                            }
+                        }
+                , 1000);
                 Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
             }
 
