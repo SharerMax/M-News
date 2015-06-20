@@ -8,10 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gc.materialdesign.views.ButtonFlat;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rengwuxian.materialedittext.validation.METValidator;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -32,7 +32,7 @@ public class EditWeiboActivity extends AbsActivity
     private MaterialEditText mWeiboEditText;
     private TextView mLocationTextView;
     private LocationManager mLocationManager;
-    private ButtonFlat mSendButton;
+    private Button mSendButton;
     private Location mLocation;
     public static final int WEIBO_MAX_COUNT = 140;
     public static final String EXTRA_FLAG = "weibo_status";
@@ -44,7 +44,7 @@ public class EditWeiboActivity extends AbsActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mWeiboEditText = (MaterialEditText)findViewById(R.id.weibo_edit_editTextView);
         mLocationTextView = (TextView)findViewById(R.id.location_textview);
-        mSendButton = (ButtonFlat)findViewById(R.id.weibo_send);
+        mSendButton = (Button)findViewById(R.id.weibo_send);
         mSendButton.setOnClickListener(this);
         mWeiboEditText.addValidator(new CountValidator(getString(R.string.weibo_edit_error)));
 

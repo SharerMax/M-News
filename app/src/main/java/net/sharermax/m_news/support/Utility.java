@@ -11,6 +11,8 @@ import com.android.volley.toolbox.Volley;
 
 import net.sharermax.m_news.R;
 
+import java.lang.ref.WeakReference;
+
 
 /**
  * Author: SharerMax
@@ -57,33 +59,40 @@ public class Utility {
 
     public static RequestQueue getRequestQueue(Context context) {
         if (null == sRequestQueue) {
-            sRequestQueue = Volley.newRequestQueue(context);
+            sRequestQueue = Volley.newRequestQueue(context.getApplicationContext());
         }
         return sRequestQueue;
     }
 
     public static LocationManager updateLocation(Context context, LocationListener locationListener) {
-
+        WeakReference<LocationListener> wf = new WeakReference<>(locationListener);
         LocationManager locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         Location location;
+        boolean gps = false;
+        boolean network = false;
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             location  = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (null != location) {
-                locationListener.onLocationChanged(location);
+                LocationListener listener = wf.get();
+                if (null != listener) locationListener.onLocationChanged(location);
                 return locationManager;
             }
+            gps = true;
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, wf.get());
         }
 
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             location  = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (null != location) {
-                locationListener.onLocationChanged(location);
+                LocationListener listener = wf.get();
+                if (null != listener) locationListener.onLocationChanged(location);
                 return locationManager;
             }
+            network = true;
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, wf.get());
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
-        return locationManager;
+
+        return gps || network ? locationManager : null;
     }
 }
