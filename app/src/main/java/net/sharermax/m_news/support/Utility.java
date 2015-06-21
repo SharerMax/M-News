@@ -21,6 +21,10 @@ import java.lang.ref.WeakReference;
  */
 public class Utility {
     public static final String CLASS_NAME = "Utility";
+
+    public static final String VOLLEY_TAG_NEWS = "news";
+    public static final String VOLLEY_TAG_WEIBO = "weibo";
+
     private static RequestQueue sRequestQueue;
 
     public static int getStatusBarHeight(Context context) {

@@ -90,6 +90,9 @@ public class WebResolve {
         return isFinished;
     }
 
+    public void cancel() {
+        Utility.getRequestQueue(mContext).cancelAll(Utility.VOLLEY_TAG_NEWS);
+    }
     private void resolveData(String url) {
         isFinished = false;
         cleanData();
@@ -103,6 +106,7 @@ public class WebResolve {
                         isFinished = true;
                     }
                 });
+        stringRequest.setTag(Utility.VOLLEY_TAG_NEWS);
         Utility.getRequestQueue(mContext).add(stringRequest);
     }
 

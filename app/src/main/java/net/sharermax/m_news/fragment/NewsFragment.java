@@ -272,4 +272,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onDetach() {
         super.onDetach();
     }
+
+    @Override
+    public void onStop() {
+        if (mWebResolve != null) mWebResolve.cancel();
+        super.onStop();
+    }
 }
