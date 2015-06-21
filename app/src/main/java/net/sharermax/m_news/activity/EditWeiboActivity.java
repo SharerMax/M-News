@@ -107,7 +107,7 @@ public class EditWeiboActivity extends AbsActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.weibo_send:
-                Log.v(CLASS_NAME, mWeiboEditText.getText().toString());
+//                Log.v(CLASS_NAME, mWeiboEditText.getText().toString());
                 if (!(mWeiboEditText.getText().toString().length() > WEIBO_MAX_COUNT)) {
                     SharerToHelper.sendToWeibo(getApplicationContext(),
                             mWeiboEditText.getText().toString(),

@@ -12,5 +12,6 @@
         android:background="@android:color/transparent"
         android:textColor="@color/white"
         style="?android:attr/borderlessButtonStyle"
-        android:text="@string/weibo_send" />
+        android:text="@string/weibo_send"
+        android:textAllCaps="true"/>
 </FrameLayout>

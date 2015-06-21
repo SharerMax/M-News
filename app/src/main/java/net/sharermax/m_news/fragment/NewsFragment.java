@@ -2,6 +2,7 @@ package net.sharermax.m_news.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -183,7 +183,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     mRetryButton.setVisibility(View.GONE);
                     mAdapter.addItems(mAdapter.getDataSize(), dataList);
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.net_error), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.net_error), Toast.LENGTH_LONG).show();
+                    Snackbar.make(getView(), getString(R.string.net_error), Snackbar.LENGTH_LONG).show();
                     if (mAdapter.getDataSize() == 0) {
                         mRetryButton.setVisibility(View.VISIBLE);
                     }

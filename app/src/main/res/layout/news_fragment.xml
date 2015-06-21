@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/newsfragment_retry"
+        android:textAllCaps="true"
         android:background="@color/green_500"
         android:visibility="gone"
         tools:visibility="visible"/>

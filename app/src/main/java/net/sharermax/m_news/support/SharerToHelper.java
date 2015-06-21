@@ -58,7 +58,7 @@ public class SharerToHelper {
         statusesAPI.update(status, "" + lat, "" + log, new RequestListener() {
             @Override
             public void onComplete(String s) {
-                Log.v(CLASS_NAME, s);
+//                Log.v(CLASS_NAME, s);
                 builder.setSmallIcon(R.drawable.ic_action_done);
                 builder.setContentTitle("Send to weibo");
                 builder.setContentText("Sent successfully");
@@ -77,7 +77,7 @@ public class SharerToHelper {
 
             @Override
             public void onWeiboException(WeiboException e) {
-                Log.v(CLASS_NAME, e.toString());
+//                Log.v(CLASS_NAME, e.toString());
                 Toast.makeText(context, failMessage, Toast.LENGTH_SHORT).show();
             }
         });
@@ -87,19 +87,19 @@ public class SharerToHelper {
         String geoToAddress = "https://api.weibo.com/2/location/geo/geo_to_address.json";
         String coordinate = "" + location.getLongitude() + "," + location.getLatitude();
         String url = geoToAddress + "?access_token=" + accessToken + "&coordinate=" + coordinate;
-        Log.v(CLASS_NAME, url);
+//        Log.v(CLASS_NAME, url);
         final WeakReference<GeoToAddressListener> wf = new WeakReference<GeoToAddressListener>(listener);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         String address = ERROR_ADDRESS;
-                        Log.v(CLASS_NAME, response.toString());
+//                        Log.v(CLASS_NAME, response.toString());
                         try {
                            address = response.getJSONArray(FIELD_GEOS).getJSONObject(0).getString(FIELD_ADDRESS);
-                           Log.v(CLASS_NAME, "Address" + address);
+//                           Log.v(CLASS_NAME, "Address" + address);
                         } catch (JSONException e) {
-                            Log.v(CLASS_NAME, e.toString());
+//                            Log.v(CLASS_NAME, e.toString());
                         }
                         GeoToAddressListener listener = wf.get();
                         if (null != listener) {
@@ -109,7 +109,7 @@ public class SharerToHelper {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.v(CLASS_NAME, error.toString());
+//                Log.v(CLASS_NAME, error.toString());
                 GeoToAddressListener listener = wf.get();
                 if (null != listener) {
                     listener.onResponse(ERROR_ADDRESS);
