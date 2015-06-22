@@ -82,6 +82,7 @@
 
     <!--NewsViewerActivity-->
     <string name="nva_action_refresh">Refresh</string>
+    <string name="nva_action_goback">GoBack</string>
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>
 

@@ -86,25 +86,26 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             }
         }
-        initRecyclerView();
-        initGlobalLayoutListener();
-        initSwipeRefreshLayout();
-        initWebResolve();
+
         mCircularPB = (CircularProgressView)mRootView.findViewById(R.id.circular_progress_bar);
 //        ViewCompat.setElevation(mCircularPB, R.dimen.progress_bar_circle_elevation);
         mCircularPB.setVisibility(View.VISIBLE);
-        refeshData();
         mRetryButton = (Button)mRootView.findViewById(R.id.retry_button);
         mRetryButton.setVisibility(View.GONE);
         mRetryButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mCircularPB.setVisibility(View.VISIBLE);
-                mRetryButton.setVisibility(View.GONE);
                 refeshData();
                 return false;
             }
         });
+
+        initRecyclerView();
+        initGlobalLayoutListener();
+        initSwipeRefreshLayout();
+        initWebResolve();
+        refeshData();
         return mRootView;
     }
 
@@ -197,6 +198,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         if (mWebResolve.isFinished()) {
+            mRetryButton.setVisibility(View.GONE);
             mWebResolve.cleanData();
             mAdapter.clear();
             mAdapter.notifyDataSetChanged();

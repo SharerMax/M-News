@@ -4,5 +4,11 @@
     <item
         android:id="@+id/menu_action_refresh"
         android:title="@string/nva_action_refresh"
+        android:orderInCategory="1"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_action_goback"
+        android:title="@string/nva_action_goback"
+        android:orderInCategory="2"
         app:showAsAction="never"/>
 </menu>
