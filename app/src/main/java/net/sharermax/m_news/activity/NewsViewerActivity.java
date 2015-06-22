@@ -53,7 +53,8 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
         ButterKnife.inject(this);
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
         mFAB.setVisibility(View.INVISIBLE);
-        ViewCompat.setElevation(mFAB, getResources().getDimension(R.dimen.toolbar_elevation));
+//        ViewCompat.setElevation(mFAB, getResources().getDimension(R.dimen.fab_elevation));
+//        mFAB.setElevation(getResources().getDimension(R.dimen.toolbar_elevation));
         mGestureDetector = new GestureDetector(this, this);
         Bundle args = getIntent().getExtras();
         String title = "";
