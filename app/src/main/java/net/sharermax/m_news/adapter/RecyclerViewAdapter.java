@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
+import net.sharermax.m_news.activity.NewsViewerActivity;
 import net.sharermax.m_news.adapter.viewholder.RecyclerHeaderHolderView;
 import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
 import net.sharermax.m_news.network.WebResolve;
@@ -77,7 +78,6 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-
         if (holder instanceof RecyclerItemViewHolder) {
             RecyclerItemViewHolder itemVH = (RecyclerItemViewHolder)holder;
             final String title = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_TITLE);
@@ -110,10 +110,13 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = data.get(position - HEADER_COUNT).get("url");
+//                    String url = data.get(position - HEADER_COUNT).get("url");
                     Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
+                    intent.putExtra(NewsViewerActivity.FLAG_EXTRA_TITLE, title);
+                    intent.putExtra(NewsViewerActivity.FLAG_EXTRA_URL, url);
+//                    intent.setAction(Intent.ACTION_VIEW);
+//                    intent.setData(Uri.parse(url));
+                    intent.setClass(v.getContext(), NewsViewerActivity.class);
                     v.getContext().startActivity(intent);
                 }
             });
