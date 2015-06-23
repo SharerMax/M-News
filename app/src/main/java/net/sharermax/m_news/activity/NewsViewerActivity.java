@@ -74,6 +74,7 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
         mGestureDetector = new GestureDetector(this, this);
         initWebView();
         initFAB();
+//        android.support.design.widget.FloatingActionButton.Behavior
     }
 
     private void initWebView() {
@@ -175,7 +176,7 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
         if (BuildConfig.DEBUG) {
             Log.v(CLASS_NAME, message);
         }
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(findViewById(R.id.coordinatorLayout), message, Snackbar.LENGTH_LONG).show();
     }
 
     private static class DataBasHandler extends Handler {

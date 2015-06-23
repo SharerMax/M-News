@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -41,12 +42,13 @@
         android:id="@+id/web_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         app:fab_addButtonColorNormal="@color/red_500"
         app:fab_addButtonColorPressed="@color/red_800"
         app:fab_addButtonSize="normal"
         app:fab_labelStyle="@style/fab_menu_labels_style"
-        app:fab_labelsPosition="left">
+        app:fab_labelsPosition="left"
+        android:layout_gravity="bottom|end"
+        app:layout_behavior="net.sharermax.m_news.view.behavior.FloatingActionMenuBehavior">
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/web_fab_share"
             android:layout_width="wrap_content"
@@ -68,4 +70,4 @@
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
