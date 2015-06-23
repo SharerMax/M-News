@@ -1,7 +1,6 @@
 package net.sharermax.m_news.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,6 +16,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import net.sharermax.m_news.BuildConfig;
 import net.sharermax.m_news.R;
@@ -34,6 +35,7 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
     public static final String FLAG_EXTRA_TITLE = "title";
     public static final String FLAG_EXTRA_URL = "url";
     private GestureDetector mGestureDetector;
+    private MenuItem mGobackMenuItem;
     @InjectView(R.id.statusHeaderView)
     View mStatusHeaderView;
     @InjectView(R.id.toolbar)
@@ -45,7 +47,7 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
     @InjectView(R.id.header_title)
     View mHeaderView;
     @InjectView(R.id.web_fab)
-    FloatingActionButton mFAB;
+    FloatingActionsMenu mFAB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +74,9 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
                     Log.v(CLASS_NAME, "load url:" + url);
                 }
                 view.loadUrl(url);
+                if (mWebView.canGoBack() && null != mGobackMenuItem) {
+                    mGobackMenuItem.setEnabled(true);
+                }
                 return false;
             }
         });
@@ -89,7 +94,6 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
-        mWebView.canGoBack();
         mWebView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -103,6 +107,8 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.newsviewer_menu, menu);
+        mGobackMenuItem = menu.findItem(R.id.menu_action_goback);
+        mGobackMenuItem.setEnabled(false);
         return true;
     }
 
@@ -118,9 +124,11 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
                 mWebView.reload();
                 return true;
             case R.id.menu_action_goback:
-                mLoadProgressBar.setVisibility(View.VISIBLE);
-                mLoadProgressBar.setProgress(0);
-                mWebView.goBack();
+                if (mWebView.canGoBack()) {
+                    mLoadProgressBar.setVisibility(View.VISIBLE);
+                    mLoadProgressBar.setProgress(0);
+                    mWebView.goBack();
+                }
                 return true;
             default:
                 return false;
@@ -129,6 +137,9 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
 
     @Override
     public boolean onDown(MotionEvent e) {
+        if (mFAB.isExpanded()) {
+            mFAB.collapse();
+        }
         return true;
     }
 
@@ -162,15 +173,18 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
             Log.v(CLASS_NAME, "FFE1:" + e1.getX() + "," + e1.getY());
             Log.v(CLASS_NAME, "FFE2:" + e2.getX() + "," + e2.getY());
         }
-        float x1 = e1.getX();
-        float x2 = e2.getX();
-        if ( x1 - x2 > 0 && !mFAB.isShown()) {
+        float y1 = e1.getY();
+        float y2 = e2.getY();
+        if ( y1 - y2 > 0 && !mFAB.isShown()) {
             mFAB.setVisibility(View.VISIBLE);
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_bottom);
             mFAB.startAnimation(animation);
         }
 
-        if (x1 - x2 < 0 && mFAB.isShown()) {
+        if (y1 - y2 < 0 && mFAB.isShown()) {
+            if (mFAB.isExpanded()) {
+                mFAB.collapse();
+            }
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_out_bottom);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
