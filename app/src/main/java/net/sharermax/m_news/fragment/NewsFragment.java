@@ -2,8 +2,8 @@ package net.sharermax.m_news.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,13 +11,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Button;
 
-import com.gc.materialdesign.views.ButtonRectangle;
-import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.AbsActivity;
@@ -54,11 +53,11 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private int mMainPageFlag;
     private int mNextPageFlag;
     private boolean mUseCardStyle;
-    private ProgressBarCircularIndeterminate mCircularPB;
+    private CircularProgressView mCircularPB;
     private RecyclerViewAdapter<HashMap<String, String>> mAdapter;
     private boolean mFirstLoad = true;
     private boolean mListAnimationEnable;
-    private ButtonRectangle mRetryButton;
+    private Button mRetryButton;
     private DividerItemDecoration mDividerItemDecoration;
     private boolean mHaveDiver;
     @Override
@@ -87,24 +86,26 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             }
         }
-        initRecyclerView();
-        initGlobalLayoutListener();
-        initSwipeRefreshLayout();
-        initWebResolve();
-        mCircularPB = (ProgressBarCircularIndeterminate)mRootView.findViewById(R.id.circular_progress_bar);
-        ViewCompat.setElevation(mCircularPB, R.dimen.progress_bar_circle_elevation);
+
+        mCircularPB = (CircularProgressView)mRootView.findViewById(R.id.circular_progress_bar);
+//        ViewCompat.setElevation(mCircularPB, R.dimen.progress_bar_circle_elevation);
         mCircularPB.setVisibility(View.VISIBLE);
-        refeshData();
-        mRetryButton = (ButtonRectangle)mRootView.findViewById(R.id.retry_button);
+        mRetryButton = (Button)mRootView.findViewById(R.id.retry_button);
+        mRetryButton.setVisibility(View.GONE);
         mRetryButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mCircularPB.setVisibility(View.VISIBLE);
-                mRetryButton.setVisibility(View.GONE);
                 refeshData();
                 return false;
             }
         });
+
+        initRecyclerView();
+        initGlobalLayoutListener();
+        initSwipeRefreshLayout();
+        initWebResolve();
+        refeshData();
         return mRootView;
     }
 
@@ -183,7 +184,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     mRetryButton.setVisibility(View.GONE);
                     mAdapter.addItems(mAdapter.getDataSize(), dataList);
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.net_error), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.net_error), Toast.LENGTH_LONG).show();
+                    Snackbar.make(getView(), getString(R.string.net_error), Snackbar.LENGTH_LONG).show();
                     if (mAdapter.getDataSize() == 0) {
                         mRetryButton.setVisibility(View.VISIBLE);
                     }
@@ -196,6 +198,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         if (mWebResolve.isFinished()) {
+            mRetryButton.setVisibility(View.GONE);
             mWebResolve.cleanData();
             mAdapter.clear();
             mAdapter.notifyDataSetChanged();
@@ -229,7 +232,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
         mAdapter = new RecyclerViewAdapter<>(
                 mWebData, mUseCardStyle);
-        mAdapter.setItemDialogEnable(true);
         mAdapter.setListAnimationEnable(mListAnimationEnable);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -270,5 +272,11 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onStop() {
+        if (mWebResolve != null) mWebResolve.cancel();
+        super.onStop();
     }
 }

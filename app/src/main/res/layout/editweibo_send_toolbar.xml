@@ -5,10 +5,13 @@
              android:layout_height="wrap_content"
              android:layout_gravity="end"
              tools:background="?attr/colorPrimary">
-    <com.gc.materialdesign.views.ButtonFlat
+    <Button
         android:id="@+id/weibo_send"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:background="@color/white"
-        android:text="@string/weibo_send" />
+        android:background="@android:color/transparent"
+        android:textColor="@color/white"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="@string/weibo_send"
+        android:textAllCaps="true"/>
 </FrameLayout>

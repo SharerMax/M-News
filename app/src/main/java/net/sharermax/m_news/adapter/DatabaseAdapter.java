@@ -40,30 +40,30 @@ public class DatabaseAdapter {
         mDatabaseHelper = new DatabaseHelper(context);
         mDataBase = mDatabaseHelper.getWritableDatabase();
         mContentValues = new ContentValues();
-        mRecordList = new ArrayList<NewsDataRecord>();
+        mRecordList = new ArrayList<>();
     }
 
     public SQLiteDatabase getDataBase() {
         return this.mDataBase;
     }
 
-    public void insert (NewsDataRecord record) {
+    public long insert (NewsDataRecord record) {
         if (null == record) {
-            return;
+            return -1;
         }
         mContentValues.clear();
         mContentValues.put(DatabaseHelper.MyBaseColumns.COLUMN_NAME_TITLE, record.title);
         mContentValues.put(DatabaseHelper.MyBaseColumns.COLUMN_NAME_URL, record.url);
         mContentValues.put(DatabaseHelper.MyBaseColumns.COLUMN_NAME_TIME, record.time);
-        mDataBase.insert(DatabaseHelper.MyBaseColumns.TABLE_NAME, null, mContentValues);
+        return mDataBase.insert(DatabaseHelper.MyBaseColumns.TABLE_NAME, null, mContentValues);
     }
 
-    public void insert() {
-        insert(mNewsDataRecord);
+    public long insert() {
+        return insert(mNewsDataRecord);
     }
 
-    public void delete(long _id) {
-        mDataBase.delete(DatabaseHelper.MyBaseColumns.TABLE_NAME,
+    public int delete(long _id) {
+        return mDataBase.delete(DatabaseHelper.MyBaseColumns.TABLE_NAME,
                 DatabaseHelper.MyBaseColumns._ID + "==?", new String[] {"" + _id});
     }
 
@@ -94,7 +94,9 @@ public class DatabaseAdapter {
     }
 
     public void open() {
-        mDataBase = mDatabaseHelper.getWritableDatabase();
+        if (!mDataBase.isOpen()) {
+            mDataBase = mDatabaseHelper.getWritableDatabase();
+        }
     }
 
     public boolean isOpen() {
@@ -122,7 +124,9 @@ public class DatabaseAdapter {
                 new String[]{DatabaseHelper.MyBaseColumns.COLUMN_NAME_URL},
                 DatabaseHelper.MyBaseColumns.COLUMN_NAME_URL + " LIKE ?",
                 new String[] {mNewsDataRecord.url}, null, null, null);
-        return cursor.getCount() > 0;
+        int count = cursor.getCount();
+        cursor.close();
+        return count > 0;
     }
 
     public void setSendData(String sendData) {

@@ -49,6 +49,8 @@
             android:label="@string/label_subscription_activity"/>
         <activity android:name=".activity.FavoriteActivity"
             android:label="@string/fav_activity_title"/>
+        <activity android:name=".activity.NewsViewerActivity"/>
+
 
     </application>
 

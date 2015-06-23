@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
+import net.sharermax.m_news.activity.NewsViewerActivity;
 import net.sharermax.m_news.adapter.viewholder.RecyclerHeaderHolderView;
 import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
 import net.sharermax.m_news.network.WebResolve;
@@ -77,7 +78,6 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-
         if (holder instanceof RecyclerItemViewHolder) {
             RecyclerItemViewHolder itemVH = (RecyclerItemViewHolder)holder;
             final String title = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_TITLE);
@@ -93,27 +93,14 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             itemVH.title.setText(title);
             itemVH.hostname.setText(hostname);
             itemVH.sbuText.setText(subText);
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-//                    String title = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_TITLE);
-//                    String url = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_URL);
-                    String sendData = title + url;
-                    if (mItemDialogEnable) {
-                        showItemDialog(v.getContext(), title, url);
-                        return true;
-                    }
-                    showActivity(v.getContext(), sendData);
-                    return true;
-                }
-            });
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = data.get(position - HEADER_COUNT).get("url");
+//                    String url = data.get(position - HEADER_COUNT).get("url");
                     Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
+                    intent.putExtra(NewsViewerActivity.FLAG_EXTRA_TITLE, title);
+                    intent.putExtra(NewsViewerActivity.FLAG_EXTRA_URL, url);
+                    intent.setClass(v.getContext(), NewsViewerActivity.class);
                     v.getContext().startActivity(intent);
                 }
             });
@@ -208,24 +195,6 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     public int getDataSize() {
         return data.size();
-    }
-
-    public void setItemDialogEnable(boolean enable) {
-        mItemDialogEnable = enable;
-    }
-
-    private void showItemDialog(Context context, String title, String url) {
-        String sendData = title + url;
-        DatabaseAdapter databaseAdapter = DatabaseAdapter.getInstance(context.getApplicationContext());
-        databaseAdapter.setSendData(sendData);
-        DatabaseAdapter.NewsDataRecord itemRecord = new DatabaseAdapter.NewsDataRecord();
-        itemRecord.title = title;
-        itemRecord.url = url;
-        itemRecord.time = System.currentTimeMillis();
-        databaseAdapter.setItemRecord(itemRecord);
-        ItemDialog dialog = new ItemDialog(context);
-        dialog.setAdapter(databaseAdapter);
-        dialog.show();
     }
 
     public void setListAnimationEnable(boolean enable) {

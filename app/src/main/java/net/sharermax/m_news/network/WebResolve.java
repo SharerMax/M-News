@@ -42,7 +42,7 @@ public class WebResolve {
     private String mCurrentHost;
 
     public WebResolve(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         mValidData = new ArrayList<>();
         mValidData.clear();
     }
@@ -90,6 +90,9 @@ public class WebResolve {
         return isFinished;
     }
 
+    public void cancel() {
+        Utility.getRequestQueue(mContext).cancelAll(Utility.VOLLEY_TAG_NEWS);
+    }
     private void resolveData(String url) {
         isFinished = false;
         cleanData();
@@ -103,6 +106,7 @@ public class WebResolve {
                         isFinished = true;
                     }
                 });
+        stringRequest.setTag(Utility.VOLLEY_TAG_NEWS);
         Utility.getRequestQueue(mContext).add(stringRequest);
     }
 
@@ -119,7 +123,7 @@ public class WebResolve {
                 int size = title.size();
                 for (int i=0; i<size-1; i++) {
                     Element t = title.get(i);
-                    Log.v(CLASS_NAME, "" + i + t.text() + t.absUrl("href"));
+//                    Log.v(CLASS_NAME, "" + i + t.text() + t.absUrl("href"));
                     HashMap<String, String> map = new HashMap<>();
                     map.put(FIELD_TITLE, t.text());
                     map.put(FIELD_URL, t.absUrl("href"));

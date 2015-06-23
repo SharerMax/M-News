@@ -11,6 +11,7 @@ import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.DatabaseAdapter;
 import net.sharermax.m_news.adapter.FavoriteViewAdapter;
 import net.sharermax.m_news.support.Setting;
+import net.sharermax.m_news.view.decoration.DividerItemDecoration;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ public class FavoriteActivity extends AbsActivity{
         mAdapter = new FavoriteViewAdapter(mDataList, mUseCardStyle);
         mAdapter.setDataBaseAdapter(DatabaseAdapter.getInstance(getApplicationContext()));
         mRecyclerView.setAdapter(mAdapter);
+        if (!mUseCardStyle) {
+            mRecyclerView.addItemDecoration(new DividerItemDecoration(this));
+        }
         dbHandler = new DbHandler(this);
         new Thread(new Runnable() {
             @Override
@@ -68,7 +72,7 @@ public class FavoriteActivity extends AbsActivity{
     private static class DbHandler extends Handler {
         private WeakReference<FavoriteActivity> mActivity;
         public DbHandler(FavoriteActivity activity) {
-            mActivity = new WeakReference<FavoriteActivity>(activity);
+            mActivity = new WeakReference<>(activity);
         }
 
         @Override
@@ -77,7 +81,7 @@ public class FavoriteActivity extends AbsActivity{
             List<DatabaseAdapter.NewsDataRecord> list = (List<DatabaseAdapter.NewsDataRecord>)msg.obj;
             if (!list.isEmpty()) {
                 FavoriteActivity favoriteActivity = mActivity.get();
-                favoriteActivity.updateData(list);
+                if (null != favoriteActivity) favoriteActivity.updateData(list);
             }
         }
     }

@@ -75,11 +75,19 @@
         <item>@string/itemdialog_share_action</item>
     </string-array>
     <string name="itemdialog_fav_exist">This item had been exists</string>
-    <string name="itemdialog_fav_success">Favorite successful</string>
+    <string name="itemdialog_fav_success">Favorite successfully</string>
 
     <!--NewsFragment-->
     <string name="newsfragment_retry">Retry</string>
 
+    <!--NewsViewerActivity-->
+    <string name="nva_action_refresh">Refresh</string>
+    <string name="nva_action_goback">GoBack</string>
+    <string name="nva_fab_action_share">Share</string>
+    <string name="nva_fab_action_fav">Favorite</string>
+    <string name="nva_fav_success_message">Favorite successfully</string>
+    <string name="nva_fav_exist_message">This item has been exists</string>
+    <string name="nva_fav_fail_message">Favorite ERROR!!!</string>
     <!--Error Message-->
     <string name="net_error">Maybe your internet is not good....</string>
 

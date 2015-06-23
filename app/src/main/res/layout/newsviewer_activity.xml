@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/header_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/basic_toolbar"/>
+            </LinearLayout>
+            <ProgressBar
+                android:id="@+id/load_progress"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:max="100"
+                android:progress="0"
+                android:background="@color/white"
+                android:indeterminateOnly="false"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/progress_horization"
+                android:layout_gravity="bottom"/>
+        </FrameLayout>
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </WebView>
+    </LinearLayout>
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/web_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:fab_addButtonColorNormal="@color/red_500"
+        app:fab_addButtonColorPressed="@color/red_800"
+        app:fab_addButtonSize="normal"
+        app:fab_labelStyle="@style/fab_menu_labels_style"
+        app:fab_labelsPosition="left">
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/web_fab_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_icon="@drawable/ic_action_share"
+            app:fab_colorNormal="@color/purple_500"
+            app:fab_colorPressed="@color/purple_800"
+            app:fab_title="@string/nva_fab_action_share"
+            app:fab_size="mini"/>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/web_fab_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_icon="@drawable/ic_action_favorite"
+            app:fab_colorNormal="@color/pink_500"
+            app:fab_colorPressed="@color/pink_800"
+            app:fab_title="@string/nva_fab_action_fav"
+            app:fab_size="mini"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+</FrameLayout>
