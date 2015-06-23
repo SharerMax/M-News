@@ -232,7 +232,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
         mAdapter = new RecyclerViewAdapter<>(
                 mWebData, mUseCardStyle);
-        mAdapter.setItemDialogEnable(true);
         mAdapter.setListAnimationEnable(mListAnimationEnable);
         mRecyclerView.setAdapter(mAdapter);
 
