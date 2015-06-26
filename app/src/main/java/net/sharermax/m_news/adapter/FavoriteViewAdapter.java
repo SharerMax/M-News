@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.daimajia.swipe.SwipeLayout;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
+import net.sharermax.m_news.activity.NewsViewerActivity;
+
 import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -45,8 +47,10 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof FavoriteViewHolder) {
+            final String title = mRecordList.get(position).title;
+            final String url = mRecordList.get(position).url;
             FavoriteViewHolder favVH = (FavoriteViewHolder)holder;
-            ((FavoriteViewHolder) holder).textView.setText(mRecordList.get(position).title);
+            ((FavoriteViewHolder) holder).textView.setText(title);
             Animator animator = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0.1f, 1f);
             animator.setDuration(300);
             animator.start();
@@ -58,8 +62,6 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             favVH.textView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    String title = mRecordList.get(position).title;
-                    String url = mRecordList.get(position).url;
                     String sendData = title + url;
                     showActivity(v.getContext(), sendData);
                     return true;
@@ -68,11 +70,14 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             favVH.textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = mRecordList.get(position).url;
                     Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
+                    intent.setClass(v.getContext(), NewsViewerActivity.class);
+                    intent.putExtra(NewsViewerActivity.FLAG_EXTRA_TITLE, title);
+                    intent.putExtra(NewsViewerActivity.FLAG_EXTRA_URL,url);
                     v.getContext().startActivity(intent);
+//                    intent.setAction(Intent.ACTION_VIEW);
+//                    intent.setData(Uri.parse(url));
+//                    v.getContext().startActivity(intent);
                 }
             });
             favVH.deleteImage.setOnClickListener(new View.OnClickListener() {
