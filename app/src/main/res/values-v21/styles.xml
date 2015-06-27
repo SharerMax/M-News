@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorPrimaryDark">@color/green_800</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/green_500</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
