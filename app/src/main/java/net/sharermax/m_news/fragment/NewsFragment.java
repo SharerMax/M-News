@@ -60,6 +60,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private Button mRetryButton;
     private DividerItemDecoration mDividerItemDecoration;
     private boolean mHaveDiver;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,8 +201,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if (mWebResolve.isFinished()) {
             mRetryButton.setVisibility(View.GONE);
             mWebResolve.cleanData();
-            mAdapter.clear();
-            mAdapter.notifyDataSetChanged();
+            if (mAdapter.getDataSize() > 0) {
+                mAdapter.clear();
+                mAdapter.notifyDataSetChanged();
+            }
             mWebResolve.startTask(mMainPageFlag);
         }
     }

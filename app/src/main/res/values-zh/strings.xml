@@ -26,7 +26,7 @@
     <string name="itemdialog_share_action">分享到微博</string>
     <string name="label_editWeiboActivity">新浪微博</string>
     <string name="label_subscription_activity">订阅</string>
-    <string name="net_error">网络可能不是很好，请检测网络后，重试</string>
+    <string name="net_error">网络可能不是很好，请检测网络后重试</string>
     <string name="nva_action_goback">前一页</string>
     <string name="newsfragment_retry">重试</string>
     <string name="nva_action_refresh">刷新</string>
