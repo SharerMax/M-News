@@ -2,7 +2,6 @@ package net.sharermax.m_news.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,7 +17,6 @@ import net.sharermax.m_news.activity.NewsViewerActivity;
 import net.sharermax.m_news.adapter.viewholder.RecyclerHeaderHolderView;
 import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
 import net.sharermax.m_news.network.WebResolve;
-import net.sharermax.m_news.view.ItemDialog;
 
 import java.util.List;
 import java.util.Map;

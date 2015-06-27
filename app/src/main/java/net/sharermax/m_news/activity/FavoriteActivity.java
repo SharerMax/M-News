@@ -42,7 +42,7 @@ public class FavoriteActivity extends AbsActivity{
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         boolean mUseCardStyle = Setting.getInstance(this).getBoolen(Setting.KEY_USE_CARD_VIEW, true);
         mDataList = new ArrayList<>();
-        mAdapter = new FavoriteViewAdapter(mDataList, mUseCardStyle);
+        mAdapter = new FavoriteViewAdapter(mDataList, mUseCardStyle, findViewById(android.R.id.content));
         mAdapter.setDataBaseAdapter(DatabaseAdapter.getInstance(getApplicationContext()));
         mRecyclerView.setAdapter(mAdapter);
         if (!mUseCardStyle) {

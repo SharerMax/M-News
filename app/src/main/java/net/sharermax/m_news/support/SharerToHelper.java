@@ -1,12 +1,10 @@
 package net.sharermax.m_news.support;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.location.Location;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Response;

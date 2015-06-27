@@ -5,8 +5,8 @@
     <string name="unknown">Unknown</string>
 
     <!--DrawerLayout-->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
     <string name="drawer_home_action">Home</string>
     <string name="drawer_favorite_action">Favorite</string>
@@ -33,13 +33,13 @@
 
     <string name="about_title">About</string>
     <string name="author_Weibo_title">Weibo</string>
-    <string name="author_Weibo_summary">\@编代码的西瓜</string>
-    <string name="author_Weibo_url">http://weibo.com/hksharemax</string>
-    <string name="author_Twitter_title">Twitter</string>
-    <string name="author_Twitter_summary">\@Saeratom</string>
-    <string name="author_Twitter_url">https://twitter.com/</string>
-    <string name="github_title">Github</string>
-    <string name="github_url">https://github.com/SharerMax/M-News</string>
+    <string name="author_Weibo_summary" translatable="false">\@编代码的西瓜</string>
+    <string name="author_Weibo_url" translatable="false">http://weibo.com/hksharemax</string>
+    <string name="author_Twitter_title" translatable="false">Twitter</string>
+    <string name="author_Twitter_summary" translatable="false">\@Saeratom</string>
+    <string name="author_Twitter_url" translatable="false">https://twitter.com/</string>
+    <string name="github_title" translatable="false">Github</string>
+    <string name="github_url" translatable="false">https://github.com/SharerMax/M-News</string>
     <string name="open_source_license">Open Source License</string>
     <string name="app_version">Version</string>
 
@@ -58,12 +58,13 @@
 
     <!--SubscriptionActivity-->
     <string name="label_subscription_activity">Subscription</string>
-    <string name="title_startup">StartUp</string>
-    <string name="title_csdn_geek">CSDN GEEK</string>
-    <string name="title_hacker_news">Hacker News</string>
+    <string name="title_startup" translatable="false">StartUp</string>
+    <string name="title_csdn_geek" translatable="false">CSDN GEEK</string>
+    <string name="title_hacker_news" translatable="false">Hacker News</string>
 
     <!--FavoriteActivity-->
     <string name="fav_activity_title">@string/drawer_favorite_action</string>
+    <string name="fav_activity_undo">UNDO</string>
 
     <!--ItemDialog-->
     <string name="itemdialog_negative_button">Cancel</string>

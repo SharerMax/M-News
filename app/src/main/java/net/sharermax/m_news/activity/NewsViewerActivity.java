@@ -28,7 +28,6 @@ import net.sharermax.m_news.BuildConfig;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.DatabaseAdapter;
 
-
 import java.lang.ref.WeakReference;
 
 import butterknife.ButterKnife;
