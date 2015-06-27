@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.daimajia.swipe.SwipeLayout;
 
 import net.sharermax.m_news.BuildConfig;
@@ -23,6 +22,7 @@ import net.sharermax.m_news.activity.EditWeiboActivity;
 import net.sharermax.m_news.activity.NewsViewerActivity;
 
 import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 

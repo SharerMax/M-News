@@ -6,8 +6,6 @@ import android.widget.TextView;
 
 import net.sharermax.m_news.R;
 
-import java.nio.Buffer;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
