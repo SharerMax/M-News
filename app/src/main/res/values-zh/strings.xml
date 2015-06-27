@@ -50,4 +50,5 @@
     <string name="weibo_edit_error">错误：已超过140个字符</string>
     <string name="weibo_edit_helper">注意：不能超过140字符</string>
     <string name="weibo_send">发送</string>
+    <string name="fav_activity_undo">撤销</string>
 </resources>

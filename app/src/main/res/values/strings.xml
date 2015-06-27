@@ -64,6 +64,7 @@
 
     <!--FavoriteActivity-->
     <string name="fav_activity_title">@string/drawer_favorite_action</string>
+    <string name="fav_activity_undo">UNDO</string>
 
     <!--ItemDialog-->
     <string name="itemdialog_negative_button">Cancel</string>

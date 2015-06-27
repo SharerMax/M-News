@@ -5,6 +5,8 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +33,18 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<DatabaseAdapter.NewsDataRecord> mRecordList;
     private boolean mUseCardView;
     private DatabaseAdapter mDatabaseAdapter;
+    private View mParentView;
 
     public FavoriteViewAdapter(List<DatabaseAdapter.NewsDataRecord> recordList, boolean useCardView) {
         mRecordList = recordList;
         mUseCardView = useCardView;
+    }
+
+    public FavoriteViewAdapter(List<DatabaseAdapter.NewsDataRecord> recordList, boolean useCardView, View parentView) {
+        mRecordList = recordList;
+        mUseCardView = useCardView;
+        mParentView = parentView;
+
     }
 
     @Override
@@ -45,7 +55,7 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof FavoriteViewHolder) {
             final String title = mRecordList.get(position).title;
             final String url = mRecordList.get(position).url;
@@ -83,11 +93,31 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             favVH.deleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Delete", Toast.LENGTH_LONG).show();
                     if (null != mDatabaseAdapter) {
+                        final DatabaseAdapter.NewsDataRecord record = mRecordList.get(position);
+                        mDatabaseAdapter.beginTransaction();
                         mDatabaseAdapter.delete(mRecordList.get(position)._id);
+                        Snackbar snackbar = Snackbar.make(mParentView, "Delete", Snackbar.LENGTH_LONG);
+                        snackbar.setAction(R.string.fav_activity_undo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mRecordList.add(position, record);
+                                notifyItemInserted(position);
+                                mDatabaseAdapter.endTransaction();
+                            }
+                        });
+                        snackbar.show();
                         mRecordList.remove(position);
                         notifyItemRemoved(position);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mDatabaseAdapter.inTransaction()) {
+                                    mDatabaseAdapter.setTransactionSuccessful();
+                                    mDatabaseAdapter.endTransaction();
+                                }
+                            }
+                        }, snackbar.getDuration());
                     }
                 }
             });

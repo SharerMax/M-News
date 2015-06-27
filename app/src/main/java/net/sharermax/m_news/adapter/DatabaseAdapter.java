@@ -114,9 +114,24 @@ public class DatabaseAdapter {
         mNewsDataRecord = record;
     }
 
+    public void beginTransaction() {
+        mDataBase.beginTransaction();
+    }
+
+    public void endTransaction() {
+        mDataBase.endTransaction();
+    }
+
+    public void setTransactionSuccessful() {
+        mDataBase.setTransactionSuccessful();
+    }
 
     public NewsDataRecord getItemRecord() {
         return mNewsDataRecord;
+    }
+
+    public boolean inTransaction() {
+        return mDataBase.inTransaction();
     }
 
     public boolean isExist() {
