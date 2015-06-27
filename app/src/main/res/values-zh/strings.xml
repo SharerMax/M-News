@@ -3,7 +3,7 @@
     <string name="app_name">M-News</string>
     <string name="about_title">关于</string>
     <string name="account_bind">账号绑定</string>
-    <string name="action"></string>
+    <string name="action">操作</string>
     <string name="app_label_setting">设置</string>
     <string name="app_version">版本</string>
     <string name="auto_refresh_summary">打开应用时，自动刷新</string>
@@ -16,7 +16,7 @@
     <string name="drawer_profile_id_anonymous">匿名</string>
     <string name="drawer_setting_action">设置</string>
     <string name="drawer_subscription_action">订阅</string>
-    <string name="fav_activity_title"></string>
+    <string name="fav_activity_title">@string/drawer_favorite_action</string>
     <string name="item_disable_animation">关闭列表动画</string>
     <string name="item_disable_animation_desc">建议低配手机关闭此功能</string>
     <string name="itemdialog_fav_exist">已经收藏过了</string>
@@ -24,10 +24,8 @@
     <string name="itemdialog_favorite_action">收藏</string>
     <string name="itemdialog_negative_button">取消</string>
     <string name="itemdialog_share_action">分享到微博</string>
-    <string name="itemdialog_title"></string>
     <string name="label_editWeiboActivity">新浪微博</string>
     <string name="label_subscription_activity">订阅</string>
-    <string name="navigation_drawer_close"></string>
     <string name="net_error">网络可能不是很好，请检测网络后，重试</string>
     <string name="nva_action_goback">前一页</string>
     <string name="newsfragment_retry">重试</string>
@@ -51,4 +49,6 @@
     <string name="weibo_edit_helper">注意：不能超过140字符</string>
     <string name="weibo_send">发送</string>
     <string name="fav_activity_undo">撤销</string>
+    <string name="itemdialog_title">操作</string>
+    <string name="author_Weibo_title">新浪微博</string>
 </resources>

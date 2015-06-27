@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.daimajia.swipe.SwipeLayout;
+
+import net.sharermax.m_news.BuildConfig;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
 import net.sharermax.m_news.activity.NewsViewerActivity;
@@ -30,6 +33,7 @@ import butterknife.InjectView;
  */
 public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    public static final String CLASS_NAME = "FavoriteViewAdapter";
     private List<DatabaseAdapter.NewsDataRecord> mRecordList;
     private boolean mUseCardView;
     private DatabaseAdapter mDatabaseAdapter;
@@ -94,7 +98,12 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     if (null != mDatabaseAdapter) {
-                        final DatabaseAdapter.NewsDataRecord record = mRecordList.get(position);
+                        final DatabaseAdapter.NewsDataRecord record = new DatabaseAdapter.NewsDataRecord();
+                        DatabaseAdapter.NewsDataRecord tempRecord = mRecordList.get(position);
+                        record.time = tempRecord.time;
+                        record.title = tempRecord.title;
+                        record.url = tempRecord.url;
+                        record._id = tempRecord._id;
                         mDatabaseAdapter.beginTransaction();
                         mDatabaseAdapter.delete(mRecordList.get(position)._id);
                         Snackbar snackbar = Snackbar.make(mParentView, "Delete", Snackbar.LENGTH_LONG);
@@ -115,9 +124,12 @@ public class FavoriteViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                                 if (mDatabaseAdapter.inTransaction()) {
                                     mDatabaseAdapter.setTransactionSuccessful();
                                     mDatabaseAdapter.endTransaction();
+                                    if (BuildConfig.DEBUG) {
+                                        Log.v(CLASS_NAME, "successful");
+                                    }
                                 }
                             }
-                        }, snackbar.getDuration());
+                        }, snackbar.getDuration() == Snackbar.LENGTH_LONG ? 2750L : 1500L);
                     }
                 }
             });
