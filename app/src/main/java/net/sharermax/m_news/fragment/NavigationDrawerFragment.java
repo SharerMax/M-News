@@ -25,6 +25,7 @@ import net.sharermax.m_news.R;
 import net.sharermax.m_news.support.UserHelper;
 import net.sharermax.m_news.support.Utility;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,14 +90,17 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
 
     public void updateProfileImage() {
         ImageLoader imageLoader = new ImageLoader(Utility.getRequestQueue(getActivity()), new ImageLoader.ImageCache() {
+            HashMap<String, WeakReference<Bitmap>> cacheMap;
             @Override
             public Bitmap getBitmap(String url) {
+                if (null != cacheMap) return cacheMap.get(url).get();
                 return null;
             }
 
             @Override
             public void putBitmap(String url, Bitmap bitmap) {
-
+                if (null == cacheMap) cacheMap = new HashMap<>();
+                cacheMap.put(url, new WeakReference<>(bitmap));
             }
         });
         String image_url = UserHelper.readUserInfo(getActivity()).get(UserHelper.KEY_COVER_IMAGE);
@@ -109,9 +113,11 @@ public class NavigationDrawerFragment extends Fragment implements ListView.OnIte
                     new Response.Listener<Bitmap>() {
                         @Override
                         public void onResponse(Bitmap response) {
+
                             mProfileImage.setImageBitmap(response);
                         }
-                    }, 0, 0, ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565,
+                    }, getResources().getDimensionPixelOffset(R.dimen.drawer_image_width),
+                    getResources().getDimensionPixelOffset(R.dimen.drawer_image_height), ImageView.ScaleType.CENTER_INSIDE, Bitmap.Config.RGB_565,
                     new Response.ErrorListener() {
                         @SuppressLint("LongLogTag")
                         @Override
