@@ -14,7 +14,8 @@
             android:key="disable_animation"
             android:title="@string/item_disable_animation"
             android:summary="@string/item_disable_animation_desc"
-            android:defaultValue="false"/>
+            android:defaultValue="true"
+            android:enabled="false"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/about_title">

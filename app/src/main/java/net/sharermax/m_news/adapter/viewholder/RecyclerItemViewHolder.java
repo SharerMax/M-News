@@ -18,6 +18,7 @@ public class RecyclerItemViewHolder extends RecyclerView.ViewHolder{
     @InjectView(R.id.main_item_title) public TextView title;
     @InjectView(R.id.main_item_subtext) public TextView sbuText;
     @InjectView(R.id.main_item_hostname) public TextView hostname;
+    public int tag = -1;
     public RecyclerItemViewHolder(View itemView) {
         super(itemView);
         ButterKnife.inject(this, itemView);

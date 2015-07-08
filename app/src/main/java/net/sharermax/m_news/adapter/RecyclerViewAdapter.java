@@ -3,6 +3,7 @@ package net.sharermax.m_news.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,7 +53,9 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+        if (BuildConfig.DEBUG) {
+            Log.v(CLASS_NAME, "create view holder");
+        }
         switch (viewType) {
             case FLAG_HEADER_TOOLBAR:
                 View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.padding_toolbar, parent, false);
@@ -79,6 +82,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (BuildConfig.DEBUG) {
             Log.v(CLASS_NAME, "position:" + position);
+            Log.v(CLASS_NAME, "viewholder:" + holder.hashCode());
         }
         if (holder instanceof RecyclerItemViewHolder) {
             RecyclerItemViewHolder itemVH = (RecyclerItemViewHolder)holder;
@@ -108,12 +112,13 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             });
 
             if (mListAnimationEnable) {
-                setAnimation(holder.itemView, position);
+                setAnimation(holder.itemView, position, ((RecyclerItemViewHolder) holder).tag);
             }
+            ((RecyclerItemViewHolder) holder).tag = position;
         }
     }
 
-    private void setAnimation(final View itemView, final int position) {
+    private void setAnimation(final View itemView, final int position, int itemTag) {
         if (position > mShowLastPosition) {
             if (mFirstLoad) {
                 itemView.setVisibility(View.INVISIBLE);
@@ -138,15 +143,37 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
                             }
                         });
+                        animation.setFillAfter(true);
                         itemView.startAnimation(animation);
                     }
                 }, (position - HEADER_COUNT) * 180);
             } else {
+//                if (-1 != itemTag || itemTag != position) {
+//                    if (itemView.getAnimation() != null) itemView.getAnimation().cancel();
+//                    if (BuildConfig.DEBUG) {
+//                        Log.v(CLASS_NAME, "position animation is cancel" + position);
+//                    }
+//                }
                 Animation animation = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.scale_in_bottom);
                 itemView.startAnimation(animation);
             }
+            mShowLastPosition = position;
+        } else {
+            ViewCompat.setAlpha(itemView, 1);
+            ViewCompat.setScaleY(itemView, 1);
+            ViewCompat.setScaleX(itemView, 1);
+            ViewCompat.setTranslationY(itemView, 0);
+            ViewCompat.setTranslationX(itemView, 0);
+            ViewCompat.setRotation(itemView, 0);
+            ViewCompat.setRotationY(itemView, 0);
+            ViewCompat.setRotationX(itemView, 0);
+            // @TODO https://code.google.com/p/android/issues/detail?id=80863
+//        ViewCompat.setPivotY(v, v.getMeasuredHeight() / 2);
+            itemView.setPivotY(itemView.getMeasuredHeight() / 2);
+            ViewCompat.setPivotX(itemView, itemView.getMeasuredWidth() / 2);
+            ViewCompat.animate(itemView).setInterpolator(null);
         }
-        mShowLastPosition = position;
+
     }
 
     @Override
