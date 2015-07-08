@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import net.sharermax.m_news.BuildConfig;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.EditWeiboActivity;
 import net.sharermax.m_news.activity.NewsViewerActivity;
@@ -76,6 +77,9 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (BuildConfig.DEBUG) {
+            Log.v(CLASS_NAME, "position:" + position);
+        }
         if (holder instanceof RecyclerItemViewHolder) {
             RecyclerItemViewHolder itemVH = (RecyclerItemViewHolder)holder;
             final String title = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_TITLE);

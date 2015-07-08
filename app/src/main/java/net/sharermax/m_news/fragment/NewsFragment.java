@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCal
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 
+import net.sharermax.m_news.BuildConfig;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.AbsActivity;
 import net.sharermax.m_news.adapter.RecyclerViewAdapter;
@@ -186,6 +188,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 if (!dataList.isEmpty()) {
                     if (mIsRefreshData && mAdapter.getDataSize() > 0) {
                         mAdapter.clear();
+                        if (BuildConfig.DEBUG) {
+                            Log.v(CLASS_NAME, "clear data");
+                        }
                     }
                     mRetryButton.setVisibility(View.GONE);
                     mAdapter.addItems(mAdapter.getDataSize(), dataList);
@@ -227,6 +232,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void bottomLoad() {
         if (mWebResolve != null && null != mWebData && !mWebData.isEmpty()) {
             mWebResolve.startTask(mNextPageFlag);
+            mIsRefreshData = false;
         }
     }
 

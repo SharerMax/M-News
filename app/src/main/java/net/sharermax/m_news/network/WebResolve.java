@@ -1,11 +1,13 @@
 package net.sharermax.m_news.network;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import net.sharermax.m_news.BuildConfig;
 import net.sharermax.m_news.support.Utility;
 
 import org.jsoup.Jsoup;
@@ -95,6 +97,9 @@ public class WebResolve {
     private void resolveData(String url) {
         isFinished = false;
         cleanData();
+        if (BuildConfig.DEBUG) {
+            Log.v(CLASS_NAME, "parse url:" + url);
+        }
         StringRequest stringRequest = new StringRequest(url, new ResponseListener(),
                 new Response.ErrorListener() {
                     @Override
@@ -132,6 +137,9 @@ public class WebResolve {
                     mValidData.add(map);
                 }
                 mNextUrl = title.last().attr("href");
+                if (BuildConfig.DEBUG) {
+                    Log.v(CLASS_NAME, "next url :" + mNextUrl);
+                }
             }
 
             if (mTaskOverListener != null) {
