@@ -28,6 +28,7 @@ import net.sharermax.m_news.adapter.MainViewPagerAdapter;
 import net.sharermax.m_news.fragment.NavigationDrawerFragment;
 import net.sharermax.m_news.fragment.NewsFragment;
 import net.sharermax.m_news.support.CrashHandler;
+import net.sharermax.m_news.support.Utility;
 import net.sharermax.m_news.view.SlidingTabLayout;
 
 /**
@@ -389,7 +390,7 @@ public class MainActivity extends AbsActivity
     @Override
     protected void onDestroy() {
         DatabaseAdapter.close();
-
+        Utility.getRequestQueue(getApplication()).cancelAll(Utility.VOLLEY_TAG_NEWS);
         super.onDestroy();
     }
 }

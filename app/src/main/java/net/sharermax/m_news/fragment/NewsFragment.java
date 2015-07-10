@@ -23,13 +23,15 @@ import net.sharermax.m_news.BuildConfig;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.activity.AbsActivity;
 import net.sharermax.m_news.adapter.RecyclerViewAdapter;
+import net.sharermax.m_news.api.news.NewsDistribution;
+import net.sharermax.m_news.api.news.common.NewsData;
+import net.sharermax.m_news.api.news.common.ResponseListener;
 import net.sharermax.m_news.network.WebResolve;
 import net.sharermax.m_news.support.Setting;
 import net.sharermax.m_news.support.Utility;
 import net.sharermax.m_news.view.decoration.DividerItemDecoration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -46,9 +48,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public static final int FLAG_NEWS_STARTUP = 0;
     public static final int FLAG_NEWS_HACKERNEWS = 1;
     private ObservableRecyclerView mRecyclerView;
-    private WebResolve mWebResolve;
+    private NewsDistribution mDistribution;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private List<HashMap<String, String>> mWebData;
+    private List<NewsData> mWebData;
     private View mRootView;
     private int mSwipeRefreshCircleStart;
     private Bundle mBundle;
@@ -56,13 +58,14 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private int mNextPageFlag;
     private boolean mUseCardStyle;
     private CircularProgressView mCircularPB;
-    private RecyclerViewAdapter<HashMap<String, String>> mAdapter;
+    private RecyclerViewAdapter<NewsData> mAdapter;
     private boolean mFirstLoad = true;
     private boolean mListAnimationEnable;
     private Button mRetryButton;
     private DividerItemDecoration mDividerItemDecoration;
     private boolean mHaveDiver;
     private boolean mIsRefreshData;
+    private boolean mIsRefreshOver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +108,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
 
+        mIsRefreshOver = true;
         initRecyclerView();
         initGlobalLayoutListener();
         initSwipeRefreshLayout();
@@ -119,6 +123,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setProgressViewOffset(true, mSwipeRefreshCircleStart, mSwipeRefreshCircleStart + mSwipeRefreshCircleStart / 2);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setOnTouchListener(new View.OnTouchListener() {
+            //When first refresh data (load data) swiperefreshlayout don't receive refresh event
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return mFirstLoad;
@@ -147,6 +152,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+        //
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -174,44 +180,70 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initSetting() {
         Setting setting = Setting.getInstance(getActivity());
         mUseCardStyle = setting.getBoolen(Setting.KEY_USE_CARD_VIEW, true);
-        mListAnimationEnable = !setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, false);
+        mListAnimationEnable = !setting.getBoolen(Setting.KEY_DISABLE_LIST_ANIMATION, true);
     }
 
     private void initWebResolve() {
-        mWebResolve = new WebResolve(getActivity());
-        mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
-            @Override
-            public void taskOver(List<HashMap<String, String>> dataList) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                mCircularPB.setVisibility(View.GONE);
-                mFirstLoad = false;
-                if (!dataList.isEmpty()) {
-                    if (mIsRefreshData && mAdapter.getDataSize() > 0) {
-                        mAdapter.clear();
-                        if (BuildConfig.DEBUG) {
-                            Log.v(CLASS_NAME, "clear data");
+//        mWebResolve = new WebResolve(getActivity());
+//        mWebResolve.setTaskOverListener(new WebResolve.TaskOverListener() {
+//            @Override
+//            public void taskOver(List<HashMap<String, String>> dataList) {
+//                mSwipeRefreshLayout.setRefreshing(false);
+//                mCircularPB.setVisibility(View.GONE);
+//                mFirstLoad = false;
+//                if (!dataList.isEmpty()) {
+//                    if (mIsRefreshData && mAdapter.getDataSize() > 0) {
+//                        mAdapter.clear();
+//                        if (BuildConfig.DEBUG) {
+//                            Log.v(CLASS_NAME, "clear data");
+//                        }
+//                    }
+//                    mRetryButton.setVisibility(View.GONE);
+//                    mAdapter.addItems(mAdapter.getDataSize(), dataList);
+//                } else {
+////                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.net_error), Toast.LENGTH_LONG).show();
+//                    Snackbar.make(getView(), getString(R.string.net_error), Snackbar.LENGTH_LONG).show();
+//                    if (mAdapter.getDataSize() == 0) {
+//                        mRetryButton.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//
+//            }
+//        });
+
+        mDistribution = new NewsDistribution(getActivity(),
+                new ResponseListener<List<NewsData>>() {
+                    @Override
+                    public void onResponse(List<NewsData> response) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        mCircularPB.setVisibility(View.GONE);
+                        mFirstLoad = false;
+                        mIsRefreshOver = true;
+                        if (null != response && !response.isEmpty()) {
+                            if (mIsRefreshData && mAdapter.getDataSize() > 0) {
+                                mAdapter.clear();
+                                if (BuildConfig.DEBUG) {
+                                    Log.v(CLASS_NAME, "clear data");
+                                }
+                            }
+                            mRetryButton.setVisibility(View.GONE);
+                            mAdapter.addItems(mAdapter.getDataSize(), response);
+                        } else {
+                            Snackbar.make(getView(), getString(R.string.net_error), Snackbar.LENGTH_LONG).show();
+                            if (mAdapter.getDataSize() == 0) {
+                                mRetryButton.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
-                    mRetryButton.setVisibility(View.GONE);
-                    mAdapter.addItems(mAdapter.getDataSize(), dataList);
-                } else {
-//                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.net_error), Toast.LENGTH_LONG).show();
-                    Snackbar.make(getView(), getString(R.string.net_error), Snackbar.LENGTH_LONG).show();
-                    if (mAdapter.getDataSize() == 0) {
-                        mRetryButton.setVisibility(View.VISIBLE);
-                    }
-                }
-
-            }
-        });
+                });
     }
 
     @Override
     public void onRefresh() {
-        if (mWebResolve.isFinished()) {
+        if (mIsRefreshOver) {
             mRetryButton.setVisibility(View.GONE);
-            mWebResolve.cleanData();
-            mWebResolve.startTask(mMainPageFlag);
+            mDistribution.start(mMainPageFlag);
+            mIsRefreshOver = false;
             mIsRefreshData = true;
         }
     }
@@ -230,8 +262,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void bottomLoad() {
-        if (mWebResolve != null && null != mWebData && !mWebData.isEmpty()) {
-            mWebResolve.startTask(mNextPageFlag);
+        if (mDistribution != null && null != mWebData && !mWebData.isEmpty()) {
+            mDistribution.start(mNextPageFlag);
             mIsRefreshData = false;
         }
     }
@@ -287,7 +319,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onStop() {
-        if (mWebResolve != null) mWebResolve.cancel();
+//        if (mWebResolve != null) mWebResolve.cancel();
         super.onStop();
     }
 }

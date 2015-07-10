@@ -18,10 +18,9 @@ import net.sharermax.m_news.activity.EditWeiboActivity;
 import net.sharermax.m_news.activity.NewsViewerActivity;
 import net.sharermax.m_news.adapter.viewholder.RecyclerHeaderHolderView;
 import net.sharermax.m_news.adapter.viewholder.RecyclerItemViewHolder;
-import net.sharermax.m_news.network.WebResolve;
+import net.sharermax.m_news.api.news.common.NewsData;
 
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +29,7 @@ import java.util.regex.Pattern;
  * Time  : 2015/3/5
  * E-Mail: mdcw1103@gmail.com
  */
-public class RecyclerViewAdapter<T extends Map<String, String>> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RecyclerViewAdapter<T extends NewsData> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final String CLASS_NAME = "RecyclerViewAdapter";
     public static final int FLAG_HEADER_TOOLBAR = 0;
     public static final int FLAG_HEADER_TAB = 1;
@@ -86,8 +85,8 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
         }
         if (holder instanceof RecyclerItemViewHolder) {
             RecyclerItemViewHolder itemVH = (RecyclerItemViewHolder)holder;
-            final String title = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_TITLE);
-            final String url = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_URL);
+            final String title = data.get(position - HEADER_COUNT).title;
+            final String url = data.get(position - HEADER_COUNT).url;
             Log.v(CLASS_NAME, url);
             Pattern pattern = Pattern.compile("\\b([a-z0-9]+(-[a-z0-9]+)*\\.)+[a-z]{2,}\\b");
             Matcher matcher = pattern.matcher(url);
@@ -95,7 +94,7 @@ public class RecyclerViewAdapter<T extends Map<String, String>> extends Recycler
             if (matcher.find()) {
                 hostname = matcher.group();
             }
-            String subText = data.get(position - HEADER_COUNT).get(WebResolve.FIELD_SUBTEXT);
+            String subText = data.get(position - HEADER_COUNT).subText;
             itemVH.title.setText(title);
             itemVH.hostname.setText(hostname);
             itemVH.sbuText.setText(subText);
