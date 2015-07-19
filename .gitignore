@@ -25,3 +25,5 @@ signingfile
 
 import-summary.txt
 captures
+
+gradle.properties
