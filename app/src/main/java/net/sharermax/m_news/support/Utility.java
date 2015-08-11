@@ -10,6 +10,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import net.sharermax.m_news.R;
+import net.sharermax.m_news.api.news.common.OkHttpStack;
 
 import java.lang.ref.WeakReference;
 
@@ -63,7 +64,7 @@ public class Utility {
 
     public static RequestQueue getRequestQueue(Context context) {
         if (null == sRequestQueue) {
-            sRequestQueue = Volley.newRequestQueue(context.getApplicationContext());
+            sRequestQueue = Volley.newRequestQueue(context.getApplicationContext(), new OkHttpStack());
         }
         return sRequestQueue;
     }
