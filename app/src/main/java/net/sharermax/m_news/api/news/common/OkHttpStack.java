@@ -27,6 +27,14 @@ import java.util.concurrent.TimeUnit;
  * E-Mail: mdcw1103@gmail.com
  */
 public class OkHttpStack implements HttpStack {
+    /**
+     * Execute http request task
+     * @param request
+     * @param additionalHeaders
+     * @return
+     * @throws IOException
+     * @throws AuthFailureError
+     */
     @Override
     public HttpResponse performRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException, AuthFailureError {
         OkHttpClient client = new OkHttpClient();
@@ -39,7 +47,7 @@ public class OkHttpStack implements HttpStack {
         }
         Headers headers = headersBuilder.build();
         com.squareup.okhttp.Request.Builder requestBuilder = new com.squareup.okhttp.Request.Builder();
-        setConnectionParametersForRequest(requestBuilder, request);
+        setConnectionMethodForRequest(requestBuilder, request);
         com.squareup.okhttp.Request okRequest = requestBuilder.headers(headers).build();
         client.setConnectTimeout(request.getTimeoutMs(), TimeUnit.MILLISECONDS);
         Response response = client.newCall(okRequest).execute();
@@ -63,7 +71,13 @@ public class OkHttpStack implements HttpStack {
         return basicHttpResponse;
     }
 
-    private void setConnectionParametersForRequest(com.squareup.okhttp.Request.Builder builder, Request<?> request) throws AuthFailureError {
+    /**
+     * Set net connection method for request
+     * @param builder
+     * @param request
+     * @throws AuthFailureError
+     */
+    private void setConnectionMethodForRequest(com.squareup.okhttp.Request.Builder builder, Request<?> request) throws AuthFailureError {
         switch (request.getMethod()) {
             case Request.Method.DEPRECATED_GET_OR_POST:
                 byte []bytes = request.getBody();
@@ -76,39 +90,41 @@ public class OkHttpStack implements HttpStack {
                 builder.url(request.getUrl());
                 break;
             case Request.Method.POST:
-                addBodyIfExists(builder, request);
-                builder.url(request.getUrl());
+                builder.url(request.getUrl()).post(createRequestBody(request));
                 break;
             case Request.Method.PUT:
-                addBodyIfExists(builder, request);
-                builder.url(request.getUrl());
+                builder.url(request.getUrl()).put(createRequestBody(request));
                 break;
             case Request.Method.HEAD:
-                builder.url(request.getUrl());
+                builder.url(request.getUrl()).head();
                 break;
             case Request.Method.DELETE:
-                builder.url(request.getUrl());
+                builder.url(request.getUrl()).delete(createRequestBody(request));
                 break;
             case Request.Method.OPTIONS:
                 builder.url(request.getUrl());
+                builder.method("OPTIONS", createRequestBody(request));
                 break;
             case Request.Method.PATCH:
-                addBodyIfExists(builder, request);
-                builder.url(request.getUrl());
+                builder.url(request.getUrl()).patch(createRequestBody(request));
                 break;
             case Request.Method.TRACE:
-                builder.url(request.getUrl());
+                builder.url(request.getUrl()).method("TRACE", null);
                 break;
             default:
                 break;
         }
     }
 
-    private void addBodyIfExists(com.squareup.okhttp.Request.Builder builder,Request<?> request) throws AuthFailureError {
+    /**
+     * Create Request Body
+     */
+    private RequestBody createRequestBody(Request<?> request) throws AuthFailureError {
         byte []bytes = request.getBody();
-        if (request.getBody() != null) {
-            builder.post(RequestBody.create(null, bytes));
+        if (bytes != null && bytes.length != 0) {
+            return RequestBody.create(null, bytes);
         }
+        return null;
     }
 
 }

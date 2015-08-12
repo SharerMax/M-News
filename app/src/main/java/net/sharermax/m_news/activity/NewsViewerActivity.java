@@ -283,13 +283,13 @@ public class NewsViewerActivity extends AbsActivity implements GestureDetector.O
         }
         float y1 = e1.getY();
         float y2 = e2.getY();
-        if (y1 - y2 > 0 && !mFAB.isShown()) {
+        if (y2 - y1 > 0 && !mFAB.isShown()) {
             mFAB.setVisibility(View.VISIBLE);
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_bottom);
             mFAB.startAnimation(animation);
         }
 
-        if (y1 - y2 < 0 && mFAB.isShown()) {
+        if (y2 - y1 < 0 && mFAB.isShown()) {
             if (mFAB.isExpanded()) {
                 mFAB.collapse();
             }
