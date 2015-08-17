@@ -4,6 +4,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.HttpStack;
 import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
@@ -17,6 +18,7 @@ import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -59,8 +61,18 @@ public class OkHttpStack implements HttpStack {
             BasicHttpEntity entity = new BasicHttpEntity();
             entity.setContent(body.byteStream());
             entity.setContentLength(body.contentLength());
-            entity.setContentEncoding(body.contentType().charset().name());
-            entity.setContentType(body.contentType().toString());
+            String encoding = response.headers().get("Content-Encoding");
+            MediaType mediaType = body.contentType();
+            if (null != mediaType) {
+                entity.setContentEncoding(mediaType.charset().displayName());
+                entity.setContentType(mediaType.toString());
+            } else {
+                entity.setContentEncoding(Charset.defaultCharset().displayName());
+                entity.setContentType("");
+            }
+//            entity.setContentEncoding( encoding == null ? Charset.defaultCharset().name() : encoding);
+//            Log.d(getClass().getSimpleName(), body.contentType() == null ? "null" : body.contentType().toString());
+//            entity.setContentType(body.contentType().toString());
             basicHttpResponse.setEntity(entity);
         }
 

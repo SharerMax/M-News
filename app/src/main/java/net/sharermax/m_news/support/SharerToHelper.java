@@ -36,6 +36,7 @@ public class SharerToHelper {
     public static final String FIELD_GEOS = "geos";
     public static final String FIELD_ADDRESS = "address";
     public static final String ERROR_ADDRESS = "UnKnow";
+    public static final String TAG_REQUEST_ADDRESS = "tag_request_address";
     public static void sendToWeibo(final Context context, String status,
                                    final String successMessage, final String failMessage, Location location) {
         Oauth2AccessToken oauth2AccessToken = AccessTokenKeeper.readAccessToken(context);
@@ -114,7 +115,7 @@ public class SharerToHelper {
                 }
             }
         });
-
+        jsonObjectRequest.setTag(TAG_REQUEST_ADDRESS);
         Utility.getRequestQueue(context).add(jsonObjectRequest);
     }
     //坐标转地址监听接口

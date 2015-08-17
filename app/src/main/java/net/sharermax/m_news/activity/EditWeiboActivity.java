@@ -2,7 +2,6 @@ package net.sharermax.m_news.activity;
 
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +16,8 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.support.AccessTokenKeeper;
+import net.sharermax.m_news.support.LocationHelper;
 import net.sharermax.m_news.support.SharerToHelper;
-import net.sharermax.m_news.support.Utility;
 
 /**
  * Author: SharerMax
@@ -26,7 +25,7 @@ import net.sharermax.m_news.support.Utility;
  * E-Mail: mdcw1103@gmail.com
  */
 public class EditWeiboActivity extends AbsActivity
-        implements LocationListener, View.OnClickListener{
+        implements LocationHelper.UpdateLocationListener, LocationHelper.GeoToAddressListener, View.OnClickListener{
     public static final String CLASS_NAME = "EditWeiboActivity";
     private MaterialEditText mWeiboEditText;
     private TextView mLocationTextView;
@@ -59,48 +58,17 @@ public class EditWeiboActivity extends AbsActivity
     @Override
     protected void onResume() {
         super.onResume();
-        mLocationManager = Utility.updateLocation(getApplicationContext(), this);
+        LocationHelper.getInstance(this).setUpdateLocationListener(this);
+        LocationHelper.getInstance(this).updateLocation();
     }
 
     @Override
     protected void onStop() {
+        LocationHelper.getInstance(this).cannelUpdateLocation();
+        LocationHelper.getInstance(this).cancelGeoToAddress();
         super.onStop();
     }
 
-
-    @Override
-    public void onLocationChanged(Location location) {
-        if (null != location) {
-            mLocation = location;
-            Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(this);
-            SharerToHelper.geoToAddress(getApplicationContext(), token.getToken(), location,
-                    new SharerToHelper.GeoToAddressListener() {
-                        @Override
-                        public void onResponse(String address) {
-                            mLocationTextView.setText(address);
-                        }
-                    });
-            if (null != mLocationManager) {
-                mLocationManager.removeUpdates(this);
-            }
-
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -122,6 +90,21 @@ public class EditWeiboActivity extends AbsActivity
                 break;
         }
     }
+
+    @Override
+    public void onResponse(String address) {
+        mLocationTextView.setText(address);
+    }
+
+    @Override
+    public void update(Location location) {
+        if (null != location) {
+            mLocation = location;
+            Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(this);
+            LocationHelper.getInstance(getApplicationContext()).geoToAddress(token.getToken(), location, this);
+        }
+    }
+
     class CountValidator extends METValidator {
 
         public CountValidator(@NonNull String errorMessage) {
