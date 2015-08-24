@@ -28,4 +28,6 @@
     <color name="grey_800">#424242</color>
     <color name="grey_800_tr">#BB424242</color>
 
+    <color name="nav_drawer_inset_foreground">#4000</color>
+
 </resources>

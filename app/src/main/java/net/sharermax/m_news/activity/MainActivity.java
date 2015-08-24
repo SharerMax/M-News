@@ -3,6 +3,7 @@ package net.sharermax.m_news.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
@@ -25,7 +26,6 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.adapter.DatabaseAdapter;
 import net.sharermax.m_news.adapter.MainViewPagerAdapter;
-import net.sharermax.m_news.fragment.NavigationDrawerFragment;
 import net.sharermax.m_news.fragment.NewsFragment;
 import net.sharermax.m_news.support.CrashHandler;
 import net.sharermax.m_news.support.Utility;
@@ -38,7 +38,7 @@ import net.sharermax.m_news.view.SlidingTabLayout;
  */
 
 public class MainActivity extends AbsActivity
-        implements NavigationDrawerFragment.OnFragmentInteractionListener, ObservableScrollViewCallbacks{
+        implements  ObservableScrollViewCallbacks{
 
     public static final String CLASS_NAME = "MainActivty";
     public static final int FLAG_ACTIVITY_SUB = 0;
@@ -52,6 +52,7 @@ public class MainActivity extends AbsActivity
     private SlidingTabLayout mSlidingTabLayout;
     private int mBaseTranslationY;
     private MainViewPagerAdapter mViewPagerAdapter;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,15 @@ public class MainActivity extends AbsActivity
         });
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mNavigationView = (NavigationView)findViewById(R.id.navigation_view);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                menuItem.setChecked(true);
+                navigationDrawerPerform(menuItem.getItemId());
+                return true;
+            }
+        });
     }
     private void initHeaderView() {
         mToolbar = (Toolbar)findViewById(R.id.header_toolbar);
@@ -118,34 +128,36 @@ public class MainActivity extends AbsActivity
         });
     }
 
-    @Override
-    public void onFragmentInteraction(int clickedItemPosition) {
-
-        switch (clickedItemPosition) {
-            case NavigationDrawerFragment.LISTVIEW_POSITION_HOME:
+    /**
+     * Perform menu action from navigationView
+     * @param id With selected menu
+     */
+    private void navigationDrawerPerform(int id) {
+        switch (id) {
+            case R.id.drawer_menu_home:
                 if (null != mViewPager) {
                     mViewPager.setCurrentItem(0);
                 }
                 break;
-            case NavigationDrawerFragment.LISTVIEW_POSITION_FAVORITE:
+            case R.id.drawer_menu_favorite:
                 Intent favIntent = new Intent();
                 favIntent.setClass(this, FavoriteActivity.class);
                 startActivity(favIntent);
                 overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
-            case NavigationDrawerFragment.LISTVIEW_POSITION_SUBSCRIPTION:
+            case R.id.drawer_menu_subscription:
                 Intent subIntent = new Intent();
                 subIntent.setClass(this, SubscriptionActivity.class);
                 startActivityForResult(subIntent, FLAG_ACTIVITY_SUB);
                 overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
-            case NavigationDrawerFragment.LISTVIEW_POSITION_SETTING:
+            case R.id.drawer_menu_setting:
                 Intent settingIntent = new Intent();
                 settingIntent.setClass(this, SettingsActivity.class);
                 startActivityForResult(settingIntent, FLAG_ACTIVITY_SET);
                 overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
-            case NavigationDrawerFragment.LISTVIEW_POSITION_ACCOUNT:
+            case R.id.drawer_menu_account:
                 Intent accountIntent = new Intent();
                 accountIntent.setClass(this, AccountBindActivity.class);
                 startActivityForResult(accountIntent, FLAG_ACTIVITY_ACC);
@@ -157,7 +169,6 @@ public class MainActivity extends AbsActivity
         if (null != mDrawerLayout) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }
-
     }
 
     @Override
@@ -371,9 +382,9 @@ public class MainActivity extends AbsActivity
                 break;
             case FLAG_ACTIVITY_ACC:
                 if (Activity.RESULT_OK == resultCode) {
-                    NavigationDrawerFragment fragment =
-                            (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigationDrawer_fragment);
-                    fragment.updateProfileImage();
+//                    NavigationDrawerFragment fragment =
+//                            (NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigationDrawer_fragment);
+//                    fragment.updateProfileImage();
                 }
                 break;
             default:

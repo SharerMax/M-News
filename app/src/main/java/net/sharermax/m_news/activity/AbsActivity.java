@@ -12,7 +12,6 @@ import android.view.View;
 
 import net.sharermax.m_news.R;
 import net.sharermax.m_news.support.Setting;
-import net.sharermax.m_news.support.Utility;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
@@ -37,7 +36,7 @@ public class AbsActivity extends AppCompatActivity implements SwipeBackActivityB
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mStatusBarHeight = Utility.getStatusBarHeight(getApplication());
+//            mStatusBarHeight = Utility.getStatusBarHeight(getApplication());
         }
         mOverrideFinishAnimation = true;
         boolean swipeBack = Setting.getInstance(this).getBoolen(Setting.KEY_SWIPE_BACK, true);

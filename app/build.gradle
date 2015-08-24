@@ -70,4 +70,5 @@ dependencies {
     compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
     compile 'com.getbase:floatingactionbutton:1.9.1'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'io.reactivex:rxandroid:1.0.1'
 }

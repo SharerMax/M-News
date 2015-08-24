@@ -28,7 +28,7 @@ public class LocationHelper implements LocationListener {
     private static LocationHelper sLocationHelper;
     private Context mContext;
     private LocationManager mLocationManager;
-    private UpdateLocationListener mUpdateLocationListener;
+    private WeakReference<UpdateLocationListener> mUpdateLocationListenerWeakReference;
     public static final String FIELD_ADDRESS = "address";
     public static final String ERROR_ADDRESS = "UnKnow";
     public static final String FIELD_GEOS = "geos";
@@ -145,14 +145,16 @@ public class LocationHelper implements LocationListener {
      * @param listener 位置更新监听器
      */
     public void setUpdateLocationListener(UpdateLocationListener listener) {
-        mUpdateLocationListener = listener;
+        mUpdateLocationListenerWeakReference = new WeakReference<>(listener);
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        if (mUpdateLocationListener != null) {
-            cannelUpdateLocation();
-            mUpdateLocationListener.update(location);
+        if (null == location) return;
+        cannelUpdateLocation();
+        UpdateLocationListener updateLocationListener = mUpdateLocationListenerWeakReference.get();
+        if (updateLocationListener != null) {
+            updateLocationListener.update(location);
         }
     }
 
